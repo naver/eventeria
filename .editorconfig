@@ -1,0 +1,15 @@
+# top-most EditorConfig file
+root = true
+
+[*.{kt, kts}]
+disabled_rules = import-ordering, indent
+# disable indent rule until https://github.com/pinterest/ktlint/issues/764 is fixed.
+
+# Unix-style newlines with a newline ending every file
+[*.java]
+end_of_line = lf
+insert_final_newline = true
+indent_style = tab
+indent_size = 4
+charset = utf-8
+

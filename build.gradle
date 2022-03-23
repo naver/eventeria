@@ -1,0 +1,136 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.6.4")
+    }
+}
+
+allprojects {
+    group = "com.navercorp.eventeria"
+    version = "0.2.0"
+}
+
+subprojects {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "java-library"
+    apply plugin: "maven-publish"
+    apply plugin: "signing"
+    apply plugin: "io.spring.dependency-management"
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    ext {
+        CLOUD_EVENTS_VERSION = "2.3.0"
+        SPRING_BOOT_VERSION = "2.6.4"
+        SPRING_CLOUD_VERSION = "3.2.2"
+
+        JQWIK_VERSION = "1.6.4"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform {
+            includeEngines "jqwik"
+        }
+    }
+
+    dependencies {
+        api("com.google.code.findbugs:jsr305:3.0.2")
+        api("org.slf4j:slf4j-api")
+
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testImplementation("org.junit.jupiter:junit-jupiter-params")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine")
+        testImplementation("net.jqwik:jqwik:${JQWIK_VERSION}")
+        testImplementation("org.assertj:assertj-core")
+
+        testImplementation("org.junit.platform:junit-platform-launcher")
+        testImplementation("org.junit.platform:junit-platform-commons")
+
+        testImplementation("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${SPRING_BOOT_VERSION}"
+            mavenBom "org.springframework.cloud:spring-cloud-stream-dependencies:${SPRING_CLOUD_VERSION}"
+        }
+    }
+
+    tasks.withType(Javadoc).all { enabled = false }
+
+    java {
+        withJavadocJar()
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                repositories {
+                    maven {
+                        def ossrhUsername = project.hasProperty("ossrhUsername") ? ossrhUsername : ""
+                        def ossrhPassword = project.hasProperty("ossrhPassword") ? ossrhPassword : ""
+
+                        credentials {
+                            username ossrhUsername
+                            password ossrhPassword
+                        }
+
+                        def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                        def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                        url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
+                    }
+                }
+
+                pom {
+                    name = "eventeria"
+                    description = "Event Driven light weight message format."
+                    url = "http://github.com/naver/eventeria"
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "mhyeon-lee"
+                            name = "Myeonghyeon Lee"
+                            email = "mheyon.lee@navercorp.com"
+                        }
+                    }
+                    scm {
+                        connection = "scm:git:git://github.com/naver/eventeria.git"
+                        developerConnection = "scm:git:ssh://github.com/naver/eventeria.git"
+                        url = "http://github.com/naver/eventeria"
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        sign publishing.publications.mavenJava
+    }
+
+    tasks.withType(Sign) {
+        onlyIf { !version.endsWith("SNAPSHOT") }
+    }
+}

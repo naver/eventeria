@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "eventeria.base-package",
+      "type": "java.lang.String",
+      "description": "Eventeria model reflection base package. default: (*) ."
+    },
+    {
+      "name": "eventeria.aggregate-root-base-package",
+      "type": "java.lang.String",
+      "description": "Eventeria aggregate root reflection base package. (default: eventeria.base-package)."
+    },
+    {
+      "name": "eventeria.envet-base-package",
+      "type": "java.lang.String",
+      "description": "Eventeria Event reflection base package. (default: eventeria.base-package)."
+    },
+    {
+      "name": "eventeria.command-base-package",
+      "type": "java.lang.String",
+      "description": "Eventeria Command reflection base package. (default: eventerai.base-package)."
+    }
+  ]
+}

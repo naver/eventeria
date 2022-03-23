@@ -1,0 +1,6 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.navercorp.spring.boot.eventeria.initializer.EventeriaPackagePropertyPostProcessor
+org.springframework.context.ApplicationContextInitializer=\
+  com.navercorp.spring.boot.eventeria.initializer.EventeriaMetaManagerInitializer
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.navercorp.spring.boot.eventeria.config.SpringBootEventeriaAutoConfiguration
