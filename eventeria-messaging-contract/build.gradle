@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api("org.reflections:reflections:0.9.12")
+    api("org.reflections:reflections:0.10.2")
 }
 
 editorconfig {
