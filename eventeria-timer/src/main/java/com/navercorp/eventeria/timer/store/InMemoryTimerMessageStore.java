@@ -72,6 +72,6 @@ public class InMemoryTimerMessageStore implements TimerMessageStore {
 			partition = 0;
 		}
 
-		return this.store.getOrDefault(partition, new ArrayList<>());
+		return this.store.computeIfAbsent(partition, ArrayList::new);
 	}
 }
