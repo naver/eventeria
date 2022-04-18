@@ -150,7 +150,7 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 
 	private String generateKey(UUID storeValueId, @Nullable Integer partition) {
 		if (partition == null) {
-			return this.redisKeyPrefix + ":timer:value";
+			return String.format("%s:timer:value:%s", this.redisKeyPrefix, storeValueId.toString());
 		}
 
 		return String.format("%s:timer:{%d}:value:%s", this.redisKeyPrefix, partition, storeValueId.toString());
