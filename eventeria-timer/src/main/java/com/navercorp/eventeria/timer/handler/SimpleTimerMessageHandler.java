@@ -54,7 +54,7 @@ public class SimpleTimerMessageHandler implements TimerMessageHandler {
 	public String register(Object message) {
 		TimerMessageStoreValue storeValue = TimerMessageHandlerSupports.toTimerMessageStoreValue(message);
 		this.timerMessageStore.save(storeValue, null);
-		return storeValue.toString();
+		return storeValue.getId().toString();
 	}
 
 	@Override
