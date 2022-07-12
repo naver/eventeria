@@ -25,6 +25,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nullable;
+
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -34,6 +37,7 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventMessageReaderWriter;
 
 public class FakeKafkaMessageAccumulator {
+	@Nullable
 	private final CloudEventMessageReaderWriter cloudEventMessageReaderWriter;
 
 	private final MultiValueMap<String, Object> published = new LinkedMultiValueMap<>();
@@ -41,6 +45,10 @@ public class FakeKafkaMessageAccumulator {
 	private final MultiValueMap<String, Object> inboundDlq = new LinkedMultiValueMap<>();
 
 	private final List<Runnable> flushTriggers = new CopyOnWriteArrayList<>();
+
+	public FakeKafkaMessageAccumulator() {
+		this.cloudEventMessageReaderWriter = null;
+	}
 
 	public FakeKafkaMessageAccumulator(CloudEventMessageReaderWriter cloudEventMessageReaderWriter) {
 		this.cloudEventMessageReaderWriter = cloudEventMessageReaderWriter;
@@ -74,6 +82,10 @@ public class FakeKafkaMessageAccumulator {
 				if (it instanceof CloudEvent) {
 					return (CloudEvent)it;
 				} else if (it.getClass() == byte[].class) {
+					Assert.notNull(
+						this.cloudEventMessageReaderWriter,
+						"cloudEventMessageReaderWriter can not be null for CloudEvent."
+					);
 					return this.cloudEventMessageReaderWriter.deserialize((byte[])it);
 				}
 
@@ -91,6 +103,10 @@ public class FakeKafkaMessageAccumulator {
 	}
 
 	public List<Message> getPublishedMessages(String channel) {
+		Assert.notNull(
+			this.cloudEventMessageReaderWriter,
+			"cloudEventMessageReaderWriter can not be null for Message."
+		);
 		return this.getPublishedCloudEvents(channel).stream()
 			.map(this.cloudEventMessageReaderWriter::convert)
 			.collect(toList());
@@ -118,6 +134,10 @@ public class FakeKafkaMessageAccumulator {
 				if (it instanceof CloudEvent) {
 					return (CloudEvent)it;
 				} else if (it.getClass() == byte[].class) {
+					Assert.notNull(
+						this.cloudEventMessageReaderWriter,
+						"cloudEventMessageReaderWriter can not be null for CloudEvent."
+					);
 					return this.cloudEventMessageReaderWriter.deserialize((byte[])it);
 				}
 
@@ -135,6 +155,10 @@ public class FakeKafkaMessageAccumulator {
 	}
 
 	public List<Message> getConsumedMessages(String channel) {
+		Assert.notNull(
+			this.cloudEventMessageReaderWriter,
+			"cloudEventMessageReaderWriter can not be null for Message."
+		);
 		return this.getConsumedCloudEvents(channel).stream()
 			.map(this.cloudEventMessageReaderWriter::convert)
 			.collect(toList());
@@ -162,6 +186,10 @@ public class FakeKafkaMessageAccumulator {
 				if (it instanceof CloudEvent) {
 					return (CloudEvent)it;
 				} else if (it.getClass() == byte[].class) {
+					Assert.notNull(
+						this.cloudEventMessageReaderWriter,
+						"cloudEventMessageReaderWriter can not be null for CloudEvent."
+					);
 					return this.cloudEventMessageReaderWriter.deserialize((byte[])it);
 				}
 
@@ -179,6 +207,10 @@ public class FakeKafkaMessageAccumulator {
 	}
 
 	public List<Message> getInboundDlqMessages(String channel) {
+		Assert.notNull(
+			this.cloudEventMessageReaderWriter,
+			"cloudEventMessageReaderWriter can not be null for Message."
+		);
 		return this.getInboundDqlCloudEvents(channel).stream()
 			.map(this.cloudEventMessageReaderWriter::convert)
 			.collect(toList());
