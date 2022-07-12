@@ -38,7 +38,7 @@ public class EventFixtures extends DomainContextBase {
 			.use(ArbitraryUtils.currentTime()).in(TestEventBuilder::occurrenceTime)
 			.use(Arbitraries.strings().alpha()).in(TestEventBuilder::name)
 			.use(Arbitraries.maps(
-				Arbitraries.strings().alpha().ofMinLength(1),
+				Arbitraries.strings().alpha().ofMinLength(1).filter(it -> !it.equals("id")),
 				Arbitraries.strings().alpha().ofMinLength(1).map(Object.class::cast)
 			).ofMinSize(1)).in(TestEventBuilder::extensions)
 			.build(TestEventBuilder::build);
@@ -52,7 +52,7 @@ public class EventFixtures extends DomainContextBase {
 			.use(ArbitraryUtils.currentTime()).in(TestDomainEventBuilder::occurrenceTime)
 			.use(Arbitraries.strings().alpha()).in(TestDomainEventBuilder::name)
 			.use(Arbitraries.maps(
-				Arbitraries.strings().alpha().ofMinLength(1),
+				Arbitraries.strings().alpha().ofMinLength(1).filter(it -> !it.equals("id")),
 				Arbitraries.strings().alpha().ofMinLength(1).map(Object.class::cast)
 			).ofMinSize(1)).in(TestDomainEventBuilder::extensions)
 			.build(TestDomainEventBuilder::build);
@@ -66,7 +66,7 @@ public class EventFixtures extends DomainContextBase {
 			.use(ArbitraryUtils.currentTime()).in(TestIntegrationEventBuilder::occurrenceTime)
 			.use(Arbitraries.strings().alpha()).in(TestIntegrationEventBuilder::name)
 			.use(Arbitraries.maps(
-				Arbitraries.strings().alpha().ofMinLength(1),
+				Arbitraries.strings().alpha().ofMinLength(1).filter(it -> !it.equals("id")),
 				Arbitraries.strings().alpha().ofMinLength(1).map(Object.class::cast)
 			).ofMinSize(1)).in(TestIntegrationEventBuilder::extensions)
 			.build(TestIntegrationEventBuilder::build);
