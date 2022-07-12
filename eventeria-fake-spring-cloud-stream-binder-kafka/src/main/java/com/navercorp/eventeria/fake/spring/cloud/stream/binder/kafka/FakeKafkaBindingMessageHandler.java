@@ -21,15 +21,20 @@ package com.navercorp.eventeria.fake.spring.cloud.stream.binder.kafka;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
 import javax.annotation.Nullable;
 
+import org.springframework.integration.IntegrationMessageHeaderAccessor;
 import org.springframework.integration.aggregator.AggregatingMessageHandler;
+import org.springframework.integration.aggregator.CorrelationStrategy;
 import org.springframework.integration.aggregator.DefaultAggregatingMessageGroupProcessor;
+import org.springframework.integration.aggregator.HeaderAttributeCorrelationStrategy;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -55,6 +60,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 	) {
 		super(new DefaultAggregatingMessageGroupProcessor());
 		super.setExpireGroupsUponCompletion(true);
+		super.setCorrelationStrategy(new FakeKafkaCorrelationStrategy());
 		this.outboundChannelName = outboundChannelName;
 		this.subscribeChannels = subscribeChannels;
 		this.subscribeDlqChannels = subscribeDlqChannels;
@@ -151,6 +157,21 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 					message.getHeaders()
 				)
 			);
+		}
+	}
+
+	private static final class FakeKafkaCorrelationStrategy implements CorrelationStrategy {
+		private final CorrelationStrategy delegate = new HeaderAttributeCorrelationStrategy(
+			IntegrationMessageHeaderAccessor.CORRELATION_ID
+		);
+
+		@Override
+		public Object getCorrelationKey(Message<?> message) {
+			Object correlationId = this.delegate.getCorrelationKey(message);
+			if (correlationId == null) {
+				correlationId = UUID.randomUUID();
+			}
+			return correlationId;
 		}
 	}
 }
