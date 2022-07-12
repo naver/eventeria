@@ -33,6 +33,9 @@ import org.springframework.integration.aggregator.AggregatingMessageHandler;
 import org.springframework.integration.aggregator.CorrelationStrategy;
 import org.springframework.integration.aggregator.DefaultAggregatingMessageGroupProcessor;
 import org.springframework.integration.aggregator.HeaderAttributeCorrelationStrategy;
+import org.springframework.integration.aggregator.ReleaseStrategy;
+import org.springframework.integration.aggregator.SimpleSequenceSizeReleaseStrategy;
+import org.springframework.integration.store.MessageGroup;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -61,6 +64,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 		super(new DefaultAggregatingMessageGroupProcessor());
 		super.setExpireGroupsUponCompletion(true);
 		super.setCorrelationStrategy(new FakeKafkaCorrelationStrategy());
+		super.setReleaseStrategy(new FakeKafkaReleaseStrategy());
 		this.outboundChannelName = outboundChannelName;
 		this.subscribeChannels = subscribeChannels;
 		this.subscribeDlqChannels = subscribeDlqChannels;
@@ -172,6 +176,24 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 				correlationId = UUID.randomUUID();
 			}
 			return correlationId;
+		}
+	}
+
+	private static final class FakeKafkaReleaseStrategy implements ReleaseStrategy {
+		private final ReleaseStrategy delegate = new SimpleSequenceSizeReleaseStrategy();
+
+		@Override
+		public boolean canRelease(MessageGroup group) {
+			if (group.size() == 0) {
+				return false;
+			}
+
+			Object size = group.getOne().getHeaders().get(IntegrationMessageHeaderAccessor.SEQUENCE_SIZE);
+			if (size == null) {
+				return true;
+			}
+
+			return this.delegate.canRelease(group);
 		}
 	}
 }
