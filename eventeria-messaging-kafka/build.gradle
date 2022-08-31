@@ -12,7 +12,7 @@ dependencies {
     api("io.cloudevents:cloudevents-kafka:${CLOUD_EVENTS_VERSION}")
 
     testImplementation project(":eventeria-messaging-json-jackson")
-    testImplementation("org.springframework.kafka:spring-kafka-test:2.8.7")
+    testImplementation("org.springframework.kafka:spring-kafka-test:2.8.8")
 }
 
 editorconfig {
