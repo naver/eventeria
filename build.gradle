@@ -29,7 +29,7 @@ subprojects {
     ext {
         CLOUD_EVENTS_VERSION = "2.3.0"
         SPRING_BOOT_VERSION = "2.7.3"
-        SPRING_CLOUD_VERSION = "3.2.4"
+        SPRING_CLOUD_VERSION = "3.2.5"
 
         JQWIK_VERSION = "1.6.5"
     }
