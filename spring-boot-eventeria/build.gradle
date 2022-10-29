@@ -14,7 +14,7 @@ dependencies {
     api project(":eventeria-messaging-spring-cloud-stream")
 
     api("org.springframework.cloud:spring-cloud-stream-binder-kafka")
-    api("org.springframework.integration:spring-integration-kafka:5.5.14")
+    api("org.springframework.integration:spring-integration-kafka:${SPRING_CLOUD_INTEGRATION_KAFKA}")
 
     compileOnly("org.springframework.boot:spring-boot-starter-data-redis")
     compileOnly("org.springframework.integration:spring-integration-redis")
