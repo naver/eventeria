@@ -25,7 +25,6 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
-import java.util.UUID;
 
 import org.assertj.core.data.TemporalUnitWithinOffset;
 
@@ -60,7 +59,7 @@ class JacksonMessageSerializerTest {
 		).isEqualTo(
 			testDomainEvent.getSourceVersion() != null ? testDomainEvent.getSourceVersion().toString() : null);
 		assertThat(jsonNode.get("correlationId"))
-			.isEqualTo(testDomainEvent.getCorrelationId().map(UUID::toString).orElse(null));
+			.isEqualTo(testDomainEvent.getCorrelationId().orElse(null));
 		assertThat(jsonNode.get("operationId")).isEqualTo(testDomainEvent.getOperationId().orElse(null));
 		assertThat(jsonNode.get("sourceType")).isEqualTo(testDomainEvent.getSourceType());
 		assertThat(jsonNode.get("source")).isEqualTo(testDomainEvent.getSource().toString());
@@ -92,7 +91,7 @@ class JacksonMessageSerializerTest {
 		).isEqualTo(
 			testDomainEvent.getSourceVersion() != null ? testDomainEvent.getSourceVersion().toString() : null);
 		assertThat(jsonNode.get("correlationId"))
-			.isEqualTo(testDomainEvent.getCorrelationId().map(UUID::toString).orElse(null));
+			.isEqualTo(testDomainEvent.getCorrelationId().orElse(null));
 		assertThat(jsonNode.get("operationId")).isEqualTo(testDomainEvent.getOperationId().orElse(null));
 		assertThat(jsonNode.get("sourceType")).isEqualTo(testDomainEvent.getSourceType());
 		assertThat(jsonNode.get("source")).isEqualTo(testDomainEvent.getSource().toString());

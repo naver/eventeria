@@ -42,24 +42,24 @@ import com.navercorp.eventeria.messaging.contract.source.RaiseEventHandler;
 public abstract class AbstractEvent
 	implements Event, MessageExtensions, MessageExtensionAppender, Partitioned, RaiseEventHandler {
 
-	private UUID id;
+	private String id;
 	private String sourceId;
 	private Long sourceVersion;
 	private URI source;
 	private URI dataSchema;
 	private String subject;
 	private String partitionKey;
-	private UUID correlationId;
+	private String correlationId;
 	private String operationId;
 	private OffsetDateTime occurrenceTime;
 	private Map<String, Object> extensions = new HashMap<>();
 
 	protected AbstractEvent() {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 	}
 
 	protected AbstractEvent(String sourceId) {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.occurrenceTime = OffsetDateTime.now();
 	}
@@ -70,7 +70,7 @@ public abstract class AbstractEvent
 
 	protected AbstractEvent(String sourceId, @Nullable Long sourceVersion, OffsetDateTime occurrenceTime) {
 		guardHeaderProperties(sourceId, sourceVersion, occurrenceTime);
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.sourceVersion = sourceVersion;
 		this.occurrenceTime = occurrenceTime;
@@ -125,11 +125,11 @@ public abstract class AbstractEvent
 	}
 
 	@Override
-	public UUID getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	protected void setId(UUID id) {
+	protected void setId(String id) {
 		this.id = id;
 	}
 
@@ -192,11 +192,11 @@ public abstract class AbstractEvent
 	}
 
 	@Override
-	public Optional<UUID> getCorrelationId() {
+	public Optional<String> getCorrelationId() {
 		return Optional.ofNullable(this.correlationId);
 	}
 
-	protected void setCorrelationId(UUID correlationId) {
+	protected void setCorrelationId(String correlationId) {
 		this.correlationId = correlationId;
 	}
 

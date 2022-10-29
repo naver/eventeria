@@ -143,7 +143,7 @@ class AnnotatedMessageHandlerAggregateRootTest {
 		TestAggregateRoot sut = new TestAggregateRoot(event);
 
 		// then
-		List<UUID> handledDomainEventIds = sut.getHandledDomainEventIds();
+		List<String> handledDomainEventIds = sut.getHandledDomainEventIds();
 		assertThat(handledDomainEventIds).hasSize(1);
 		assertThat(handledDomainEventIds.get(0)).isEqualTo(event.getId());
 
@@ -167,7 +167,7 @@ class AnnotatedMessageHandlerAggregateRootTest {
 		sut.raiseEvent(domainEvent);
 
 		// then
-		List<UUID> handledDomainEventIds = sut.getHandledDomainEventIds();
+		List<String> handledDomainEventIds = sut.getHandledDomainEventIds();
 		assertThat(handledDomainEventIds).hasSize(1);
 		assertThat(handledDomainEventIds.get(0)).isEqualTo(domainEvent.getId());
 

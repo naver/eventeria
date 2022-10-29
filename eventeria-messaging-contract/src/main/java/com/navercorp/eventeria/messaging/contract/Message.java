@@ -23,12 +23,11 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
 public interface Message {
-	UUID getId();
+	String getId();
 
 	OffsetDateTime getOccurrenceTime();
 
@@ -61,7 +60,7 @@ public interface Message {
 		return Optional.empty();
 	}
 
-	Optional<UUID> getCorrelationId();
+	Optional<String> getCorrelationId();
 
 	Optional<String> getOperationId();
 }

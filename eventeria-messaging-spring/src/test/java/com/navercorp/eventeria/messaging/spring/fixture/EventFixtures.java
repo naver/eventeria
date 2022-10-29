@@ -43,7 +43,7 @@ public class EventFixtures extends DomainContextBase {
 			.in(TestDomainEvent.TestDomainEventBuilder::occurrenceTime)
 			.use(Arbitraries.strings().alpha())
 			.in(TestDomainEvent.TestDomainEventBuilder::name)
-			.use(Arbitraries.randomValue(r -> UUID.randomUUID()))
+			.use(Arbitraries.randomValue(r -> UUID.randomUUID().toString()))
 			.in(TestDomainEvent.TestDomainEventBuilder::correlationId)
 			.use(Arbitraries.randomValue(r -> UUID.randomUUID().toString()))
 			.in(TestDomainEvent.TestDomainEventBuilder::operationId)

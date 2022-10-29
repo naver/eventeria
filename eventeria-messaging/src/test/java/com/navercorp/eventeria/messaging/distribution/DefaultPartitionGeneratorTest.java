@@ -171,7 +171,7 @@ class DefaultPartitionGeneratorTest {
 	}
 
 	static class SimpleMessage implements Message {
-		private final UUID id = UUID.randomUUID();
+		private final String id = UUID.randomUUID().toString();
 		private final UUID sourceId;
 
 		public SimpleMessage(UUID sourceId) {
@@ -179,7 +179,7 @@ class DefaultPartitionGeneratorTest {
 		}
 
 		@Override
-		public UUID getId() {
+		public String getId() {
 			return this.id;
 		}
 
@@ -205,7 +205,7 @@ class DefaultPartitionGeneratorTest {
 		}
 
 		@Override
-		public Optional<UUID> getCorrelationId() {
+		public Optional<String> getCorrelationId() {
 			return Optional.empty();
 		}
 

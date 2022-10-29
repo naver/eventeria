@@ -37,7 +37,7 @@ import com.navercorp.eventeria.messaging.contract.extension.MessageExtensionAppe
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
 public class SimpleMessage implements Message, Partitioned, MessageExtensions, MessageExtensionAppender {
-	private UUID id;
+	private String id;
 	private OffsetDateTime occurrenceTime;
 	private String sourceId;
 	private Long sourceVersion;
@@ -46,7 +46,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 	private URI dataSchema;
 	private String subject;
 	private String partitionKey;
-	private UUID correlationId;
+	private String correlationId;
 	private String operationId;
 	private Map<String, Object> payload = new HashMap<>();
 	private Map<String, Object> extensions = new HashMap<>();
@@ -64,6 +64,36 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 		String subject,
 		String partitionKey,
 		UUID correlationId,
+		String operationId,
+		Map<String, Object> payload,
+		Map<String, Object> extensions
+	) {
+		this(
+			id.toString(),
+			occurrenceTime,
+			sourceId,
+			sourceVersion,
+			sourceType,
+			dataSchema,
+			subject,
+			partitionKey,
+			correlationId.toString(),
+			operationId,
+			payload,
+			extensions
+		);
+	}
+
+	protected SimpleMessage(
+		String id,
+		OffsetDateTime occurrenceTime,
+		String sourceId,
+		Long sourceVersion,
+		String sourceType,
+		URI dataSchema,
+		String subject,
+		String partitionKey,
+		String correlationId,
 		String operationId,
 		Map<String, Object> payload,
 		Map<String, Object> extensions
@@ -87,11 +117,11 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 	}
 
 	@Override
-	public UUID getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	protected void setId(UUID id) {
+	protected void setId(String id) {
 		this.id = id;
 	}
 
@@ -163,11 +193,11 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 	}
 
 	@Override
-	public Optional<UUID> getCorrelationId() {
+	public Optional<String> getCorrelationId() {
 		return Optional.ofNullable(this.correlationId);
 	}
 
-	protected void setCorrelationId(UUID correlationId) {
+	protected void setCorrelationId(String correlationId) {
 		this.correlationId = correlationId;
 	}
 
@@ -311,7 +341,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 	}
 
 	public static class SimpleMessageBuilder {
-		private UUID id;
+		private String id;
 		private OffsetDateTime occurrenceTime;
 		private String sourceId;
 		private Long sourceVersion;
@@ -319,7 +349,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 		private URI dataSchema;
 		private String subject;
 		private String partitionKey;
-		private UUID correlationId;
+		private String correlationId;
 		private String operationId;
 		private Map<String, Object> payload = new HashMap<>();
 		private Map<String, Object> extensions = new HashMap<>();
@@ -327,7 +357,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 		public SimpleMessageBuilder() {
 		}
 
-		public SimpleMessageBuilder id(UUID id) {
+		public SimpleMessageBuilder id(String id) {
 			this.id = id;
 			return this;
 		}
@@ -371,7 +401,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 			return this;
 		}
 
-		public SimpleMessageBuilder correlationId(UUID correlationId) {
+		public SimpleMessageBuilder correlationId(String correlationId) {
 			this.correlationId = correlationId;
 			return this;
 		}
@@ -401,7 +431,7 @@ public class SimpleMessage implements Message, Partitioned, MessageExtensions, M
 
 		public SimpleMessage build() {
 			if (this.id == null) {
-				this.id = UUID.randomUUID();
+				this.id = UUID.randomUUID().toString();
 			}
 			if (this.occurrenceTime == null) {
 				this.occurrenceTime = OffsetDateTime.now();

@@ -30,7 +30,7 @@ import com.navercorp.eventeria.messaging.contract.event.Event;
 
 @Getter
 public class TestSimpleEvent implements Event {
-	private UUID id;
+	private String id;
 	private String sourceId;
 	private Long sourceVersion;
 	private String name;
@@ -42,7 +42,7 @@ public class TestSimpleEvent implements Event {
 
 	@Builder
 	public TestSimpleEvent(String sourceId, Long sourceVersion, OffsetDateTime occurrenceTime, String name) {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.sourceVersion = sourceVersion;
 		this.name = name;
@@ -55,7 +55,7 @@ public class TestSimpleEvent implements Event {
 	}
 
 	@Override
-	public Optional<UUID> getCorrelationId() {
+	public Optional<String> getCorrelationId() {
 		return Optional.empty();
 	}
 

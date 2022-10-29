@@ -54,7 +54,7 @@ public class EventFixtures extends DomainContextBase {
 			.in(TestDomainEventBuilder::occurrenceTime)
 			.use(Arbitraries.strings().alpha())
 			.in(TestDomainEventBuilder::name)
-			.use(Arbitraries.randomValue(r -> UUID.randomUUID()))
+			.use(Arbitraries.randomValue(r -> UUID.randomUUID().toString()))
 			.in(TestDomainEventBuilder::correlationId)
 			.use(Arbitraries.randomValue(r -> UUID.randomUUID().toString()))
 			.in(TestDomainEventBuilder::operationId)
@@ -95,7 +95,7 @@ public class EventFixtures extends DomainContextBase {
 			Long sourceVersion,
 			Instant occurrenceTime,
 			String name,
-			UUID correlationId,
+			String correlationId,
 			String operationId,
 			URI dataSchema,
 			String subject,

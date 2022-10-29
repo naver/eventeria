@@ -21,7 +21,6 @@ package com.navercorp.eventeria.domain.fixture;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.jqwik.api.Arbitraries;
 import net.jqwik.api.Arbitrary;
@@ -54,7 +53,7 @@ public class AbstractAggregateRootFixtures extends DomainContextBase {
 		private String id;
 		private Long version;
 		private int amount;
-		private transient List<UUID> handledDomainEventIds = new ArrayList<>();
+		private transient List<String> handledDomainEventIds = new ArrayList<>();
 
 		@Builder
 		public TestAggregateRoot(String id, Long version, int amount) {
@@ -72,8 +71,8 @@ public class AbstractAggregateRootFixtures extends DomainContextBase {
 		}
 
 		@DomainEventHandler
-		private void onTestDomainEvent(TestDomainEvent testDomainEvnt) {
-			this.handledDomainEventIds.add(testDomainEvnt.getId());
+		private void onTestDomainEvent(TestDomainEvent testDomainEvent) {
+			this.handledDomainEventIds.add(testDomainEvent.getId());
 		}
 
 		@DomainEventHandler

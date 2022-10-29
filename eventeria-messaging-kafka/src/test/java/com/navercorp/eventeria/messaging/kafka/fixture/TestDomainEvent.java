@@ -22,7 +22,6 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -55,7 +54,7 @@ public class TestDomainEvent extends AbstractDomainEvent {
 		Long sourceVersion,
 		Instant occurrenceTime,
 		String name,
-		UUID correlationId,
+		String correlationId,
 		String operationId,
 		URI dataSchema,
 		String subject,

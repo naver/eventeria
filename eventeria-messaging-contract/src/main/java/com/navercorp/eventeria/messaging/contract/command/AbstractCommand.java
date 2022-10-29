@@ -37,31 +37,31 @@ import com.navercorp.eventeria.messaging.contract.extension.MessageExtensionAppe
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
 public abstract class AbstractCommand implements Command, MessageExtensions, MessageExtensionAppender, Partitioned {
-	private UUID id;
+	private String id;
 	private String sourceId;
 	private Long sourceVersion;
 	private URI source;
 	private URI dataSchema;
 	private String subject;
 	private String partitionKey;
-	private UUID correlationId;
+	private String correlationId;
 	private String operationId;
 	private OffsetDateTime occurrenceTime;
 	private Map<String, Object> extensions = new HashMap<>();
 
 	protected AbstractCommand() {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 	}
 
 	// Aggregate 가 아직 만들어지지 않은 대상에 발생시키는 명령은 sourceId 가 없다.
 	protected AbstractCommand(@Nullable String sourceId) {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.occurrenceTime = OffsetDateTime.now();
 	}
 
 	protected AbstractCommand(@Nullable String sourceId, @Nullable Long sourceVersion) {
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.sourceVersion = sourceVersion;
 		this.occurrenceTime = OffsetDateTime.now();
@@ -73,7 +73,7 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 
 	protected AbstractCommand(String sourceId, @Nullable Long sourceVersion, OffsetDateTime occurrenceTime) {
 		guardHeaderProperties(sourceId, sourceVersion, occurrenceTime);
-		this.id = UUID.randomUUID();
+		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
 		this.sourceVersion = sourceVersion;
 		this.occurrenceTime = occurrenceTime;
@@ -89,11 +89,11 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 	}
 
 	@Override
-	public UUID getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	protected void setId(UUID id) {
+	protected void setId(String id) {
 		this.id = id;
 	}
 
@@ -157,11 +157,11 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 	}
 
 	@Override
-	public Optional<UUID> getCorrelationId() {
+	public Optional<String> getCorrelationId() {
 		return Optional.ofNullable(this.correlationId);
 	}
 
-	protected void setCorrelationId(UUID correlationId) {
+	protected void setCorrelationId(String correlationId) {
 		this.correlationId = correlationId;
 	}
 

@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -176,7 +175,7 @@ class CloudEventMessageTypeAliasMapperTest {
 
 	private static class MappingEvent implements Event {
 		@Override
-		public UUID getId() {
+		public String getId() {
 			return null;
 		}
 
@@ -202,7 +201,7 @@ class CloudEventMessageTypeAliasMapperTest {
 		}
 
 		@Override
-		public Optional<UUID> getCorrelationId() {
+		public Optional<String> getCorrelationId() {
 			return Optional.empty();
 		}
 

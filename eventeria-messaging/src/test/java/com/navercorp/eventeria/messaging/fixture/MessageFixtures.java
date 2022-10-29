@@ -64,7 +64,7 @@ public class MessageFixtures extends DomainContextBase {
 	@Setter
 	@ToString
 	public static class TestMessage implements Message {
-		private UUID id;
+		private String id;
 		private OffsetDateTime occurrenceTime;
 		private String name;
 
@@ -72,13 +72,13 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		public TestMessage(String name) {
-			this.id = UUID.randomUUID();
+			this.id = UUID.randomUUID().toString();
 			this.occurrenceTime = OffsetDateTime.now();
 			this.name = name;
 		}
 
 		@Override
-		public UUID getId() {
+		public String getId() {
 			return this.id;
 		}
 
@@ -105,7 +105,7 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		@Override
-		public Optional<UUID> getCorrelationId() {
+		public Optional<String> getCorrelationId() {
 			return Optional.empty();
 		}
 
@@ -129,7 +129,7 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		@Override
-		public UUID getId() {
+		public String getId() {
 			return null;
 		}
 
@@ -156,7 +156,7 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		@Override
-		public Optional<UUID> getCorrelationId() {
+		public Optional<String> getCorrelationId() {
 			return Optional.empty();
 		}
 
@@ -179,7 +179,7 @@ public class MessageFixtures extends DomainContextBase {
 	public static class TestPartitioned implements Message, Partitioned,
 		MessageExtensions, MessageExtensionAppender {
 
-		private UUID id;
+		private String id;
 		private OffsetDateTime occurrenceTime;
 		private String name;
 		private Map<String, Object> extensions;
@@ -188,13 +188,13 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		public TestPartitioned(String name) {
-			this.id = UUID.randomUUID();
+			this.id = UUID.randomUUID().toString();
 			this.occurrenceTime = OffsetDateTime.now();
 			this.name = name;
 		}
 
 		@Override
-		public UUID getId() {
+		public String getId() {
 			return this.id;
 		}
 
@@ -221,7 +221,7 @@ public class MessageFixtures extends DomainContextBase {
 		}
 
 		@Override
-		public Optional<UUID> getCorrelationId() {
+		public Optional<String> getCorrelationId() {
 			return Optional.empty();
 		}
 
