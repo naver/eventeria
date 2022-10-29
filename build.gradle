@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.4")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.5")
     }
 }
 
@@ -28,9 +28,9 @@ subprojects {
 
     ext {
         CLOUD_EVENTS_VERSION = "2.4.0"
-        SPRING_BOOT_VERSION = "2.7.4"
+        SPRING_BOOT_VERSION = "2.7.5"
         SPRING_CLOUD_VERSION = "3.2.5"
-        SPRING_CLOUD_INTEGRATION_KAFKA = "5.5.14"
+        SPRING_CLOUD_INTEGRATION_KAFKA = "5.5.15"
 
         JQWIK_VERSION = "1.7.0"
     }
