@@ -180,7 +180,7 @@ public class FakeKafkaMessageAccumulator {
 		return values;
 	}
 
-	public List<CloudEvent> getInboundDqlCloudEvents(String channel) {
+	public List<CloudEvent> getInboundDlqCloudEvents(String channel) {
 		return this.getInboundDlq(channel).stream()
 			.map(it -> {
 				if (it instanceof CloudEvent) {
@@ -201,7 +201,7 @@ public class FakeKafkaMessageAccumulator {
 	}
 
 	public List<CloudEvent> popInboundDlqCloudEvents(String channel) {
-		List<CloudEvent> cloudEvent = this.getInboundDqlCloudEvents(channel);
+		List<CloudEvent> cloudEvent = this.getInboundDlqCloudEvents(channel);
 		this.inboundDlq.clear();
 		return cloudEvent;
 	}
@@ -211,7 +211,7 @@ public class FakeKafkaMessageAccumulator {
 			this.cloudEventMessageReaderWriter,
 			"cloudEventMessageReaderWriter can not be null for Message."
 		);
-		return this.getInboundDqlCloudEvents(channel).stream()
+		return this.getInboundDlqCloudEvents(channel).stream()
 			.map(this.cloudEventMessageReaderWriter::convert)
 			.collect(toList());
 	}
