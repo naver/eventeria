@@ -153,7 +153,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 				List<Object> consumedPayloads = new ArrayList<>();
 				Object errorPayload = null;
 				List<Object> remainPayloads = new ArrayList<>();
-				for (int i = 0, size = payloads.size(); i < size ; i++) {
+				for (int i = 0, size = payloads.size(); i < size; i++) {
 					Object payload = payloads.get(i);
 					if (i < errorIndex) {
 						consumedPayloads.add(payload);
