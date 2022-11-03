@@ -18,7 +18,9 @@
 
 package com.navercorp.eventeria.fake.spring.cloud.stream.binder.kafka;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,6 +39,7 @@ import org.springframework.integration.aggregator.ReleaseStrategy;
 import org.springframework.integration.aggregator.SimpleSequenceSizeReleaseStrategy;
 import org.springframework.integration.store.MessageGroup;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.kafka.listener.BatchListenerFailedException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -109,43 +112,82 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 		this.kafkaMessageAccumulator.registerFlushTrigger(() ->
 			this.subscribeChannels.forEach(inbound -> {
 				CompletableFuture<?> future = CompletableFuture.runAsync(
-					() -> {
-						try {
-							if (inbound.isTransactional() && this.kafkaTransactionTemplate != null) {
-								this.kafkaTransactionTemplate.executeWithoutResult(status ->
-									sendToSubscribeChannel(inbound, message)
-								);
-							} else {
-								sendToSubscribeChannel(inbound, message);
-							}
-
-							((Collection<?>)message.getPayload()).forEach(it ->
-								this.kafkaMessageAccumulator.consumed(
-									inbound.getBeanName(),
-									it
-								)
-							);
-						} catch (Exception ex) {
-							FakeBindingSubscribableChannel dlqChannel = this.subscribeDlqChannels.get(
-								inbound.getBeanName());
-							if (dlqChannel != null) {
-								((Collection<?>)message.getPayload()).forEach(it ->
-									this.kafkaMessageAccumulator.inboundDlq(
-										inbound.getBeanName(),
-										it
-									)
-								);
-
-								dlqChannel.send(message);
-							}
-						}
-					},
+					() -> executeSubscribe(inbound, message),
 					this.executor
 				);
 
 				future.join();
 			})
 		);
+	}
+
+	private void executeSubscribe(
+		FakeBindingSubscribableChannel inbound,
+		org.springframework.messaging.Message<?> message
+	) {
+		try {
+			if (inbound.isTransactional() && this.kafkaTransactionTemplate != null) {
+				this.kafkaTransactionTemplate.executeWithoutResult(status ->
+					sendToSubscribeChannel(inbound, message)
+				);
+			} else {
+				sendToSubscribeChannel(inbound, message);
+			}
+
+			((Collection<?>)message.getPayload()).forEach(it ->
+				this.kafkaMessageAccumulator.consumed(
+					inbound.getBeanName(),
+					it
+				)
+			);
+		} catch (Exception ex) {
+			if (ex instanceof BatchListenerFailedException) {
+				List<?> payloads = new ArrayList<>((Collection<?>)message.getPayload());
+				if (payloads.isEmpty()) {
+					throw ex;
+				}
+
+				BatchListenerFailedException batchException = (BatchListenerFailedException)ex;
+				int errorIndex = batchException.getIndex();
+
+				List<Object> consumedPayloads = new ArrayList<>();
+				Object errorPayload = null;
+				List<Object> remainPayloads = new ArrayList<>();
+				for (int i = 0, size = payloads.size(); i < size ; i++) {
+					Object payload = payloads.get(i);
+					if (i < errorIndex) {
+						consumedPayloads.add(payload);
+					} else if (i == errorIndex) {
+						errorPayload = payload;
+					} else {
+						remainPayloads.add(payload);
+					}
+				}
+
+				consumedPayloads.forEach(it -> this.kafkaMessageAccumulator.consumed(inbound.getBeanName(), it));
+				if (errorPayload != null) {
+					this.sendToDlq(
+						inbound,
+						new GenericMessage<>(
+							Collections.singletonList(errorPayload),
+							message.getHeaders()
+						)
+					);
+				}
+
+				if (!remainPayloads.isEmpty()) {
+					executeSubscribe(
+						inbound,
+						new GenericMessage<>(
+							remainPayloads,
+							message.getHeaders()
+						)
+					);
+				}
+			} else {
+				this.sendToDlq(inbound, message);
+			}
+		}
 	}
 
 	private void sendToSubscribeChannel(
@@ -161,6 +203,24 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 					message.getHeaders()
 				)
 			);
+		}
+	}
+
+	private void sendToDlq(
+		FakeBindingSubscribableChannel inbound,
+		org.springframework.messaging.Message<?> message
+	) {
+		FakeBindingSubscribableChannel dlqChannel = this.subscribeDlqChannels.get(
+			inbound.getBeanName());
+		if (dlqChannel != null) {
+			((Collection<?>)message.getPayload()).forEach(it ->
+				this.kafkaMessageAccumulator.inboundDlq(
+					inbound.getBeanName(),
+					it
+				)
+			);
+
+			dlqChannel.send(message);
 		}
 	}
 
