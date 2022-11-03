@@ -21,8 +21,10 @@ package com.navercorp.eventeria.fake.spring.cloud.stream.binder.kafka;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -141,13 +143,13 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 				)
 			);
 		} catch (Exception ex) {
-			if (ex instanceof BatchListenerFailedException) {
+			BatchListenerFailedException batchException = getBatchListenerFailedException(ex);
+			if (batchException != null) {
 				List<?> payloads = new ArrayList<>((Collection<?>)message.getPayload());
 				if (payloads.isEmpty()) {
 					throw ex;
 				}
 
-				BatchListenerFailedException batchException = (BatchListenerFailedException)ex;
 				int errorIndex = batchException.getIndex();
 
 				List<Object> consumedPayloads = new ArrayList<>();
@@ -222,6 +224,29 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 
 			dlqChannel.send(message);
 		}
+	}
+
+	@org.springframework.lang.Nullable
+	private BatchListenerFailedException getBatchListenerFailedException(Throwable throwableArg) {
+		if (throwableArg == null || throwableArg instanceof BatchListenerFailedException) {
+			return (BatchListenerFailedException) throwableArg;
+		}
+
+		BatchListenerFailedException target = null;
+
+		Throwable throwable = throwableArg;
+		Set<Throwable> checked = new HashSet<>();
+		while (throwable.getCause() != null && !checked.contains(throwable.getCause())) {
+			throwable = throwable.getCause();
+			checked.add(throwable);
+
+			if (throwable instanceof BatchListenerFailedException) {
+				target = (BatchListenerFailedException) throwable;
+				break;
+			}
+		}
+
+		return target;
 	}
 
 	private static final class FakeKafkaCorrelationStrategy implements CorrelationStrategy {
