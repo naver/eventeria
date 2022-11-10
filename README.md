@@ -2,6 +2,8 @@
 
 Event Driven lightweight message format
 
+[Document](https://github.com/naver/eventeria/wiki)
+
 ## License
 ```
 Copyright (c) 2022-present NAVER Corp.
