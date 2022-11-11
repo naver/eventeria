@@ -38,22 +38,17 @@ import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
 @ParametersAreNonnullByDefault
 public final class MessageCategoryExtension implements CloudEventExtension {
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
 	public static final String MESSAGE_CATEGORY_EXTENSION = "messagecategory";
 	public static final Set<String> MESSAGE_CATEGORY_EXTENSION_KEYS = Collections.singleton(MESSAGE_CATEGORY_EXTENSION);
 	public static final String MESSAGE_CATEGORY_DELIMITER = ",";
-
-	public enum MessageCategory {
-		MESSAGE, COMMAND, EVENT, DOMAIN_EVENT, INTEGRATION_EVENT, TIMER
-	}
-
-	private Set<MessageCategory> messageCategories;
+	private static final Logger LOG = LoggerFactory.getLogger(MessageCategoryExtension.class);
 
 	static {
 		ExtensionProvider.getInstance()
 			.registerExtension(MessageCategoryExtension.class, MessageCategoryExtension::new);
 	}
+
+	private Set<MessageCategory> messageCategories;
 
 	public static MessageCategoryExtension parseExtension(CloudEventExtensions cloudEventExtensions) {
 		return ExtensionProvider.getInstance().parseExtension(MessageCategoryExtension.class, cloudEventExtensions);
@@ -77,7 +72,7 @@ public final class MessageCategoryExtension implements CloudEventExtension {
 			try {
 				categories.add(MessageCategory.valueOf(category));
 			} catch (Exception ex) {
-				log.warn("Can not find MessageCategory enum value. category: {}", category, ex);
+				LOG.warn("Can not find MessageCategory enum value. category: {}", category, ex);
 			}
 		}
 
@@ -128,5 +123,9 @@ public final class MessageCategoryExtension implements CloudEventExtension {
 		return "MessageCategoryExtension{"
 			+ "messageCategories='" + messageCategories + '\''
 			+ '}';
+	}
+
+	public enum MessageCategory {
+		MESSAGE, COMMAND, EVENT, DOMAIN_EVENT, INTEGRATION_EVENT, TIMER
 	}
 }

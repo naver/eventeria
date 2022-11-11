@@ -42,7 +42,7 @@ import com.navercorp.eventeria.timer.contract.store.TimerMessageStore;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
 public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
-	private final Logger logger = LoggerFactory.getLogger(RedisCloudEventTimerMessageStore.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RedisCloudEventTimerMessageStore.class);
 
 	private final String redisKeyPrefix;
 	private final RedisOperations<String, String> redisIndexOperations;
@@ -87,7 +87,7 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 			String valueKey = this.generateKey(storeValueId, partition);
 			this.redisValueOperations.delete(valueKey);
 		} catch (Exception ex) {
-			logger.warn("Remove timer message value has error. But it would be ignore. storeValueId: {}, partition: {}",
+			LOG.warn("Remove timer message value has error. But it would be ignore. storeValueId: {}, partition: {}",
 				storeValueId, partition, ex);
 		}
 	}
@@ -128,7 +128,7 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 					result.add(this.toTimerMessageStoreValue(redisStoreValue));
 				}
 			} catch (Throwable throwable) {
-				logger.error("timer handler persisted value can not be deserialize to cloudEvent. "
+				LOG.error("timer handler persisted value can not be deserialize to cloudEvent. "
 					+ "This message would be ignored and deleted from store. "
 					+ "indexKey: {}, storeValueId: {}, score: {}", indexKey, storeValueId, tuple.getScore(), throwable);
 

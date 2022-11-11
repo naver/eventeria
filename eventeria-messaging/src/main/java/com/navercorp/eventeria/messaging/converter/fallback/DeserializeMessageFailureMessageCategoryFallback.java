@@ -34,8 +34,7 @@ import com.navercorp.eventeria.messaging.extension.MessageCategoryExtension;
 import com.navercorp.eventeria.messaging.extension.MessageCategoryExtension.MessageCategory;
 
 public final class DeserializeMessageFailureMessageCategoryFallback implements DeserializeMessageFailureFallback {
-	private static final Logger logger =
-		LoggerFactory.getLogger(DeserializeMessageFailureMessageCategoryFallback.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DeserializeMessageFailureMessageCategoryFallback.class);
 
 	private final MessageDeserializer messageDeserializer;
 
@@ -45,7 +44,7 @@ public final class DeserializeMessageFailureMessageCategoryFallback implements D
 
 	@Override
 	public Message fallback(CloudEvent cloudEvent, Throwable throwable) {
-		logger.warn(
+		LOG.warn(
 			"Deserialize message is failed. [FALLBACK] deserialize simple message by message category. cloudEvent: {}",
 			cloudEvent,
 			throwable

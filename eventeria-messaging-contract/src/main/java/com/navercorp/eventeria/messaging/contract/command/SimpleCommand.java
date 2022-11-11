@@ -103,6 +103,9 @@ public class SimpleCommand implements Command, Partitioned, MessageExtensions, M
 		this.sourceId = sourceId;
 		this.sourceVersion = sourceVersion;
 		this.sourceType = sourceType;
+		this.dataSchema = dataSchema;
+		this.subject = subject;
+		this.partitionKey = partitionKey;
 		this.correlationId = correlationId;
 		this.operationId = operationId;
 		this.payload = payload;
@@ -291,15 +294,15 @@ public class SimpleCommand implements Command, Partitioned, MessageExtensions, M
 		this.extensions.put(extensionName.toLowerCase(), extensionValue);
 	}
 
-	protected void setExtensions(Map<String, Object> extensions) {
-		extensions.forEach(this::appendExtension);
-	}
-
 	protected Map<String, Object> getExtensions() {
 		if (this.extensions == null) {
 			this.extensions = new HashMap<>();
 		}
 		return this.extensions;
+	}
+
+	protected void setExtensions(Map<String, Object> extensions) {
+		extensions.forEach(this::appendExtension);
 	}
 
 	@Override

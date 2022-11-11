@@ -63,7 +63,7 @@ public class DefaultCloudEventAttributesConverter implements CloudEventAttribute
 
 			@Override
 			public String getId() {
-				return message.getId().toString();
+				return message.getId();
 			}
 
 			@Override

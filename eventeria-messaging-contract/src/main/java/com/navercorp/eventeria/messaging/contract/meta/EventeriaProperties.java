@@ -26,25 +26,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EventeriaProperties {
-	private static final Logger log = LoggerFactory.getLogger(EventeriaProperties.class);
+	private static final Logger LOG = LoggerFactory.getLogger(EventeriaProperties.class);
 	private static final String EVENTERIA_META_INF_PROPERTIES = "/META-INF/eventeria.properties";
 
 	private static final Properties PROPERTIES;
 
-	private static String BASE_PACKAGE;
-	private static String AGGREGATE_ROOT_BASE_PACKAGE;
-	private static String EVENT_BASE_PACKAGE;
-	private static String COMMAND_BASE_PACKAGE;
+	private static final String BASE_PACKAGE;
+	private static final String AGGREGATE_ROOT_BASE_PACKAGE;
+	private static final String EVENT_BASE_PACKAGE;
+	private static final String COMMAND_BASE_PACKAGE;
 
 	static {
 		Properties properties = new Properties();
 		try (InputStream propertiesIs = EventeriaProperties.class.getResourceAsStream(EVENTERIA_META_INF_PROPERTIES)) {
 			if (propertiesIs != null) {
 				properties.load(propertiesIs);
-				log.info("Load {}. {}", EVENTERIA_META_INF_PROPERTIES, properties.toString());
+				LOG.info("Load {}. {}", EVENTERIA_META_INF_PROPERTIES, properties);
 			}
 		} catch (IOException e) {
-			log.error("Can not load properties from " + EVENTERIA_META_INF_PROPERTIES, e);
+			LOG.error("Can not load properties from " + EVENTERIA_META_INF_PROPERTIES, e);
 		}
 
 		PROPERTIES = properties;

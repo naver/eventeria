@@ -32,7 +32,7 @@ import com.navercorp.eventeria.timer.contract.store.TimerMessageStore;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
 public class SimpleTimerMessageHandler implements TimerMessageHandler {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(SimpleTimerMessageHandler.class);
 
 	private final TimerMessageStore timerMessageStore;
 	private final int countPerRelease;
@@ -79,19 +79,15 @@ public class SimpleTimerMessageHandler implements TimerMessageHandler {
 
 	// return need rescheduling partitions
 	private boolean schedulePersistedMessages(Instant scheduleTime, Consumer<Object> consumeReleaseMessage) {
-		boolean needReschedule = false;
-
 		List<TimerMessageStoreValue> releaseValues = this.timerMessageStore.findReleaseValues(
 			scheduleTime, this.countPerRelease, null);
 
 		if (releaseValues == null || releaseValues.isEmpty()) {
-			return needReschedule;
+			return false;
 		}
 
-		// 추가 처리할 데이터가 더 있기 때문에 reschedule partition 으로 추가합니다.
-		if (releaseValues.size() == this.countPerRelease) {
-			needReschedule = true;
-		}
+		// mark that rescheduling is needed because there are remaining data to process
+		boolean needReschedule = releaseValues.size() == this.countPerRelease;
 
 		releaseValues.sort(Comparator.comparing(TimerMessageStoreValue::getReleaseDateTime));
 
@@ -100,7 +96,7 @@ public class SimpleTimerMessageHandler implements TimerMessageHandler {
 				consumeReleaseMessage.accept(releaseValue.getMessage());
 				this.timerMessageStore.remove(releaseValue.getId(), null);
 			} catch (Throwable throwable) {
-				logger.error("timer handler release message is failed. "
+				LOG.error("timer handler release message is failed. "
 					+ "This message would be ignored and retry next scheduling. storeValue: "
 					+ releaseValue);
 			}

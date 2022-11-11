@@ -82,7 +82,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 
 	@Override
 	public void handleMessageInternal(org.springframework.messaging.Message<?> message) {
-		// dlq 는 outbound 를 기록하지 않는다.
+		// Do not record outbound published for DLQ
 		if (this.outboundChannelName != null) {
 			this.kafkaMessageAccumulator.published(
 				this.outboundChannelName,
@@ -229,7 +229,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 	@org.springframework.lang.Nullable
 	private BatchListenerFailedException getBatchListenerFailedException(Throwable throwableArg) {
 		if (throwableArg == null || throwableArg instanceof BatchListenerFailedException) {
-			return (BatchListenerFailedException) throwableArg;
+			return (BatchListenerFailedException)throwableArg;
 		}
 
 		BatchListenerFailedException target = null;
@@ -241,7 +241,7 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 			checked.add(throwable);
 
 			if (throwable instanceof BatchListenerFailedException) {
-				target = (BatchListenerFailedException) throwable;
+				target = (BatchListenerFailedException)throwable;
 				break;
 			}
 		}
