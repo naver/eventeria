@@ -72,8 +72,8 @@ class CloudEventKafkaTest {
 		BROKER = new EmbeddedKafkaBroker(1, true, 1)
 			.kafkaPorts(0)
 			.brokerProperty(KafkaConfig.OffsetsTopicReplicationFactorProp(), (short)1)
-			.brokerProperty("transaction.state.log.replication.factor", (short)1)
-			.brokerProperty("transaction.state.log.min.isr", 1);
+			.brokerProperty(KafkaConfig.TransactionsTopicReplicationFactorProp(), (short)1)
+			.brokerProperty(KafkaConfig.TransactionsTopicMinISRProp(), 1);
 		BROKER.afterPropertiesSet();
 	}
 

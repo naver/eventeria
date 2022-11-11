@@ -65,15 +65,15 @@ public final class AggregateMetaManager {
 		String aggregateRootBasePackage = EventeriaProperties.getAggregateRootBasePackage();
 		Reflections reflections = new Reflections(aggregateRootBasePackage);
 		Set<Class<?>> aggregateHandlerTypes = reflections.getTypesAnnotatedWith(AnnotatedAggregateHandler.class, true);
-		for (Class<?> handlerType : aggregateHandlerTypes) {
-			if (AggregateRoot.class.isAssignableFrom(handlerType)) {
-				if (!META_MODELS.containsKey(handlerType)) {
-					AnnotatedAggregateMetaModel metaModel = AnnotatedAggregateMetaModel.newAggregateMetaModel(
-						(Class<AggregateRoot>)handlerType);
-					metaModelMap.put((Class<? extends AggregateRoot>)handlerType, metaModel);
-				}
-			}
-		}
+
+		aggregateHandlerTypes.stream()
+			.filter(AggregateRoot.class::isAssignableFrom)
+			.filter(handlerType -> !META_MODELS.containsKey(handlerType))
+			.forEach(handlerType -> {
+				AnnotatedAggregateMetaModel metaModel = AnnotatedAggregateMetaModel.newAggregateMetaModel(
+					(Class<AggregateRoot>)handlerType);
+				metaModelMap.put((Class<? extends AggregateRoot>)handlerType, metaModel);
+			});
 
 		META_MODELS.putAll(metaModelMap);
 		INITIALIZED = true;

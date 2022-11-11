@@ -41,7 +41,7 @@ import com.navercorp.eventeria.timer.contract.store.TimerMessageStore;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
 public class DistributedTimerMessageHandler implements TimerMessageHandler {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(DistributedTimerMessageHandler.class);
 
 	private final TimerMessageStore timerMessageStore;
 	private final int countPerRelease;
@@ -129,7 +129,7 @@ public class DistributedTimerMessageHandler implements TimerMessageHandler {
 					return;
 				}
 
-				// 추가 처리할 데이터가 더 있기 때문에 reschedule partition 으로 추가합니다.
+				// add partition to reschedulePartition because there are remaining data to process
 				if (releaseValues.size() == this.countPerRelease) {
 					reschedulePartitions.add(partition);
 				}
@@ -143,13 +143,13 @@ public class DistributedTimerMessageHandler implements TimerMessageHandler {
 						this.timerMessageStore.remove(releaseValue.getId(), partition);
 						successCount++;
 					} catch (Throwable throwable) {
-						logger.error("timer handler release message is failed. "
+						LOG.error("timer handler release message is failed. "
 							+ "This message would be ignored and retry next scheduling. storeValue: "
 							+ releaseValue);
 					}
 				}
 
-				// Message Release 대상 중 release 에 성공한 Message 가 없다면, reschedule 하지 않는다.
+				// If there is no succeed message among release targets, do not reschedule.
 				if (successCount == 0 && reschedulePartitions.contains(partition)) {
 					reschedulePartitions.remove(partition);
 				}

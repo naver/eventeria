@@ -37,7 +37,7 @@ import com.navercorp.eventeria.messaging.contract.meta.EventeriaProperties;
 public class EventeriaPackagePropertyPostProcessor implements EnvironmentPostProcessor {
 	private static final String EVENTERIA_META_INF_PROPERTIES = "/META-INF/eventeria.properties";
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(EventeriaPackagePropertyPostProcessor.class);
 
 	@Override
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
@@ -54,7 +54,7 @@ public class EventeriaPackagePropertyPostProcessor implements EnvironmentPostPro
 
 			if (packages.size() == 1) {
 				System.setProperty(basePackagePath, packages.get(0));
-				log.debug("Eventeria base package property set by applicationPackageName. {} : {}", basePackagePath,
+				LOG.debug("Eventeria base package property set by applicationPackageName. {} : {}", basePackagePath,
 					packages.get(0));
 			}
 		}
@@ -80,7 +80,7 @@ public class EventeriaPackagePropertyPostProcessor implements EnvironmentPostPro
 		}
 
 		if (StringUtils.hasLength(basePackage)) {
-			log.debug("Eventeria package property set. {} : {}", propertyPath, basePackage);
+			LOG.debug("Eventeria package property set. {} : {}", propertyPath, basePackage);
 		}
 	}
 

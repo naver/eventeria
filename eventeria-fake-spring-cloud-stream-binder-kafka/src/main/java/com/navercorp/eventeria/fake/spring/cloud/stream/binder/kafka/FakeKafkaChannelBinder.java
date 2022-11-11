@@ -136,7 +136,7 @@ public class FakeKafkaChannelBinder implements ChannelBinder {
 			}
 		});
 
-		// 같은 토픽끼리 Channel Binding
+		// bind channels among the same topics
 		topicInboundChannels.forEach((key, inboundChannels) -> {
 			List<FakeBindingSubscribableChannel> outboundChannels =
 				topicOutboundChannels.getOrDefault(key, Collections.emptyList());
@@ -168,7 +168,7 @@ public class FakeKafkaChannelBinder implements ChannelBinder {
 			);
 		});
 
-		// Inbound 채널이 없을 경우 가상 Channel 을 만들어 Binding
+		// If there is no inbound channel, create a virtual inbound channel and bind
 		topicOutboundChannels.entrySet().stream()
 			.filter(entry -> !topicInboundChannels.containsKey(entry.getKey()))
 			.forEach(entry -> entry.getValue().forEach(outbound -> {

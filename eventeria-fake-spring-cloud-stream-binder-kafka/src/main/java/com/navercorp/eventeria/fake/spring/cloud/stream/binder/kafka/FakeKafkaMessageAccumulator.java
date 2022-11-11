@@ -50,7 +50,7 @@ public class FakeKafkaMessageAccumulator {
 		this.cloudEventMessageReaderWriter = null;
 	}
 
-	public FakeKafkaMessageAccumulator(CloudEventMessageReaderWriter cloudEventMessageReaderWriter) {
+	public FakeKafkaMessageAccumulator(@Nullable CloudEventMessageReaderWriter cloudEventMessageReaderWriter) {
 		this.cloudEventMessageReaderWriter = cloudEventMessageReaderWriter;
 	}
 

@@ -53,7 +53,7 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 		this.id = UUID.randomUUID().toString();
 	}
 
-	// Aggregate 가 아직 만들어지지 않은 대상에 발생시키는 명령은 sourceId 가 없다.
+	// There is no sourceId in the Command which raises to target that is not created an Aggregate.
 	protected AbstractCommand(@Nullable String sourceId) {
 		this.id = UUID.randomUUID().toString();
 		this.sourceId = sourceId;
@@ -106,7 +106,7 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 		this.occurrenceTime = occurrenceTime;
 	}
 
-	// Aggregate 가 아직 만들어지지 않은 대상에 발생시키는 명령은 sourceId 가 없다.
+	// There is no sourceId in the Command which raises to target that is not created an Aggregate.
 	@Nullable
 	@Override
 	public String getSourceId() {
@@ -216,15 +216,15 @@ public abstract class AbstractCommand implements Command, MessageExtensions, Mes
 		this.extensions.put(extensionName.toLowerCase(), extensionValue);
 	}
 
-	protected void setExtensions(Map<String, Object> extensions) {
-		extensions.forEach(this::appendExtension);
-	}
-
 	protected Map<String, Object> getExtensions() {
 		if (this.extensions == null) {
 			this.extensions = new HashMap<>();
 		}
 		return this.extensions;
+	}
+
+	protected void setExtensions(Map<String, Object> extensions) {
+		extensions.forEach(this::appendExtension);
 	}
 
 	@Override
