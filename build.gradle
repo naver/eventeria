@@ -119,7 +119,7 @@ subprojects {
                         developer {
                             id = "ilkyun-lim"
                             name = "Ilkyun Lim"
-                            email = "iik0475@gmail.com"
+                            email = "ilkyun.lim@navercorp.com"
                         }
                         developer {
                             id = "sanha"
