@@ -21,6 +21,7 @@ package com.navercorp.eventeria.messaging.spring.integration.router;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.springframework.context.ApplicationContext;
@@ -54,6 +55,8 @@ public class MessagePayloadTypeRouter extends PayloadTypeRouter {
 	}
 
 	public static RouterRegister register(String messageHandlerBeanName) {
+		Objects.requireNonNull(messageHandlerBeanName,
+			"The parameter 'messageHandlerBeanName' can not be null.");
 		return new RouterRegister(messageHandlerBeanName);
 	}
 
