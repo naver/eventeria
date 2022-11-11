@@ -114,7 +114,27 @@ subprojects {
                         developer {
                             id = "mhyeon-lee"
                             name = "Myeonghyeon Lee"
-                            email = "mheyon.lee@navercorp.com"
+                            email = "mheyon.lee@gmail.com"
+                        }
+                        developer {
+                            id = "ilkyun-lim"
+                            name = "Ilkyun Lim"
+                            email = "ilkyun.lim@navercorp.com"
+                        }
+                        developer {
+                            id = "sanha"
+                            name = "Sanha Lee"
+                            email = "sanhaleehana@gmail.com"
+                        }
+                        developer {
+                            id = "taes-k"
+                            name = "Taesung Kim"
+                            email = "cobura12@gmail.com"
+                        }
+                        developer {
+                            id = "chanhyeong"
+                            name = "Chanhyeong Cho"
+                            email = "chu7825@gmail.com"
                         }
                     }
                     scm {
