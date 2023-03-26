@@ -117,51 +117,39 @@ public class DefaultCloudEventAttributesConverter implements CloudEventAttribute
 
 			@Nullable
 			private Object getAttributeV03(String attributeName) {
-				switch (attributeName) {
-					case CloudEventV03.SPECVERSION:
-						return getSpecVersion();
-					case CloudEventV03.ID:
-						return getId();
-					case CloudEventV03.SOURCE:
-						return getSource();
-					case CloudEventV03.TYPE:
-						return getType();
-					case CloudEventV03.DATACONTENTTYPE:
-						return getDataContentType();
-					case CloudEventV03.SCHEMAURL:
-						return getDataSchema();
-					case CloudEventV03.SUBJECT:
-						return getSubject();
-					case CloudEventV03.TIME:
-						return getTime();
-					case CloudEventV03.DATACONTENTENCODING:
+				return switch (attributeName) {
+					case CloudEventV03.SPECVERSION -> getSpecVersion();
+					case CloudEventV03.ID -> getId();
+					case CloudEventV03.SOURCE -> getSource();
+					case CloudEventV03.TYPE -> getType();
+					case CloudEventV03.DATACONTENTTYPE -> getDataContentType();
+					case CloudEventV03.SCHEMAURL -> getDataSchema();
+					case CloudEventV03.SUBJECT -> getSubject();
+					case CloudEventV03.TIME -> getTime();
+					case CloudEventV03.DATACONTENTENCODING ->
 						// We don't save datacontentencoding, but the attribute name is valid,
 						// hence we just return always null
-						return null;
-				}
-				throw new IllegalArgumentException("Spec version v0.3 doesn't have attribute named " + attributeName);
+						null;
+					default -> throw new IllegalArgumentException(
+						"Spec version v0.3 doesn't have attribute named " + attributeName);
+				};
+
 			}
 
 			private Object getAttributeV1(String attributeName) {
-				switch (attributeName) {
-					case CloudEventV1.SPECVERSION:
-						return getSpecVersion();
-					case CloudEventV1.ID:
-						return getId();
-					case CloudEventV1.SOURCE:
-						return getSource();
-					case CloudEventV1.TYPE:
-						return getType();
-					case CloudEventV1.DATACONTENTTYPE:
-						return getDataContentType();
-					case CloudEventV1.DATASCHEMA:
-						return getDataSchema();
-					case CloudEventV1.SUBJECT:
-						return getSubject();
-					case CloudEventV1.TIME:
-						return getTime();
-				}
-				throw new IllegalArgumentException("Spec version v1 doesn't have attribute named " + attributeName);
+				return switch (attributeName) {
+					case CloudEventV1.SPECVERSION -> getSpecVersion();
+					case CloudEventV1.ID -> getId();
+					case CloudEventV1.SOURCE -> getSource();
+					case CloudEventV1.TYPE -> getType();
+					case CloudEventV1.DATACONTENTTYPE -> getDataContentType();
+					case CloudEventV1.DATASCHEMA -> getDataSchema();
+					case CloudEventV1.SUBJECT -> getSubject();
+					case CloudEventV1.TIME -> getTime();
+					default -> throw new IllegalArgumentException(
+						"Spec version v1 doesn't have attribute named " + attributeName);
+				};
+
 			}
 		};
 	}

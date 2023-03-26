@@ -6,13 +6,13 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.7.10")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:3.0.5")
     }
 }
 
 allprojects {
     group = "com.navercorp.eventeria"
-    version = "1.0.1-SNAPSHOT"
+    version = "1.1.0-SNAPSHOT"
 }
 
 subprojects {
@@ -23,14 +23,14 @@ subprojects {
     apply plugin: "signing"
     apply plugin: "io.spring.dependency-management"
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     ext {
         CLOUD_EVENTS_VERSION = "2.4.2"
-        SPRING_BOOT_VERSION = "2.7.10"
-        SPRING_CLOUD_VERSION = "3.2.7"
-        SPRING_CLOUD_INTEGRATION_KAFKA = "5.5.17"
+        SPRING_BOOT_VERSION = "3.0.5"
+        SPRING_CLOUD_VERSION = "4.0.1"
+        SPRING_CLOUD_INTEGRATION_KAFKA = "6.0.4"
 
         JQWIK_VERSION = "1.7.0"
     }
@@ -75,8 +75,8 @@ subprojects {
     java {
         withJavadocJar()
         withSourcesJar()
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     publishing {
@@ -128,7 +128,7 @@ subprojects {
                         }
                         developer {
                             id = "taes-k"
-                            name = "Taesung Kim"
+                            name = "Taeseong Kim"
                             email = "cobura12@gmail.com"
                         }
                         developer {
