@@ -3,6 +3,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 /bin/
 /env.bat
+local.gradle.properties
 
 ### STS ###
 .apt_generated
