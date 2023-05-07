@@ -18,9 +18,9 @@
 
 package com.navercorp.eventeria.messaging.spring.integration.dsl;
 
+import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowAdapter;
 import org.springframework.integration.dsl.IntegrationFlowDefinition;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.messaging.SubscribableChannel;
 
 import io.cloudevents.CloudEvent;
@@ -62,7 +62,7 @@ public class MessageSubscriberIntegrationAdapter extends IntegrationFlowAdapter 
 
 	@Override
 	protected IntegrationFlowDefinition<?> buildFlow() {
-		return IntegrationFlows.from(this.getInputSubscribableChannel())
+		return IntegrationFlow.from(this.getInputSubscribableChannel())
 			.filter(CloudEvent.class, this.getCloudEventFilter()::accept)
 			.transform(CloudEvent.class, this.getMessageConverter()::convert)
 			.channel(this.getSpringMessageHandler());

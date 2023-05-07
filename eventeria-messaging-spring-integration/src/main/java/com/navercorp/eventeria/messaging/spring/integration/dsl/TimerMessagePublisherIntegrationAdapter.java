@@ -18,8 +18,8 @@
 
 package com.navercorp.eventeria.messaging.spring.integration.dsl;
 
+import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowDefinition;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.messaging.MessageChannel;
 
 import com.navercorp.eventeria.messaging.contract.Message;
@@ -44,7 +44,8 @@ public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherInt
 			messageConverter,
 			cloudEventHeaderMapper,
 			outputChannel,
-			(cloudEvent) -> true, springTimerMessageHandler
+			(cloudEvent) -> true,
+			springTimerMessageHandler
 		);
 	}
 
@@ -68,7 +69,7 @@ public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherInt
 
 	@Override
 	protected IntegrationFlowDefinition<?> buildFlow() {
-		return IntegrationFlows.from(this.getMessagePublisher())
+		return IntegrationFlow.from(this.getMessagePublisher())
 			.split()
 			.handle(this.getSpringTimerMessageHandler())
 			.transform(Message.class, this.getMessageConverter()::convert)
