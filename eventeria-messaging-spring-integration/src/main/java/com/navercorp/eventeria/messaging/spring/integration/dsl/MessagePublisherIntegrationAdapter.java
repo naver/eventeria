@@ -21,9 +21,9 @@ package com.navercorp.eventeria.messaging.spring.integration.dsl;
 import java.util.function.Consumer;
 
 import org.springframework.integration.dsl.HeaderEnricherSpec;
+import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowAdapter;
 import org.springframework.integration.dsl.IntegrationFlowDefinition;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.messaging.MessageChannel;
 
 import io.cloudevents.CloudEvent;
@@ -72,7 +72,7 @@ public class MessagePublisherIntegrationAdapter extends IntegrationFlowAdapter {
 
 	@Override
 	protected IntegrationFlowDefinition<?> buildFlow() {
-		return IntegrationFlows.from(this.getMessagePublisher())
+		return IntegrationFlow.from(this.getMessagePublisher())
 			.split()
 			.transform(Message.class, this.getMessageConverter()::convert)
 			.enrichHeaders(this.enrichCloudEventHeaderSpec())
