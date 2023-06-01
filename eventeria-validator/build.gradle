@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api("javax.validation:validation-api:2.0.1.Final")
+    api("jakarta.validation:jakarta.validation-api:3.0.2")
 
     testImplementation("org.hibernate.validator:hibernate-validator")
     testImplementation("javax.el:javax.el-api:3.0.0")
