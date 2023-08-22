@@ -8,21 +8,8 @@ plugins {
 }
 
 dependencies {
-    api project(":eventeria-domain")
-    api project(":eventeria-messaging-json-jackson")
     api project(":eventeria-messaging-spring-integration")
-    api project(":eventeria-messaging-spring-integration-kafka")
-    api project(":eventeria-messaging-spring-cloud-stream")
-
-    api("org.springframework.cloud:spring-cloud-stream-binder-kafka")
-
-    compileOnly("org.springframework.boot:spring-boot-starter-data-redis")
-    compileOnly("org.springframework.integration:spring-integration-redis")
-    compileOnly("org.springframework.cloud:spring-cloud-stream-binder-kafka-streams")
-
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    api("org.springframework.integration:spring-integration-kafka")
 }
 
 editorconfig {
@@ -109,7 +96,6 @@ check.dependsOn jacocoTestCoverageVerification
 
 
 jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes(
                 "Specification-Title": artifactName,

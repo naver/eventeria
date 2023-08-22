@@ -21,7 +21,9 @@ package com.navercorp.spring.boot.eventeria.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.navercorp.spring.boot.eventeria.kafka.handler.properties.KafkaConsumerHandlerProperties;
+
 @Configuration
-@Import({MessageConfiguration.class})
+@Import({MessageConfiguration.class, KafkaConsumerHandlerProperties.class})
 public class SpringBootEventeriaAutoConfiguration {
 }

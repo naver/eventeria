@@ -11,8 +11,8 @@ buildscript {
 }
 
 allprojects {
-    group = "com.navercorp.eventeria"
-    version = "1.1.1-SNAPSHOT"
+    group = "com.navercorp.eventeria.snapshot"
+    version = "1.1.1-2308241730"
 }
 
 subprojects {
