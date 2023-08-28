@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "kafka.consumer.error-handler")
+@ConfigurationProperties(prefix = "eventeria.kafka.consumer.error-handler")
 public class KafkaConsumerHandlerProperties {
 	private static final Logger LOG = LoggerFactory.getLogger(KafkaConsumerHandlerProperties.class);
 	private Map<String, KafkaConsumerHandlerProperty> handlers = new HashMap<>();
