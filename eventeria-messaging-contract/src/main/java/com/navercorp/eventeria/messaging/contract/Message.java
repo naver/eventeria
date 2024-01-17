@@ -26,6 +26,14 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+/**
+ * a basic message format.
+ *
+ * @see com.navercorp.eventeria.messaging.contract.command.Command
+ * @see com.navercorp.eventeria.messaging.contract.event.Event
+ * @see com.navercorp.eventeria.messaging.contract.event.DomainEvent
+ * @see com.navercorp.eventeria.messaging.contract.event.IntegrationEvent
+ */
 public interface Message {
 	String getId();
 

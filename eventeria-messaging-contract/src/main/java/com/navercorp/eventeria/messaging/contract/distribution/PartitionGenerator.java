@@ -22,8 +22,17 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+/**
+ * determines which partitions to publish
+ */
 @FunctionalInterface
 public interface PartitionGenerator {
+	/**
+	 * @param payload a message to publish
+	 * @param numOfPartition a total partition count
+	 * @param fallbackPartition partition supplier to use when failed to extract partition key from payload
+	 * @return a partition to be published
+	 */
 	int partition(Object payload, int numOfPartition, @Nullable Supplier<Integer> fallbackPartition);
 
 	default int partition(Object payload, int numOfPartition) {

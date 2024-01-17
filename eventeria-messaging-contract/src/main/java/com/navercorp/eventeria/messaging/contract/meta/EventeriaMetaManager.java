@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.Event;
 
+/**
+ * Provides all types of {@link Command} and {@link Event} in application.
+ */
 public class EventeriaMetaManager {
 	private static final Logger LOG = LoggerFactory.getLogger(EventeriaMetaManager.class);
 

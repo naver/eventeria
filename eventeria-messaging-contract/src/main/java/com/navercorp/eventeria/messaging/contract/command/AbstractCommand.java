@@ -36,6 +36,9 @@ import com.navercorp.eventeria.messaging.contract.distribution.Partitioned;
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensionAppender;
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
+/**
+ * a abstract class to support implementation of {@link Command}
+ */
 public abstract class AbstractCommand implements Command, MessageExtensions, MessageExtensionAppender, Partitioned {
 	private String id;
 	private String sourceId;

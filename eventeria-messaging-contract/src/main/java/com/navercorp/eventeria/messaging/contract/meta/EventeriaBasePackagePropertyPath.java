@@ -18,7 +18,16 @@
 
 package com.navercorp.eventeria.messaging.contract.meta;
 
+/**
+ * property paths for base-packages.
+ * (/META-INF/eventeria.properties or spring-framework Environment)
+ */
 public class EventeriaBasePackagePropertyPath {
+
+	private EventeriaBasePackagePropertyPath() {
+		throw new UnsupportedOperationException("This is a constant class and cannot be instantiated");
+	}
+
 	public static final String BASE_PACKAGE_PROPERTY_PATH = "eventeria.base-package";
 	public static final String AGGREGATE_ROOT_BASE_PACKAGE_PROPERTY_PATH = "eventeria.aggregate-root-base-package";
 	public static final String EVENT_BASE_PACKAGE_PROPERTY_PATH = "eventeria.event-base-package";

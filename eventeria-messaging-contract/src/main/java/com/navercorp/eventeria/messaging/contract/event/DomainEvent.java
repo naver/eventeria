@@ -18,5 +18,8 @@
 
 package com.navercorp.eventeria.messaging.contract.event;
 
+/**
+ * a event of domain (aggregate).
+ */
 public interface DomainEvent extends Event {
 }

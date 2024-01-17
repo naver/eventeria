@@ -18,5 +18,8 @@
 
 package com.navercorp.eventeria.messaging.contract.event;
 
+/**
+ * a event for specific receiver or objective.
+ */
 public interface IntegrationEvent extends Event {
 }

@@ -22,6 +22,12 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+/**
+ * extensions of {@link com.navercorp.eventeria.messaging.contract.Message}<br/>
+ * the extensions are following cloudevents spec.
+ *
+ * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#extension-context-attributes">extension-context-attributes</a>
+ */
 public interface MessageExtensions {
 	@Nullable
 	Object getExtension(String extensionName);

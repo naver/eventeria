@@ -16,21 +16,24 @@
  * limitations under the License.
  */
 
-package com.navercorp.eventeria.messaging.contract.serializer;
+package com.navercorp.eventeria.messaging.contract.meta;
 
-import com.navercorp.eventeria.messaging.contract.Message;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@FunctionalInterface
-public interface MessageSerializer {
-	default byte[] serialize(Message message) {
-		return this.serialize(message, false);
+import java.util.Properties;
+
+import org.junit.jupiter.api.Test;
+
+class EventeriaPropertiesLoaderTest {
+	@Test
+	void load() {
+		Properties actual = EventeriaPropertiesLoader.load();
+		assertThat(actual).isNotEmpty();
 	}
 
-	/**
-	 * serialize a message to byte array
-	 *
-	 * @param message a message to serialize
-	 * @param exceptExtensions whether contains cloudevents extensions into serialized result or not.
-	 */
-	byte[] serialize(Message message, boolean exceptExtensions);
+	@Test
+	void exists() {
+		boolean actual = EventeriaPropertiesLoader.exists();
+		assertThat(actual).isTrue();
+	}
 }

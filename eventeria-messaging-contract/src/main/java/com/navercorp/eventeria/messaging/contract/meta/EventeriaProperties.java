@@ -18,17 +18,13 @@
 
 package com.navercorp.eventeria.messaging.contract.meta;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * Manage base package paths to use for scanning.
+ * if not exist, scan all packages. (and raise unnecessary costs)
+ */
 public class EventeriaProperties {
-	private static final Logger LOG = LoggerFactory.getLogger(EventeriaProperties.class);
-	private static final String EVENTERIA_META_INF_PROPERTIES = "/META-INF/eventeria.properties";
-
 	private static final Properties PROPERTIES;
 
 	private static final String BASE_PACKAGE;
@@ -37,17 +33,7 @@ public class EventeriaProperties {
 	private static final String COMMAND_BASE_PACKAGE;
 
 	static {
-		Properties properties = new Properties();
-		try (InputStream propertiesIs = EventeriaProperties.class.getResourceAsStream(EVENTERIA_META_INF_PROPERTIES)) {
-			if (propertiesIs != null) {
-				properties.load(propertiesIs);
-				LOG.info("Load {}. {}", EVENTERIA_META_INF_PROPERTIES, properties);
-			}
-		} catch (IOException e) {
-			LOG.error("Can not load properties from " + EVENTERIA_META_INF_PROPERTIES, e);
-		}
-
-		PROPERTIES = properties;
+		PROPERTIES = EventeriaPropertiesLoader.load();
 		BASE_PACKAGE = getProperty(EventeriaBasePackagePropertyPath.BASE_PACKAGE_PROPERTY_PATH);
 		AGGREGATE_ROOT_BASE_PACKAGE = getProperty(
 			EventeriaBasePackagePropertyPath.AGGREGATE_ROOT_BASE_PACKAGE_PROPERTY_PATH);
