@@ -22,6 +22,10 @@ import java.util.Map;
 
 import io.cloudevents.CloudEvent;
 
+/**
+ * Converts metadata (id, time, type, extensions, ...) of {@link CloudEvent} to map,
+ * for publishing to external binding systems.
+ */
 public interface CloudEventHeaderMapper {
 	Map<String, Object> toHeaderMap(CloudEvent cloudEvent);
 }

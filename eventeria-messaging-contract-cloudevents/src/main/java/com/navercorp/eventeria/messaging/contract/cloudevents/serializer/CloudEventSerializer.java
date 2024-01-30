@@ -20,6 +20,9 @@ package com.navercorp.eventeria.messaging.contract.cloudevents.serializer;
 
 import io.cloudevents.CloudEvent;
 
+/**
+ * serialize {@link CloudEvent} to byte array
+ */
 public interface CloudEventSerializer {
 	byte[] serialize(CloudEvent cloudEvent);
 }

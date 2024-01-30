@@ -18,5 +18,11 @@
 
 package com.navercorp.eventeria.messaging.contract.cloudevents.converter;
 
+
+import com.navercorp.eventeria.messaging.contract.Message;
+
+/**
+ * Converts {@link Message} to {@link io.cloudevents.CloudEvent}, and {@link io.cloudevents.CloudEvent} to {@link Message}
+ */
 public interface CloudEventMessageConverter extends MessageToCloudEventConverter, CloudEventToMessageConverter {
 }

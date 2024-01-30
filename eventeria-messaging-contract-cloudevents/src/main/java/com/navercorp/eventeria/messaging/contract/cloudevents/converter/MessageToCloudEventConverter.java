@@ -22,6 +22,9 @@ import io.cloudevents.CloudEvent;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * Converts {@link Message} to {@link io.cloudevents.CloudEvent}
+ */
 @FunctionalInterface
 public interface MessageToCloudEventConverter {
 	CloudEvent convert(Message message);

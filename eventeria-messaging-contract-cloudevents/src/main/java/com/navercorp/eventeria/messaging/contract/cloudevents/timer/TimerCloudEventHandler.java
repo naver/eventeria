@@ -24,6 +24,9 @@ import io.cloudevents.CloudEvent;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * subscribe timer message of cloudevents format
+ */
 public interface TimerCloudEventHandler {
 	boolean isTimerMessage(Message message);
 

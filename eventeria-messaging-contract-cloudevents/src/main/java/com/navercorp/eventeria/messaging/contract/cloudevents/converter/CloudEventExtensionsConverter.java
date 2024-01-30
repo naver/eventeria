@@ -22,6 +22,11 @@ import io.cloudevents.CloudEventExtensions;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * Converts {@link Message} to {@link CloudEventExtensions}
+ *
+ * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#extension-context-attributes">cloudevents extensions?</a>
+ */
 @FunctionalInterface
 public interface CloudEventExtensionsConverter {
 	CloudEventExtensions convert(Message message);

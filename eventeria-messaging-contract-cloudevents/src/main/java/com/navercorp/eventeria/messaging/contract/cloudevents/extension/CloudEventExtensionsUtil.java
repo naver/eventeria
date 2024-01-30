@@ -32,6 +32,9 @@ public final class CloudEventExtensionsUtil {
 		return EmptyCloudEventExtensions.INSTANCE;
 	}
 
+	/**
+	 * Converts {@link MessageExtensions} tp {@link io.cloudevents.CloudEventExtensions}
+	 */
 	public static CloudEventExtensions toCloudEventExtensions(MessageExtensions messageExtensions) {
 		return new CloudEventExtensions() {
 			@Override
