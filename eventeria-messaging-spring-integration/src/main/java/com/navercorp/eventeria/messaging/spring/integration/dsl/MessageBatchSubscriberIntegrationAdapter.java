@@ -66,7 +66,7 @@ public class MessageBatchSubscriberIntegrationAdapter extends IntegrationFlowAda
 	protected IntegrationFlowDefinition<?> buildFlow() {
 		return IntegrationFlow.from(this.getInputSubscribableChannel())
 			.enrichHeaders(eh -> eh.correlationId(UUID.randomUUID()))
-			.split(sp -> sp.applySequence(true).get())
+			.splitWith(sp -> sp.applySequence(true).getObject())
 			.filter(CloudEvent.class, this.getCloudEventFilter()::accept)
 			.transform(CloudEvent.class, this.getMessageConverter()::convert)
 			.aggregate(sp -> sp.expireGroupsUponCompletion(true))

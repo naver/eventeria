@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -37,6 +38,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.assertj.core.data.TemporalUnitWithinOffset;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
+import org.springframework.kafka.test.EmbeddedKafkaZKBroker;
 
 import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
@@ -69,11 +71,15 @@ class CloudEventKafkaTest {
 	private static final EmbeddedKafkaBroker BROKER;
 
 	static {
-		BROKER = new EmbeddedKafkaBroker(1, true, 1)
+		BROKER = new EmbeddedKafkaZKBroker(1, true, 1)
 			.kafkaPorts(0)
-			.brokerProperty(KafkaConfig.OffsetsTopicReplicationFactorProp(), (short)1)
-			.brokerProperty(KafkaConfig.TransactionsTopicReplicationFactorProp(), (short)1)
-			.brokerProperty(KafkaConfig.TransactionsTopicMinISRProp(), 1);
+			.brokerProperties(
+				Map.of(
+					KafkaConfig.OffsetsTopicReplicationFactorProp(), "1",
+					KafkaConfig.TransactionsTopicReplicationFactorProp(), "1",
+					KafkaConfig.TransactionsTopicMinISRProp(), "1"
+				)
+			);
 		BROKER.afterPropertiesSet();
 	}
 

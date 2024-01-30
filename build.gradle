@@ -13,6 +13,11 @@ buildscript {
 allprojects {
     group = "com.navercorp.eventeria"
     version = "1.1.1-SNAPSHOT"
+
+    // https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs.add("-parameters")
+    }
 }
 
 subprojects {
@@ -27,10 +32,10 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_17
 
     ext {
-        CLOUD_EVENTS_VERSION = "2.4.2"
-        SPRING_BOOT_VERSION = "3.0.5"
-        SPRING_CLOUD_VERSION = "4.0.1"
-        SPRING_CLOUD_INTEGRATION_KAFKA = "6.0.4"
+        CLOUD_EVENTS_VERSION = "2.5.0"
+        SPRING_BOOT_VERSION = "3.2.1"
+        SPRING_CLOUD_VERSION = "4.1.0"
+        SPRING_CLOUD_INTEGRATION_KAFKA = "6.2.1"
 
         JQWIK_VERSION = "1.7.0"
     }
