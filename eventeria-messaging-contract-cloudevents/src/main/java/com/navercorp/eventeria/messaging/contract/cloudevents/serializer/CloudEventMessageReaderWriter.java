@@ -23,6 +23,9 @@ import io.cloudevents.CloudEvent;
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventMessageConverter;
 
+/**
+ * deserialize byte array to {@link Message>}, and serialize {@link Message} to byte array.
+ */
 public interface CloudEventMessageReaderWriter extends CloudEventMessageConverter, CloudEventSerializerDeserializer {
 	default byte[] write(Message message) {
 		CloudEvent cloudEvent = convert(message);
