@@ -20,5 +20,8 @@ package com.navercorp.eventeria.messaging.contract.event;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * a message interface indicating Event
+ */
 public interface Event extends Message {
 }

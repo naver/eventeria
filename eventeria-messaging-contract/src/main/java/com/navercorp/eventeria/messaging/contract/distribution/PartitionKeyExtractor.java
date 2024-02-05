@@ -20,6 +20,9 @@ package com.navercorp.eventeria.messaging.contract.distribution;
 
 import java.util.Optional;
 
+/**
+ * extracts a key from message to generate partition
+ */
 public interface PartitionKeyExtractor {
 	Optional<String> extractKey(Object message);
 }

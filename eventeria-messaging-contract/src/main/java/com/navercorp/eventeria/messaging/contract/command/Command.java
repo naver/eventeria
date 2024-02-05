@@ -20,5 +20,8 @@ package com.navercorp.eventeria.messaging.contract.command;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * a message interface indicating Command
+ */
 public interface Command extends Message {
 }

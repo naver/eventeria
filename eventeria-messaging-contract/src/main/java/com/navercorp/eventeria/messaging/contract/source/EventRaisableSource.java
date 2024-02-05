@@ -20,9 +20,18 @@ package com.navercorp.eventeria.messaging.contract.source;
 
 import javax.annotation.Nullable;
 
+/**
+ * a class which raises {@link com.navercorp.eventeria.messaging.contract.event.Event}
+ */
 public interface EventRaisableSource {
+	/**
+	 * @return the id of source
+	 */
 	String getId();
 
+	/**
+	 * @return the version of source
+	 */
 	@Nullable
 	Long getVersion();
 }

@@ -26,6 +26,9 @@ import javax.annotation.Nullable;
 
 import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
 
+/**
+ * a abstract class to support implementation of {@link DomainEvent}
+ */
 public abstract class AbstractDomainEvent extends AbstractEvent implements DomainEvent {
 	protected AbstractDomainEvent() {
 		super();

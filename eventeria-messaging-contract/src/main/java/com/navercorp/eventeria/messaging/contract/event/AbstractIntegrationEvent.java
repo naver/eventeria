@@ -25,6 +25,9 @@ import javax.annotation.Nullable;
 
 import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
 
+/**
+ * a abstract class to support implementation of {@link IntegrationEvent}
+ */
 public abstract class AbstractIntegrationEvent extends AbstractEvent implements IntegrationEvent {
 	protected AbstractIntegrationEvent() {
 		super(null);
@@ -40,11 +43,5 @@ public abstract class AbstractIntegrationEvent extends AbstractEvent implements 
 
 	protected AbstractIntegrationEvent(String sourceId, @Nullable Long version, OffsetDateTime occurrenceTime) {
 		super(sourceId, version, occurrenceTime);
-	}
-
-	@Nullable
-	@Override
-	protected Long determineRaisedVersion(EventRaisableSource source) {
-		return source.getVersion();
 	}
 }

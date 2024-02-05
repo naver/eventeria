@@ -39,6 +39,9 @@ import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
 import com.navercorp.eventeria.messaging.contract.source.RaiseEventHandler;
 
+/**
+ * a abstract class to support implementation of {@link Event}
+ */
 public abstract class AbstractEvent
 	implements Event, MessageExtensions, MessageExtensionAppender, Partitioned, RaiseEventHandler {
 

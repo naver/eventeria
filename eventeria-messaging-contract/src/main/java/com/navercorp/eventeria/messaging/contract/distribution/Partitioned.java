@@ -18,6 +18,13 @@
 
 package com.navercorp.eventeria.messaging.contract.distribution;
 
+/**
+ * a interface using with {@link com.navercorp.eventeria.messaging.contract.Message} which has a partition key.<br/>
+ * for distributed messaging broker like apache-kafka.
+ *
+ * @see com.navercorp.eventeria.messaging.contract.command.AbstractCommand#getPartitionKey()
+ * @see com.navercorp.eventeria.messaging.contract.event.AbstractEvent#getPartitionKey()
+ */
 public interface Partitioned {
 	String getPartitionKey();
 }

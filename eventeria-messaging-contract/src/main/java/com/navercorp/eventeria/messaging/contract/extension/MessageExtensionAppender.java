@@ -21,5 +21,12 @@ package com.navercorp.eventeria.messaging.contract.extension;
 import javax.annotation.Nullable;
 
 public interface MessageExtensionAppender {
+	/**
+	 * CloudEvents attribute names MUST consist of lower-case letters ('a' to 'z') or digits ('0' to '9')
+	 * from the ASCII character set.
+	 * Attribute names SHOULD be descriptive and terse and SHOULD NOT exceed 20 characters in length.
+	 *
+	 * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#extension-context-attributes">extension-context-attributes</a>
+	 */
 	void appendExtension(String extensionName, @Nullable Object extensionValue);
 }
