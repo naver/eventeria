@@ -23,6 +23,9 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * A value object contains metadata of timer message and persisted by {@link TimerMessageStore}
+ */
 public final class TimerMessageStoreValue {
 	private final UUID id;    // unique id for each timer message distinguish
 	private final Object message;

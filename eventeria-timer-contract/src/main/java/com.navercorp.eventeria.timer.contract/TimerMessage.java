@@ -21,6 +21,9 @@ package com.navercorp.eventeria.timer.contract;
 import java.time.Instant;
 import java.util.Optional;
 
+/**
+ * A message which supports Delayed Queue
+ */
 public interface TimerMessage {
 	Optional<Instant> timerTime();
 }

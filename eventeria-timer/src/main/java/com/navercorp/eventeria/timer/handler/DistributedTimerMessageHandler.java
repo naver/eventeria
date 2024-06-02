@@ -40,6 +40,9 @@ import com.navercorp.eventeria.timer.contract.handler.TimerMessageHandler;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStore;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
+/**
+ * A implementation of {@link TimerMessageHandler} that handles messages with distributed way.
+ */
 public class DistributedTimerMessageHandler implements TimerMessageHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(DistributedTimerMessageHandler.class);
 
@@ -143,9 +146,11 @@ public class DistributedTimerMessageHandler implements TimerMessageHandler {
 						this.timerMessageStore.remove(releaseValue.getId(), partition);
 						successCount++;
 					} catch (Throwable throwable) {
-						LOG.error("timer handler release message is failed. "
-							+ "This message would be ignored and retry next scheduling. storeValue: "
-							+ releaseValue);
+						LOG.error(
+							"timer handler release message is failed. "
+								+ "This message would be ignored and retry next scheduling. storeValue: {}",
+							releaseValue
+						);
 					}
 				}
 
