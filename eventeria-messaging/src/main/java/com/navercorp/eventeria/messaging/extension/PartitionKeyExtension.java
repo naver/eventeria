@@ -33,6 +33,9 @@ import io.cloudevents.core.provider.ExtensionProvider;
 import com.navercorp.eventeria.messaging.contract.cloudevents.extension.CloudEventExtensionsUtil;
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
+/**
+ * This extension supports partitionkey extension which is used to allocate partition key of messaging system.
+ */
 @ParametersAreNonnullByDefault
 public final class PartitionKeyExtension implements CloudEventExtension {
 	public static final String PARTITION_KEY_EXTENSION = "partitionkey";

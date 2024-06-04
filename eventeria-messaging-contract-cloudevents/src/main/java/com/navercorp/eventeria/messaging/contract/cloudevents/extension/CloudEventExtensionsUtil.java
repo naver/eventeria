@@ -33,7 +33,7 @@ public final class CloudEventExtensionsUtil {
 	}
 
 	/**
-	 * Converts {@link MessageExtensions} tp {@link io.cloudevents.CloudEventExtensions}
+	 * Converts {@link MessageExtensions} to {@link io.cloudevents.CloudEventExtensions}
 	 */
 	public static CloudEventExtensions toCloudEventExtensions(MessageExtensions messageExtensions) {
 		return new CloudEventExtensions() {

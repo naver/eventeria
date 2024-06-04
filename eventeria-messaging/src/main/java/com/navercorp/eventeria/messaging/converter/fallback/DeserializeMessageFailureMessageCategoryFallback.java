@@ -42,6 +42,13 @@ public final class DeserializeMessageFailureMessageCategoryFallback implements D
 		this.messageDeserializer = messageDeserializer;
 	}
 
+	/**
+	 * Deserialize cloudevent to the object which is type of eventeria by {@link MessageCategoryExtension#MESSAGE_CATEGORY_EXTENSION} value.
+	 *
+	 * @param cloudEvent cloudevent to convert
+	 * @param throwable failure from original deserializer
+	 * @return converted object which is a subtype of {@link Message}
+	 */
 	@Override
 	public Message fallback(CloudEvent cloudEvent, Throwable throwable) {
 		LOG.warn(

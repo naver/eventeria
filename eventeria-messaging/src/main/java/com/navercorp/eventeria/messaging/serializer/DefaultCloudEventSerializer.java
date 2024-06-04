@@ -23,8 +23,12 @@ import io.cloudevents.core.format.EventFormat;
 import io.cloudevents.core.message.StructuredMessageWriter;
 import io.cloudevents.core.message.impl.GenericStructuredMessageReader;
 
+import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventSerializerDeserializer;
 
+/**
+ * A default implementation of serializer/deserializer between {@link CloudEvent> and byte array.
+ */
 public class DefaultCloudEventSerializer implements CloudEventSerializerDeserializer {
 	private final EventFormat eventFormat;
 	private final StructuredMessageWriter<byte[]> structuredMessageWriter;

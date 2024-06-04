@@ -20,7 +20,17 @@ package com.navercorp.eventeria.messaging.filter;
 
 import io.cloudevents.CloudEvent;
 
+/**
+ * Represents a predicate (boolean-value function) of one CloudEvent object.
+ */
 @FunctionalInterface
 public interface CloudEventFilter {
+	/**
+	 * Evaluates this predicate on the given object.
+	 *
+	 * @param cloudEvent the input argument
+	 * @return {@code true} if the input argument matches the predicate,
+	 * otherwise {@code false}
+	 */
 	boolean accept(CloudEvent cloudEvent);
 }

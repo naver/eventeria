@@ -36,6 +36,12 @@ import io.cloudevents.core.provider.ExtensionProvider;
 import com.navercorp.eventeria.messaging.contract.cloudevents.extension.CloudEventExtensionsUtil;
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
+/**
+ * This extension supports messagecategory extension.
+ *
+ * @see com.navercorp.eventeria.messaging.converter.MessageCategoryExtensionsConverter
+ * @see com.navercorp.eventeria.messaging.converter.fallback.DeserializeMessageFailureMessageCategoryFallback
+ */
 @ParametersAreNonnullByDefault
 public final class MessageCategoryExtension implements CloudEventExtension {
 	public static final String MESSAGE_CATEGORY_EXTENSION = "messagecategory";

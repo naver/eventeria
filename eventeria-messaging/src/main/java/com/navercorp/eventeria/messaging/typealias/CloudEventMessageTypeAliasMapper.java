@@ -24,6 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * A default implementation of serializing/deserializing mapper between typealias extensions and actual types.
+ */
 public class CloudEventMessageTypeAliasMapper
 	implements MessageSerializeTypeAliasMapper, MessageDeserializeTypeAliasMapper {
 	private final Map<Class<? extends Message>, String> serializeTypeAliasMap = new ConcurrentHashMap<>();

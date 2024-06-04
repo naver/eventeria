@@ -51,8 +51,8 @@ public class DefaultCloudEventAttributesConverter implements CloudEventAttribute
 
 	@Override
 	public CloudEventAttributes convert(Message message) {
-		if (message instanceof CloudEventAttributes) {
-			return (CloudEventAttributes)message;
+		if (message instanceof CloudEventAttributes cloudEventAttributes) {
+			return cloudEventAttributes;
 		}
 
 		return new CloudEventAttributes() {

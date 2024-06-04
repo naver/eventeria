@@ -22,6 +22,9 @@ import java.util.Optional;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * A mapping from actual type.to {@link com.navercorp.eventeria.messaging.extension.CloudEventTypeAliasExtension#TYPE_ALIAS_EXTENSION} extension value
+ */
 @FunctionalInterface
 public interface MessageSerializeTypeAliasMapper {
 	Optional<String> getSerializeTypeAlias(Class<? extends Message> messageType);

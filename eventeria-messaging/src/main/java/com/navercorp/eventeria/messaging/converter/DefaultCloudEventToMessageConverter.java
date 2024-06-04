@@ -74,13 +74,12 @@ public class DefaultCloudEventToMessageConverter implements CloudEventToMessageC
 			throw new RuntimeException("CloudEvent data can not be null to convert Message. cloudEvent: " + cloudEvent);
 		}
 
-		if (cloudEventData instanceof PojoCloudEventData) {
-			return (Message)((PojoCloudEventData)cloudEventData).getValue();
+		if (cloudEventData instanceof PojoCloudEventData pojoCloudEventData) {
+			return (Message)(pojoCloudEventData).getValue();
 		}
 
 		Message message = this.deserialize(cloudEvent);
-		if (message instanceof MessageExtensionAppender) {
-			MessageExtensionAppender appender = (MessageExtensionAppender)message;
+		if (message instanceof MessageExtensionAppender appender) {
 			for (String extensionName : cloudEvent.getExtensionNames()) {
 				appender.appendExtension(extensionName, cloudEvent.getExtension(extensionName));
 			}
@@ -95,9 +94,9 @@ public class DefaultCloudEventToMessageConverter implements CloudEventToMessageC
 		} catch (Throwable throwable) {
 			if (this.deserializeMessageFailureFallback != null) {
 				return this.deserializeMessageFailureFallback.fallback(cloudEvent, throwable);
-			} else {
-				throw throwable;
 			}
+
+			throw throwable;
 		}
 	}
 }

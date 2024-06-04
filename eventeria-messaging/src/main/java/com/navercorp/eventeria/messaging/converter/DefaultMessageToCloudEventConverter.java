@@ -58,8 +58,8 @@ public class DefaultMessageToCloudEventConverter implements MessageToCloudEventC
 
 	@Override
 	public CloudEvent convert(Message message) {
-		if (message instanceof CloudEvent) {
-			return (CloudEvent)message;
+		if (message instanceof CloudEvent cloudEvent) {
+			return cloudEvent;
 		}
 
 		CloudEventAttributes cloudEventAttributes = this.cloudEventAttributesConverter.convert(message);
