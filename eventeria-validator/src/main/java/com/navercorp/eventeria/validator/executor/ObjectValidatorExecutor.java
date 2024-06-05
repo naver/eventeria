@@ -18,6 +18,9 @@
 
 package com.navercorp.eventeria.validator.executor;
 
+/**
+ * Validates given object.
+ */
 @FunctionalInterface
 public interface ObjectValidatorExecutor<T> {
 	void execute(T obj);

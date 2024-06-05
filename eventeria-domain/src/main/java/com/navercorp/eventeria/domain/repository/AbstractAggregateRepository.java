@@ -23,11 +23,17 @@ import java.util.function.UnaryOperator;
 
 import com.navercorp.eventeria.domain.entity.AggregateRoot;
 import com.navercorp.eventeria.domain.entity.LogicalDeletable;
-import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessagePublisher;
 import com.navercorp.eventeria.validator.executor.DefaultObjectValidatorExecutor;
 import com.navercorp.eventeria.validator.executor.ObjectValidatorExecutor;
 
+/**
+ * An abstract implementation with useful methods.<br/>
+ * Supports validation and publishing events of aggregate root for {@link AggregateRepository#save}.<br/>
+ * Provides delete operation and also logical delete.
+ *
+ * @see LogicalDeletable
+ */
 public abstract class AbstractAggregateRepository<T extends AggregateRoot, ID> implements AggregateRepository<T, ID> {
 	private final ObjectValidatorExecutor<T> objectValidatorExecutor;
 	private final MessagePublisher messagePublisher;
@@ -51,17 +57,18 @@ public abstract class AbstractAggregateRepository<T extends AggregateRoot, ID> i
 		this.objectValidatorExecutor.execute(aggregateRoot);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void publishEvents(T aggregateRoot) {
-		Iterable<? extends Message> messages = aggregateRoot.events();
-		this.messagePublisher.publish((Iterable<Message>)messages);
+		this.messagePublisher.publish(aggregateRoot.events());
 		aggregateRoot.clearEvents();
 	}
 
 	protected T saveAndReturn(T aggregateRoot, UnaryOperator<T> persistStore) {
 		this.validate(aggregateRoot);
+
 		aggregateRoot = persistStore.apply(aggregateRoot);
+
 		this.publishEvents(aggregateRoot);
+
 		return aggregateRoot;
 	}
 
@@ -78,9 +85,13 @@ public abstract class AbstractAggregateRepository<T extends AggregateRoot, ID> i
 		}
 	}
 
+	/**
+	 * @param aggregateRoot objects to delete
+	 * @param deleteStore additional operations on called this method
+	 */
 	protected void delete(T aggregateRoot, Consumer<T> deleteStore) {
-		if (aggregateRoot instanceof LogicalDeletable) {
-			this.markDeleted((LogicalDeletable)aggregateRoot);
+		if (aggregateRoot instanceof LogicalDeletable logicalDeletable) {
+			this.markDeleted(logicalDeletable);
 		}
 
 		deleteStore.accept(aggregateRoot);

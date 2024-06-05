@@ -26,11 +26,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a method can subscribe {@link com.navercorp.eventeria.messaging.contract.event.DomainEvent}
+ * Indicates a method can subscribe {@link com.navercorp.eventeria.messaging.contract.command.Command}
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
-public @interface DomainEventHandler {
+public @interface CommandHandler {
 }

@@ -25,8 +25,8 @@ import com.navercorp.eventeria.messaging.contract.Message;
 /**
  * Converts {@link Message} to {@link CloudEventAttributes}
  *
- * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#required-attributes">cloudevents required attributes?</a>
- * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#optional-attributes">cloudevents optional attributes?</a>
+ * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#required-attributes">cloudevents required attributes</a>
+ * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#optional-attributes">cloudevents optional attributes</a>
  */
 @FunctionalInterface
 public interface CloudEventAttributesConverter {

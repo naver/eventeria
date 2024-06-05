@@ -32,6 +32,9 @@ import org.slf4j.LoggerFactory;
 import com.navercorp.eventeria.domain.annotation.AnnotatedAggregateHandler;
 import com.navercorp.eventeria.messaging.contract.meta.EventeriaProperties;
 
+/**
+ * Provides {@link AnnotatedAggregateMetaModel} of class annotated with {@link AnnotatedAggregateHandler}
+ */
 public final class AggregateMetaManager {
 	private static final Logger LOG = LoggerFactory.getLogger(AggregateMetaManager.class);
 	private static final Map<Class<? extends AggregateRoot>, AnnotatedAggregateMetaModel> META_MODELS =
@@ -46,6 +49,13 @@ public final class AggregateMetaManager {
 		scanAndInitialize();
 	}
 
+	/**
+	 * Create {@link AnnotatedAggregateMetaModel} by parsing {@link AggregateRoot} annotated with {@link AnnotatedAggregateHandler}
+	 *
+	 * @param aggregateRootType
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	@Nullable
 	static <T extends AggregateRoot> AnnotatedAggregateMetaModel<T> findAggregateMetaModel(Class<T> aggregateRootType) {
 		if (!aggregateRootType.isAnnotationPresent(AnnotatedAggregateHandler.class)) {
@@ -55,7 +65,7 @@ public final class AggregateMetaManager {
 		return META_MODELS.computeIfAbsent(aggregateRootType, AnnotatedAggregateMetaModel::newAggregateMetaModel);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static synchronized void scanAndInitialize() {
 		if (INITIALIZED) {
 			return;
@@ -81,6 +91,8 @@ public final class AggregateMetaManager {
 		LOG.info(
 			"AggregateMetaManager initialized. aggregateRootBasePackage: {},"
 				+ "AnnotatedAggregateHandler AggregateMetaModel size: {}.",
-			aggregateRootBasePackage, META_MODELS.size());
+			aggregateRootBasePackage,
+			META_MODELS.size()
+		);
 	}
 }

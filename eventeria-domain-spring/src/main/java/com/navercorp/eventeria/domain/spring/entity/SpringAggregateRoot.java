@@ -25,6 +25,12 @@ import com.navercorp.eventeria.domain.entity.AggregateRoot;
 import com.navercorp.eventeria.messaging.contract.event.Event;
 import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
 
+/**
+ * An abstract implementation provides manipulating (pend/provide/remove) {@link Event}.
+ * <p/>
+ * This has a same implementation with {@link com.navercorp.eventeria.domain.entity.AbstractAggregateRoot}<br/>
+ * except the {@link #eventDelegate} field annotated with {@link Transient}.
+ */
 public abstract class SpringAggregateRoot implements AggregateRoot, EventRaisableSource {
 	@Transient
 	private final transient AggregateEventDelegate eventDelegate = new AggregateEventDelegate(this);
@@ -39,6 +45,11 @@ public abstract class SpringAggregateRoot implements AggregateRoot, EventRaisabl
 		this.eventDelegate.clearEvents();
 	}
 
+	/**
+	 * pends {@link Event}
+	 *
+	 * @param event
+	 */
 	protected void raiseEvent(Event event) {
 		this.eventDelegate.raiseEvent(event);
 	}

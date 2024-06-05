@@ -20,12 +20,20 @@ package com.navercorp.eventeria.domain.spring.entity;
 
 import java.util.Map;
 
+import org.springframework.data.annotation.Transient;
+
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessageHandler;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 import com.navercorp.eventeria.messaging.contract.event.Event;
 
+/**
+ * An extended implementation to support managing {@link Message} changes by aggregate root.
+ * <p/>
+ * This has a same implementation with {@link com.navercorp.eventeria.domain.entity.MessageHandlerAggregateRoot}<br/>
+ * except the {@link SpringAggregateRoot#eventDelegate} field annotated with {@link Transient}.
+ */
 public abstract class SpringMessageHandlerAggregateRoot extends SpringAggregateRoot implements MessageHandler {
 	@Override
 	public void handle(Message message, Map<String, Object> headers) {
@@ -44,7 +52,17 @@ public abstract class SpringMessageHandlerAggregateRoot extends SpringAggregateR
 		}
 	}
 
+	/**
+	 * Behavior on subscribe {@link Command}
+	 *
+	 * @param command
+	 */
 	protected abstract void handleCommand(Command command);
 
+	/**
+	 * Behavior on subscribe {@link DomainEvent}
+	 *
+	 * @param domainEvent
+	 */
 	protected abstract void handleDomainEvent(DomainEvent domainEvent);
 }

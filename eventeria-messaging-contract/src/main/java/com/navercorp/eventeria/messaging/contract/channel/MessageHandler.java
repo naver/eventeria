@@ -23,6 +23,9 @@ import java.util.Map;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * subscribe a {@link Message}
+ */
 @FunctionalInterface
 public interface MessageHandler {
 	default void handle(Message message) {

@@ -11,6 +11,8 @@ dependencies {
     api project(":eventeria-messaging-contract")
     api project(":eventeria-validator")
 
+    implementation("org.reflections:reflections:0.10.2")
+
     testImplementation project(":eventeria-messaging-contract")
 
     testImplementation("javax.el:javax.el-api:3.0.0")

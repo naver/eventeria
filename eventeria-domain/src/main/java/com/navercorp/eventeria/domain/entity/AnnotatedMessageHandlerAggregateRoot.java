@@ -22,10 +22,17 @@ import com.navercorp.eventeria.domain.annotation.AnnotatedAggregateHandler;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 
+/**
+ * An extended implementation to support managing {@link com.navercorp.eventeria.messaging.contract.Message} changes by aggregate root. <br/>
+ * This also supports executions of annotated methods.
+ *
+ * @see com.navercorp.eventeria.domain.annotation.CommandHandler
+ * @see com.navercorp.eventeria.domain.annotation.DomainEventHandler
+ */
 @AnnotatedAggregateHandler
 public abstract class AnnotatedMessageHandlerAggregateRoot extends MessageHandlerAggregateRoot {
-	private final transient AnnotatedAggregateMessageHandler messageHandler = new AnnotatedAggregateMessageHandler(
-		this);
+	private final transient AnnotatedAggregateMessageHandler<AnnotatedMessageHandlerAggregateRoot>
+		messageHandler = new AnnotatedAggregateMessageHandler<>(this);
 
 	@Override
 	protected void handleCommand(Command command) {
@@ -37,10 +44,16 @@ public abstract class AnnotatedMessageHandlerAggregateRoot extends MessageHandle
 		this.messageHandler.handle(domainEvent, this.isRequiredDomainEventHandler());
 	}
 
+	/**
+	 * Whether handler method of {@link Command} must exist.
+	 */
 	protected boolean isRequiredCommandHandler() {
 		return false;
 	}
 
+	/**
+	 * Whether handler method of {@link DomainEvent} must exist.
+	 */
 	protected boolean isRequiredDomainEventHandler() {
 		return false;
 	}

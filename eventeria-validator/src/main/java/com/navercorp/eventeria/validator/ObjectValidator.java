@@ -18,6 +18,9 @@
 
 package com.navercorp.eventeria.validator;
 
+/**
+ * Indicates an object can validate itself.
+ */
 public interface ObjectValidator {
 	void validate();
 }
