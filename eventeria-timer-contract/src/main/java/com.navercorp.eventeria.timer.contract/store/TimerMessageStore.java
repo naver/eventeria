@@ -24,6 +24,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+/**
+ * A store for publishing timer messages.
+ */
 public interface TimerMessageStore {
 	void save(TimerMessageStoreValue storeValue, @Nullable Integer partition);
 
@@ -31,5 +34,13 @@ public interface TimerMessageStore {
 
 	long count(Instant conditionDateTime, @Nullable Integer partition);
 
+	/**
+	 * find all messages by a scheduled time and partitions.
+	 *
+	 * @param conditionDateTime
+	 * @param count
+	 * @param partition
+	 * @return
+	 */
 	List<TimerMessageStoreValue> findReleaseValues(Instant conditionDateTime, int count, @Nullable Integer partition);
 }

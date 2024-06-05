@@ -20,14 +20,39 @@ package com.navercorp.eventeria.timer.contract.handler;
 
 import java.util.function.Consumer;
 
+/**
+ * A receiving channel of timer messages.
+ */
 public interface TimerMessageHandler {
+	/**
+	 * Returns whether a message is {@link com.navercorp.eventeria.timer.contract.TimerMessage}
+	 *
+	 * @param message
+	 * @return true if {@link com.navercorp.eventeria.timer.contract.TimerMessage}
+	 */
 	boolean isTimerMessage(Object message);
 
+	/**
+	 * Register a message into delayed queue.
+	 *
+	 * @param message a message to be scheduled
+	 * @return the identifier value of scheduled message.
+	 */
 	String register(Object message);
 
+	/**
+	 * Retrieve all messages with a scheduled time before this operation is called
+	 *
+	 * @param consumeReleasedMessage behavior per popped message.
+	 */
 	void releaseMessages(Consumer<Object> consumeReleasedMessage);
 
 	long getDelayedMessageCount();
 
+	/**
+	 * Cancel a scheduled message.
+	 * 
+	 * @param registeredId the identifier value that created in {@link #register}
+	 */
 	void cancel(String registeredId);
 }

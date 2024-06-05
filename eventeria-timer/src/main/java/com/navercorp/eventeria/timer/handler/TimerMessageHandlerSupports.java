@@ -26,16 +26,19 @@ import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
 class TimerMessageHandlerSupports {
 	static Optional<Instant> getReleaseDateTime(Object message) {
-		Optional<Instant> timerTime = Optional.empty();
-
-		if (message instanceof TimerMessage) {
-			TimerMessage timerMessage = (TimerMessage)message;
-			timerTime = timerMessage.timerTime();
+		if (message instanceof TimerMessage timerMessage) {
+			return timerMessage.timerTime();
 		}
 
-		return timerTime;
+		return Optional.empty();
 	}
 
+	/**
+	 * Transform a message to {@link TimerMessageStoreValue}
+	 *
+	 * @param message
+	 * @return
+	 */
 	static TimerMessageStoreValue toTimerMessageStoreValue(Object message) {
 		Instant releaseDateTime = getReleaseDateTime(message).orElseGet(Instant::now);
 		return new TimerMessageStoreValue(message, releaseDateTime);

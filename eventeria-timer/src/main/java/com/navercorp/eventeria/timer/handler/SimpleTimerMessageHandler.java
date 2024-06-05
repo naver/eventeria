@@ -96,9 +96,11 @@ public class SimpleTimerMessageHandler implements TimerMessageHandler {
 				consumeReleaseMessage.accept(releaseValue.getMessage());
 				this.timerMessageStore.remove(releaseValue.getId(), null);
 			} catch (Throwable throwable) {
-				LOG.error("timer handler release message is failed. "
-					+ "This message would be ignored and retry next scheduling. storeValue: "
-					+ releaseValue);
+				LOG.error(
+					"timer handler release message is failed. "
+						+ "This message would be ignored and retry next scheduling. storeValue: {}",
+					releaseValue
+				);
 			}
 		}
 
