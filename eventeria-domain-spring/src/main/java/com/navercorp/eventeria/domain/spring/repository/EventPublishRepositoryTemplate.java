@@ -31,6 +31,14 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessagePublisher;
 import com.navercorp.eventeria.validator.executor.ObjectValidatorExecutor;
 
+/**
+ * An abstract implementation with useful methods.<br/>
+ * <p/>
+ * This supports integrating with spring-data,<br/>
+ * with similar implementations with {@link com.navercorp.eventeria.domain.repository.AbstractAggregateRepository}.
+ * 
+ * @see LogicalDeletable
+ */
 public class EventPublishRepositoryTemplate {
 	private final MessagePublisher messagePublisher;
 	private ObjectValidatorExecutor<Object> objectValidatorExecutor;
