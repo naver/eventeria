@@ -22,6 +22,9 @@ import io.cloudevents.CloudEvent;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * A mapping from {@link CloudEvent} to actual type.
+ */
 @FunctionalInterface
 public interface MessageDeserializeTypeConverter {
 	Class<? extends Message> convert(CloudEvent cloudEvent);

@@ -47,7 +47,7 @@ public final class CompositeCloudEventExtensionsConverter extends DefaultCloudEv
 	}
 
 	public CompositeCloudEventExtensionsConverter(CloudEventExtensionsConverter... converters) {
-		this(converters != null ? Arrays.asList(converters) : Collections.emptyList());
+		this(Arrays.asList(converters));
 	}
 
 	public CompositeCloudEventExtensionsConverter(List<CloudEventExtensionsConverter> converters) {

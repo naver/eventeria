@@ -33,6 +33,9 @@ import io.cloudevents.core.provider.ExtensionProvider;
 import com.navercorp.eventeria.messaging.contract.cloudevents.extension.CloudEventExtensionsUtil;
 import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 
+/**
+ * This extension supports typealias extension which is used to manage mappings between string type and actual type.
+ */
 @ParametersAreNonnullByDefault
 public final class CloudEventTypeAliasExtension implements CloudEventExtension {
 	public static final String TYPE_ALIAS_EXTENSION = "typealias";

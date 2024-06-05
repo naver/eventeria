@@ -22,6 +22,9 @@ import io.cloudevents.CloudEvent;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * A fallback called when failed to deserialize in {@link com.navercorp.eventeria.messaging.contract.serializer.MessageDeserializer}
+ */
 @FunctionalInterface
 public interface DeserializeMessageFailureFallback {
 	Message fallback(CloudEvent cloudEvent, Throwable throwable);

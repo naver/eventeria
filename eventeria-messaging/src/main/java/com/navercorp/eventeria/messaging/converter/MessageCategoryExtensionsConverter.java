@@ -37,8 +37,14 @@ import com.navercorp.eventeria.messaging.contract.event.Event;
 import com.navercorp.eventeria.messaging.contract.event.IntegrationEvent;
 import com.navercorp.eventeria.messaging.extension.MessageCategoryExtension;
 import com.navercorp.eventeria.messaging.extension.MessageCategoryExtension.MessageCategory;
+import com.navercorp.eventeria.messaging.extension.PartitionKeyExtension;
 import com.navercorp.eventeria.timer.contract.TimerMessage;
 
+/**
+ * Converts a {@link Message} to messagecategory {@link CloudEventExtensions}
+ *
+ * @see MessageCategoryExtension
+ */
 @ParametersAreNonnullByDefault
 public final class MessageCategoryExtensionsConverter implements CloudEventExtensionsConverter {
 	@Override

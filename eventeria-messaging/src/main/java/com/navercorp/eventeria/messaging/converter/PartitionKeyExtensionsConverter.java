@@ -34,6 +34,11 @@ import com.navercorp.eventeria.messaging.contract.distribution.Partitioned;
 import com.navercorp.eventeria.messaging.distribution.DefaultPartitionKeyExtractor;
 import com.navercorp.eventeria.messaging.extension.PartitionKeyExtension;
 
+/**
+ * Converts a {@link Message} to partitionkey {@link CloudEventExtensions}
+ *
+ * @see PartitionKeyExtension
+ */
 @ParametersAreNonnullByDefault
 public final class PartitionKeyExtensionsConverter implements CloudEventExtensionsConverter {
 	private final PartitionKeyExtractor partitionKeyExtractor;
@@ -49,17 +54,16 @@ public final class PartitionKeyExtensionsConverter implements CloudEventExtensio
 	@Override
 	public CloudEventExtensions convert(Message message) {
 		Optional<String> partitionKey = this.partitionKeyExtractor.extractKey(message);
-		if (!partitionKey.isPresent()) {
+		if (partitionKey.isEmpty()) {
 			return EmptyCloudEventExtensions.INSTANCE;
 		}
 
-		Partitioned partitioned = (Partitioned)message;
 		return new CloudEventExtensions() {
 			@Nullable
 			@Override
 			public Object getExtension(String extensionName) {
 				if (PartitionKeyExtension.PARTITION_KEY_EXTENSION.equals(extensionName)) {
-					return partitioned.getPartitionKey();
+					return partitionKey.get();
 				}
 
 				return null;

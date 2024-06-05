@@ -38,11 +38,10 @@ public class DefaultCloudEventExtensionsConverter implements CloudEventExtension
 			return (CloudEventExtensions)message;
 		}
 
-		if (!(message instanceof MessageExtensions)) {
+		if (!(message instanceof MessageExtensions messageExtensions)) {
 			return EmptyCloudEventExtensions.INSTANCE;
 		}
 
-		MessageExtensions messageExtensions = (MessageExtensions)message;
 		return new CloudEventExtensions() {
 			@Nullable
 			@Override

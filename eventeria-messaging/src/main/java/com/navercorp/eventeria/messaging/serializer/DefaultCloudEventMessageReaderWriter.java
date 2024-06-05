@@ -25,6 +25,12 @@ import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEve
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventMessageReaderWriter;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventSerializerDeserializer;
 
+/**
+ * A default implementation of serializer/deserializer
+ * between {@link Message> and byte array,
+ * and between {@link CloudEvent> and byte array
+ * and between {@link Message> and {@link CloudEvent}.
+ */
 public class DefaultCloudEventMessageReaderWriter implements CloudEventMessageReaderWriter {
 	private final CloudEventMessageConverter cloudEventMessageConverter;
 	private final CloudEventSerializerDeserializer cloudEventSerializerDeserializer;

@@ -34,16 +34,16 @@ public class MessageDeserializeTypeAliasConverter implements MessageDeserializeT
 		this.messageDeserializeTypeAliasMapper = messageDeserializeTypeAliasMapper;
 	}
 
+	/**
+	 * Find target class type from {@link CloudEventTypeAliasExtension} first,
+	 * if not exists, find next from {@link CloudEvent#getType()}.
+	 *
+	 * @param cloudEvent cloudevent to find deserializing class type
+	 * @return the deserializing class type
+	 */
 	@Override
 	public Class<? extends Message> convert(CloudEvent cloudEvent) {
-		String type = cloudEvent.getType();
-		CloudEventTypeAliasExtension typeAliasExtension = CloudEventTypeAliasExtension.parseExtension(cloudEvent);
-		if (typeAliasExtension != null) {
-			String typeAlias = typeAliasExtension.getTypeAlias();
-			if (typeAlias != null) {
-				type = typeAlias;
-			}
-		}
+		String type = getTypeString(cloudEvent);
 
 		Optional<Class<? extends Message>> deserializeType =
 			this.messageDeserializeTypeAliasMapper.getDeserializeTypeAlias(type);
@@ -52,6 +52,15 @@ public class MessageDeserializeTypeAliasConverter implements MessageDeserializeT
 		}
 
 		return this.findClass(type);
+	}
+
+	private String getTypeString(CloudEvent cloudEvent) {
+		CloudEventTypeAliasExtension typeAliasExtension = CloudEventTypeAliasExtension.parseExtension(cloudEvent);
+		if (typeAliasExtension != null && typeAliasExtension.getTypeAlias() != null) {
+			return typeAliasExtension.getTypeAlias();
+		}
+
+		return cloudEvent.getType();
 	}
 
 	@SuppressWarnings("unchecked")
