@@ -25,10 +25,15 @@ import org.springframework.messaging.SubscribableChannel;
 
 import io.cloudevents.CloudEvent;
 
+import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventToMessageConverter;
 import com.navercorp.eventeria.messaging.filter.CloudEventFilter;
 import com.navercorp.eventeria.messaging.spring.integration.channel.SpringMessageHandler;
 
+/**
+ * An {@link IntegrationFlow} template to support conversion of {@link CloudEvent} to {@link Message},
+ * and to subscribe {@link CloudEvent} from input channel.
+ */
 public class MessageSubscriberIntegrationAdapter extends IntegrationFlowAdapter {
 	private final SubscribableChannel inputChannel;
 	private final CloudEventToMessageConverter messageConverter;
@@ -48,6 +53,12 @@ public class MessageSubscriberIntegrationAdapter extends IntegrationFlowAdapter 
 		);
 	}
 
+	/**
+	 * @param inputChannel message channel that supports subscribing {@link CloudEvent}.
+	 * @param messageConverter {@link CloudEvent} to {@link Message} converter.
+	 * @param messageHandler subscriber of {@link Message} to send {@link Message} to inbound application channel
+	 * @param cloudEventFilter
+	 */
 	public MessageSubscriberIntegrationAdapter(
 		SubscribableChannel inputChannel,
 		CloudEventToMessageConverter messageConverter,
@@ -68,14 +79,23 @@ public class MessageSubscriberIntegrationAdapter extends IntegrationFlowAdapter 
 			.channel(this.getSpringMessageHandler());
 	}
 
+	/**
+	 * @return message channel that supports subscribing {@link CloudEvent}.
+	 */
 	protected SubscribableChannel getInputSubscribableChannel() {
 		return this.inputChannel;
 	}
 
+	/**
+	 * @return {@link CloudEvent} to {@link Message} converter.
+	 */
 	protected CloudEventToMessageConverter getMessageConverter() {
 		return this.messageConverter;
 	}
 
+	/**
+	 * @return subscriber of {@link Message} to send {@link Message} to inbound application channel
+	 */
 	protected SpringMessageHandler getSpringMessageHandler() {
 		return this.messageHandler;
 	}

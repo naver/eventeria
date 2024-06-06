@@ -31,9 +31,13 @@ import com.navercorp.eventeria.messaging.extension.PartitionKeyExtension;
 
 /**
  * Default {@link CloudEventHeaderMapper} implementation.
- * A result of {@link #toHeaderMap(CloudEvent)} has pairs for kafka
+ * A result of {@link #toHeaderMap(CloudEvent)} has pairs for kafka.
+ * <p>
+ * If you want your own value to {@link io.cloudevents.CloudEventExtensions},<br/>
+ * implements {@link com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventExtensionsConverter}.
  * <p>
  * CloudEvent attributes are prefixed with `ce_` for use in the message-headers section.
+ *
  * @see <a href="https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/bindings/kafka-protocol-binding.md#3231-property-names">cloudevents kafka property names</a>
  */
 public class DefaultCloudEventHeaderMapper implements CloudEventHeaderMapper {

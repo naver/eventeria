@@ -24,6 +24,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
+import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
@@ -31,6 +32,9 @@ import io.cloudevents.CloudEvent;
 
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventSerializerDeserializer;
 
+/**
+ * Implementation of {@link MessageConverter} for {@link CloudEvent}.
+ */
 public class SpringCloudEventMessageConverter extends AbstractMessageConverter {
 	private final CloudEventSerializerDeserializer cloudEventSerializerDeserializer;
 

@@ -22,6 +22,8 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowDefinition;
 import org.springframework.messaging.MessageChannel;
 
+import io.cloudevents.CloudEvent;
+
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.MessageToCloudEventConverter;
 import com.navercorp.eventeria.messaging.contract.cloudevents.header.CloudEventHeaderMapper;
@@ -29,6 +31,10 @@ import com.navercorp.eventeria.messaging.filter.CloudEventFilter;
 import com.navercorp.eventeria.messaging.spring.integration.channel.SpringMessagePublisher;
 import com.navercorp.eventeria.timer.spring.integration.handler.SpringTimerMessageHandler;
 
+/**
+ * Extended implementation of {@link MessagePublisherIntegrationAdapter} which supports
+ * publishing {@link com.navercorp.eventeria.timer.contract.TimerMessage}s
+ */
 public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherIntegrationAdapter {
 	private final SpringTimerMessageHandler springTimerMessageHandler;
 
@@ -49,6 +55,15 @@ public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherInt
 		);
 	}
 
+	/**
+	 * @param messagePublisher message channel that supports publishing {@link Message}.
+	 * @param messageConverter {@link Message} to {@link CloudEvent} converter.
+	 * @param cloudEventHeaderMapper mapper to send {@link io.cloudevents.CloudEventExtensions} values to
+	 *                               headers of {@link org.springframework.messaging.Message}.
+	 * @param outputChannel output channel of spring-integration to send other system.
+	 * @param cloudEventFilter
+	 * @param springTimerMessageHandler publish/subscribe channel for {@link com.navercorp.eventeria.timer.contract.TimerMessage}
+	 */
 	public TimerMessagePublisherIntegrationAdapter(
 		SpringMessagePublisher messagePublisher,
 		MessageToCloudEventConverter messageConverter,
@@ -78,6 +93,9 @@ public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherInt
 			.channel(this.getOutputMessageChannel());
 	}
 
+	/**
+	 * @return publish/subscribe channel for {@link com.navercorp.eventeria.timer.contract.TimerMessage}
+	 */
 	protected SpringTimerMessageHandler getSpringTimerMessageHandler() {
 		return this.springTimerMessageHandler;
 	}

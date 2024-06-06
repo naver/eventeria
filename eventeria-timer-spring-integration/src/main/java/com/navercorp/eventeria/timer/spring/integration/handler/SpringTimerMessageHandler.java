@@ -26,11 +26,15 @@ import org.springframework.integration.handler.AbstractReplyProducingMessageHand
 import org.springframework.integration.handler.DelayHandlerManagement;
 import org.springframework.integration.support.locks.DefaultLockRegistry;
 import org.springframework.integration.support.locks.LockRegistry;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
 import com.navercorp.eventeria.timer.contract.handler.TimerMessageHandler;
 
+/**
+ * Implements {@link AbstractReplyProducingMessageHandler} with supporting {@link TimerMessageHandler}
+ */
 public class SpringTimerMessageHandler extends AbstractReplyProducingMessageHandler implements DelayHandlerManagement {
 	private final TimerMessageHandler timerMessageHandler;
 	private final String lockKey;
@@ -53,6 +57,18 @@ public class SpringTimerMessageHandler extends AbstractReplyProducingMessageHand
 		this.lockRegistry = lockRegistry;
 	}
 
+	/**
+	 * subscribe a message
+	 * <p/>
+	 * If a message is not type of {@link com.navercorp.eventeria.timer.contract.TimerMessage}, just return.
+	 * If a message is type of {@link com.navercorp.eventeria.timer.contract.TimerMessage},
+	 * intercepts and registers to {@link TimerMessageHandler} without publishing to output channel.
+	 *
+	 * @param requestMessage The request message.
+	 * @return null if requestMessage is {@link com.navercorp.eventeria.timer.contract.TimerMessage},
+	 * 		   if not, the request message.
+	 */
+	@Nullable
 	@Override
 	protected Object handleRequestMessage(Message<?> requestMessage) {
 		Object payload = requestMessage.getPayload();
@@ -70,6 +86,9 @@ public class SpringTimerMessageHandler extends AbstractReplyProducingMessageHand
 		return Long.valueOf(this.timerMessageHandler.getDelayedMessageCount()).intValue();
 	}
 
+	/**
+	 * Retrieve all persisted messages before called time, and send all to output channel.
+	 */
 	@Override
 	public void reschedulePersistedMessages() {
 		Lock lock = this.lockRegistry.obtain(this.lockKey);

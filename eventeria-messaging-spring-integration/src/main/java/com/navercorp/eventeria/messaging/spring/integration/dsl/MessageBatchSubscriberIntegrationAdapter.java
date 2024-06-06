@@ -27,10 +27,16 @@ import org.springframework.messaging.SubscribableChannel;
 
 import io.cloudevents.CloudEvent;
 
+import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventToMessageConverter;
 import com.navercorp.eventeria.messaging.filter.CloudEventFilter;
 import com.navercorp.eventeria.messaging.spring.integration.channel.SpringMessageHandler;
 
+/**
+ * An {@link IntegrationFlow} template supports batch messages.
+ *
+ * @see MessageSubscriberIntegrationAdapter
+ */
 public class MessageBatchSubscriberIntegrationAdapter extends IntegrationFlowAdapter {
 	private final SubscribableChannel inputChannel;
 	private final CloudEventToMessageConverter messageConverter;

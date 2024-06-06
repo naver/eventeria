@@ -18,6 +18,9 @@
 
 package com.navercorp.eventeria.messaging.spring.integration.channel.fallback;
 
+/**
+ * policy type when failed to publish {@link com.navercorp.eventeria.messaging.contract.Message}s
+ */
 public enum FallbackPolicy {
 	THROW_EXCEPTION,
 	IGNORE

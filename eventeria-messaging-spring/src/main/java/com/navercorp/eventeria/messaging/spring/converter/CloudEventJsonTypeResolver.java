@@ -24,6 +24,11 @@ import org.springframework.messaging.converter.ContentTypeResolver;
 import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeType;
 
+/**
+ * A {@link ContentTypeResolver} for 'content-type' header.
+ *
+ * @see org.springframework.messaging.converter.DefaultContentTypeResolver
+ */
 public class CloudEventJsonTypeResolver implements ContentTypeResolver {
 	@Override
 	public MimeType resolve(@Nullable MessageHeaders headers) throws InvalidMimeTypeException {
@@ -34,10 +39,10 @@ public class CloudEventJsonTypeResolver implements ContentTypeResolver {
 		Object value = headers.get("content-type");
 		if (value == null) {
 			return null;
-		} else if (value instanceof MimeType) {
-			return (MimeType)value;
-		} else if (value instanceof  String) {
-			return MimeType.valueOf((String)value);
+		} else if (value instanceof MimeType mimeType) {
+			return mimeType;
+		} else if (value instanceof String string) {
+			return MimeType.valueOf(string);
 		} else {
 			throw new IllegalArgumentException(
 				"Unknown type for contentType header value: " + value.getClass()
