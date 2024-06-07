@@ -27,6 +27,13 @@ import com.navercorp.eventeria.messaging.contract.distribution.PartitionKeyExtra
 import com.navercorp.eventeria.messaging.distribution.DefaultPartitionKeyExtractor;
 import com.navercorp.eventeria.messaging.extension.PartitionKeyExtension;
 
+/**
+ * Strategy for extracting a partition key from a Message.
+ * Extract partition from 'ce_partitionkey' header value in {@link Message}
+ *
+ * @see PartitionKeyExtension
+ * @see com.navercorp.eventeria.messaging.contract.distribution.Partitioned#getPartitionKey
+ */
 public class MessagePartitionKeyExtractorStrategy implements PartitionKeyExtractorStrategy {
 	private final PartitionKeyExtractor partitionKeyExtractor;
 
