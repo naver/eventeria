@@ -22,6 +22,9 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.support.GenericMessage;
 
+/**
+ * Publish message into fake-kafka binders.
+ */
 public final class FakeKafkaMessageTrigger {
 	private final FakeKafkaChannelBinder binder;
 

@@ -41,6 +41,9 @@ import com.navercorp.eventeria.messaging.contract.extension.MessageExtensions;
 import com.navercorp.eventeria.messaging.jackson.mixin.MessageExtensionIncludeMixin;
 import com.navercorp.eventeria.messaging.jackson.mixin.SimpleMessageMixIn;
 
+/**
+ * jackson module for supporting eventeria-domain models.
+ */
 public class MessageModule extends SimpleModule {
 	public MessageModule() {
 		super(MessageModule.class.getName());

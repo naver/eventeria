@@ -29,6 +29,14 @@ import com.navercorp.eventeria.messaging.jackson.MessageObjectMappers;
 import com.navercorp.eventeria.messaging.jackson.mixin.MessageExtensionIgnoreMixin;
 import com.navercorp.eventeria.messaging.jackson.mixin.MessageExtensionIncludeMixin;
 
+/**
+ * Do (de)serialize between {@link Message} and byte array.<br/>
+ * The serialized value is the result of {@link io.cloudevents.CloudEvent#getData()}.
+ * <p/>
+ * There is an option whether includes {@link MessageExtensions} into serialized result.
+ *
+ * @see com.navercorp.eventeria.messaging.converter.DefaultMessageToCloudEventConverter
+ */
 public final class JacksonMessageSerializer implements MessageSerializerDeserializer {
 	private final ObjectMapper objectMapper;
 	private final ObjectMapper objectMapperIgnoreExtension;

@@ -22,6 +22,9 @@ import org.springframework.cloud.stream.binding.SubscribableChannelBindingTarget
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
+/**
+ * supports getting inbound/outbound {@link MessageChannel}.
+ */
 public class DefaultChannelBinder implements ChannelBinder {
 	private final SubscribableChannelBindingTargetFactory bindingTargetFactory;
 	private final ChannelBindable channelBindable;
@@ -34,6 +37,12 @@ public class DefaultChannelBinder implements ChannelBinder {
 		this.channelBindable = channelBindable;
 	}
 
+	/**
+	 * get outbound {@link MessageChannel} of channelName. If not exists, create and get.
+	 *
+	 * @param channelName
+	 * @return
+	 */
 	@Override
 	public MessageChannel getOutboundChannel(String channelName) {
 		SubscribableChannel outboundChannel = this.bindingTargetFactory.createOutput(channelName);
@@ -41,6 +50,12 @@ public class DefaultChannelBinder implements ChannelBinder {
 		return outboundChannel;
 	}
 
+	/**
+	 * get inbound {@link MessageChannel} of channelName. If not exists, create and get.
+	 *
+	 * @param channelName
+	 * @return
+	 */
 	@Override
 	public SubscribableChannel getInboundChannel(String channelName) {
 		SubscribableChannel inboundChannel = this.bindingTargetFactory.createInput(channelName);

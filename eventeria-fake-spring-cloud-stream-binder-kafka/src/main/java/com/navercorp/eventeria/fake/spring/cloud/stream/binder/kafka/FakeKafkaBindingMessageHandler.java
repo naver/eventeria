@@ -48,6 +48,9 @@ import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+/**
+ * Subscribes messages by fake-binder and invokes registered channel binding.
+ */
 public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 	@Nullable
 	private final String outboundChannelName;
@@ -93,6 +96,12 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 		super.handleMessageInternal(message);
 	}
 
+	/**
+	 * register onsubscribe triggers instead of actual publishing.
+	 *
+	 * @param result message to publish
+	 * @param requestMessage
+	 */
 	@Override
 	public void sendOutputs(Object result, org.springframework.messaging.Message<?> requestMessage) {
 		org.springframework.messaging.Message<?> message = ((MessageBuilder<?>)result).build();
@@ -110,6 +119,11 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 		}
 	}
 
+	/**
+	 * Register onsubscribe trigger when a message published.
+	 *
+	 * @param message the message be about to publish.
+	 */
 	private void registerFlushTrigger(org.springframework.messaging.Message<?> message) {
 		this.kafkaMessageAccumulator.registerFlushTrigger(() ->
 			this.subscribeChannels.forEach(inbound -> {
@@ -123,6 +137,12 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 		);
 	}
 
+	/**
+	 * trigger subscribers about a message.
+	 *
+	 * @param inbound subscribing channel
+	 * @param message published message.
+	 */
 	private void executeSubscribe(
 		FakeBindingSubscribableChannel inbound,
 		org.springframework.messaging.Message<?> message
@@ -240,8 +260,8 @@ public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 			throwable = throwable.getCause();
 			checked.add(throwable);
 
-			if (throwable instanceof BatchListenerFailedException) {
-				target = (BatchListenerFailedException)throwable;
+			if (throwable instanceof BatchListenerFailedException batchListenerFailedException) {
+				target = batchListenerFailedException;
 				break;
 			}
 		}

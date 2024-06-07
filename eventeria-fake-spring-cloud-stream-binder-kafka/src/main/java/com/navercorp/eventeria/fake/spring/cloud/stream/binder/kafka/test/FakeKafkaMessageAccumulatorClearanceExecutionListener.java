@@ -24,6 +24,9 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import com.navercorp.eventeria.fake.spring.cloud.stream.binder.kafka.FakeKafkaMessageAccumulator;
 
+/**
+ * Clear published messages accumulated by {@link FakeKafkaMessageAccumulator} per test method execution.
+ */
 public class FakeKafkaMessageAccumulatorClearanceExecutionListener extends AbstractTestExecutionListener {
 	@Override
 	public void beforeTestMethod(TestContext testContext) {

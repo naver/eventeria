@@ -36,6 +36,11 @@ import io.cloudevents.CloudEvent;
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventMessageReaderWriter;
 
+/**
+ * accumulates all published/subscribed/failed messages by fake-binder.
+ *
+ * @see FakeKafkaBindingMessageHandler
+ */
 public class FakeKafkaMessageAccumulator {
 	@Nullable
 	private final CloudEventMessageReaderWriter cloudEventMessageReaderWriter;
@@ -54,14 +59,32 @@ public class FakeKafkaMessageAccumulator {
 		this.cloudEventMessageReaderWriter = cloudEventMessageReaderWriter;
 	}
 
+	/**
+	 * add published message
+	 *
+	 * @param channel
+	 * @param value
+	 */
 	public void published(String channel, Object value) {
 		this.published.add(channel, value);
 	}
 
+	/**
+	 * add subscribed message
+	 *
+	 * @param channel
+	 * @param value
+	 */
 	public void consumed(String channel, Object value) {
 		this.consumed.add(channel, value);
 	}
 
+	/**
+	 * add published dlq message
+	 *
+	 * @param channel
+	 * @param value
+	 */
 	public void inboundDlq(String channel, Object value) {
 		this.inboundDlq.add(channel, value);
 	}
@@ -131,8 +154,8 @@ public class FakeKafkaMessageAccumulator {
 	public List<CloudEvent> getConsumedCloudEvents(String channel) {
 		return this.getConsumed(channel).stream()
 			.map(it -> {
-				if (it instanceof CloudEvent) {
-					return (CloudEvent)it;
+				if (it instanceof CloudEvent cloudEvent) {
+					return cloudEvent;
 				} else if (it.getClass() == byte[].class) {
 					Assert.notNull(
 						this.cloudEventMessageReaderWriter,
@@ -183,8 +206,8 @@ public class FakeKafkaMessageAccumulator {
 	public List<CloudEvent> getInboundDlqCloudEvents(String channel) {
 		return this.getInboundDlq(channel).stream()
 			.map(it -> {
-				if (it instanceof CloudEvent) {
-					return (CloudEvent)it;
+				if (it instanceof CloudEvent cloudEvent) {
+					return cloudEvent;
 				} else if (it.getClass() == byte[].class) {
 					Assert.notNull(
 						this.cloudEventMessageReaderWriter,
@@ -226,6 +249,11 @@ public class FakeKafkaMessageAccumulator {
 		this.flushTriggers.add(runnable);
 	}
 
+	/**
+	 * flush all registered triggers by {@link #registerFlushTrigger}.
+	 * 
+	 * @see FakeKafkaBindingMessageHandler#sendOutputs 
+	 */
 	public void flushTriggers() {
 		List<Runnable> triggers = new ArrayList<>(this.flushTriggers);
 		this.flushTriggers.clear();

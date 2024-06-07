@@ -31,6 +31,9 @@ import org.springframework.cloud.stream.binding.Bindable;
 import org.springframework.cloud.stream.binding.BindingService;
 import org.springframework.messaging.MessageChannel;
 
+/**
+ * Register/Use channel bindings of spring-cloud-stream directly.
+ */
 public final class ChannelBindable implements Bindable {
 	private final Map<String, MessageChannel> outputChannels = new HashMap<>();
 	private final Map<String, MessageChannel> inputChannels = new HashMap<>();
