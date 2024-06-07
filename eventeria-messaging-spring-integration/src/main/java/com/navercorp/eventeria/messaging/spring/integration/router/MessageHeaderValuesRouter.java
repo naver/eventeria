@@ -37,6 +37,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * Router to resolve execution method by header value in {@link org.springframework.messaging.Message}.
+ */
 public class MessageHeaderValuesRouter extends AbstractMappingMessageRouter {
 
 	private final String messageHandlerBeanName;
@@ -62,10 +65,16 @@ public class MessageHeaderValuesRouter extends AbstractMappingMessageRouter {
 		}
 	}
 
+	/**
+	 * Initialize builder to create {@link MessageHeaderValuesRouter}
+	 *
+	 * @param messageHandlerBeanName the channel name of spring-integration
+	 * @return new builder ({@link RouterRegister})
+	 */
 	public static RouterRegister register(String messageHandlerBeanName) {
 		Objects.requireNonNull(messageHandlerBeanName,
 			"The parameter 'messageHandlerBeanName' can not be null.");
-		return new MessageHeaderValuesRouter.RouterRegister(messageHandlerBeanName);
+		return new RouterRegister(messageHandlerBeanName);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,8 +100,7 @@ public class MessageHeaderValuesRouter extends AbstractMappingMessageRouter {
 			return Collections.emptyList();
 		}
 
-		for (Entry<Entry<String, Object>, MessageChannel> candidate : mappingChannels.entrySet()) {
-			Entry<String, Object> targetHeader = candidate.getKey();
+		for (Entry<String, Object> targetHeader : mappingChannels.keySet()) {
 			Object value = message.getHeaders().get(targetHeader.getKey());
 
 			if (targetHeader.getValue() == null) {
@@ -113,19 +121,21 @@ public class MessageHeaderValuesRouter extends AbstractMappingMessageRouter {
 		super.onInit();
 
 		ApplicationContext appContext = this.getApplicationContext();
-		if (!(appContext instanceof GenericApplicationContext)) {
+		if (!(appContext instanceof GenericApplicationContext applicationContext)) {
 			throw new RuntimeException(
 				"ApplicationContext should be instance of GenericApplicationContext to register bean. type: "
 					+ appContext.getClass().getName()
 			);
 		}
 
-		GenericApplicationContext applicationContext = (GenericApplicationContext)appContext;
 		this.mappingChannels.forEach((headerKeyValue, channel) ->
 			applicationContext.registerBean(getRouterName(headerKeyValue), MessageChannel.class, () -> channel)
 		);
 	}
 
+	/**
+	 * builder class for {@link MessageHeaderValuesRouter}
+	 */
 	@SuppressWarnings("rawtypes")
 	public static class RouterRegister {
 		private final String messageHandlerBeanName;

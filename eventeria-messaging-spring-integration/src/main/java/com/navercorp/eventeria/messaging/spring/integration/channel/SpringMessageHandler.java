@@ -28,6 +28,10 @@ import org.springframework.messaging.support.GenericMessage;
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessageHandler;
 
+/**
+ * A implementation of {@link com.navercorp.eventeria.messaging.contract.channel.MessageHandler} and {@link org.springframework.messaging.MessageChannel}
+ * to subscribe a {@link Message}.
+ */
 public class SpringMessageHandler extends PublishSubscribeChannel
 	implements MessageHandler, ApplicationEventPublisherAware {
 	private boolean publishApplicationEventPublisher;
@@ -43,6 +47,12 @@ public class SpringMessageHandler extends PublishSubscribeChannel
 		return result;
 	}
 
+	/**
+	 * Converts a {@link Message} to a {@link org.springframework.messaging.Message}
+	 * and publish to inbound channel (your application logic) which is declared by spring-integration.
+	 *
+	 * @param message
+	 */
 	@Override
 	public void handle(Message message, Map<String, Object> headers) {
 		this.send(new GenericMessage<>(message, headers));

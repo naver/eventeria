@@ -33,6 +33,9 @@ import org.springframework.messaging.MessageChannel;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * Router to resolve execution method by {@link Message} type.
+ */
 public class MessagePayloadTypeRouter extends PayloadTypeRouter {
 	private final String messageHandlerBeanName;
 	private final Map<String, MessageChannel> mappingChannels = new HashMap<>();
@@ -54,6 +57,12 @@ public class MessagePayloadTypeRouter extends PayloadTypeRouter {
 		super.setDefaultOutputChannel(new NullChannel());
 	}
 
+	/**
+	 * Initialize builder to create {@link MessagePayloadTypeRouter}
+	 *
+	 * @param messageHandlerBeanName the channel name of spring-integration
+	 * @return new builder ({@link RouterRegister})
+	 */
 	public static RouterRegister register(String messageHandlerBeanName) {
 		Objects.requireNonNull(messageHandlerBeanName,
 			"The parameter 'messageHandlerBeanName' can not be null.");
@@ -88,19 +97,21 @@ public class MessagePayloadTypeRouter extends PayloadTypeRouter {
 		super.onInit();
 
 		ApplicationContext appContext = this.getApplicationContext();
-		if (!(appContext instanceof GenericApplicationContext)) {
+		if (!(appContext instanceof GenericApplicationContext applicationContext)) {
 			throw new RuntimeException(
 				"ApplicationContext should be instance of GenericApplicationContext to register bean. type: "
 					+ appContext.getClass().getName()
 			);
 		}
 
-		GenericApplicationContext applicationContext = (GenericApplicationContext)appContext;
 		this.mappingChannels.forEach((beanName, channel) ->
 			applicationContext.registerBean(beanName, MessageChannel.class, () -> channel)
 		);
 	}
 
+	/**
+	 * builder class for {@link MessagePayloadTypeRouter}
+	 */
 	@SuppressWarnings("rawtypes")
 	public static class RouterRegister {
 		private final String messageHandlerBeanName;

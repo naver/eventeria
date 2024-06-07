@@ -34,6 +34,10 @@ import com.navercorp.eventeria.messaging.contract.cloudevents.header.CloudEventH
 import com.navercorp.eventeria.messaging.filter.CloudEventFilter;
 import com.navercorp.eventeria.messaging.spring.integration.channel.SpringMessagePublisher;
 
+/**
+ * An {@link IntegrationFlow} template to support conversion of {@link Message} to {@link CloudEvent},
+ * and to publish {@link CloudEvent} to output channel.
+ */
 public class MessagePublisherIntegrationAdapter extends IntegrationFlowAdapter {
 	private final SpringMessagePublisher messagePublisher;
 	private final MessageToCloudEventConverter messageConverter;
@@ -56,6 +60,14 @@ public class MessagePublisherIntegrationAdapter extends IntegrationFlowAdapter {
 		);
 	}
 
+	/**
+	 * @param messagePublisher message channel that supports publishing {@link Message}.
+	 * @param messageConverter {@link Message} to {@link CloudEvent} converter.
+	 * @param cloudEventHeaderMapper mapper to send {@link io.cloudevents.CloudEventExtensions} values to
+	 *                               headers of {@link org.springframework.messaging.Message}.
+	 * @param outputChannel output channel of spring-integration to send other system.
+	 * @param cloudEventFilter
+	 */
 	public MessagePublisherIntegrationAdapter(
 		SpringMessagePublisher messagePublisher,
 		MessageToCloudEventConverter messageConverter,
@@ -80,14 +92,24 @@ public class MessagePublisherIntegrationAdapter extends IntegrationFlowAdapter {
 			.channel(this.getOutputMessageChannel());
 	}
 
+	/**
+	 * @return message channel that supports publishing {@link Message}.
+	 */
 	protected SpringMessagePublisher getMessagePublisher() {
 		return this.messagePublisher;
 	}
 
+	/**
+	 * @return {@link Message} to {@link CloudEvent} converter.
+	 */
 	protected MessageToCloudEventConverter getMessageConverter() {
 		return this.messageConverter;
 	}
 
+	/**
+	 * @return mapper to send {@link io.cloudevents.CloudEventExtensions} values to
+	 * 		   headers of {@link org.springframework.messaging.Message}.
+	 */
 	protected CloudEventHeaderMapper getCloudEventHeaderMapper() {
 		return this.cloudEventHeaderMapper;
 	}
@@ -96,6 +118,9 @@ public class MessagePublisherIntegrationAdapter extends IntegrationFlowAdapter {
 		return this.cloudEventFilter;
 	}
 
+	/**
+	 * @return output channel of spring-integration to send other system.
+	 */
 	protected MessageChannel getOutputMessageChannel() {
 		return this.outputChannel;
 	}

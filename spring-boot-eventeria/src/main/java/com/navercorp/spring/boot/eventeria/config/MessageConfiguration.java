@@ -127,7 +127,10 @@ public class MessageConfiguration {
 		return new JacksonCloudEventReaderWriter(cloudEventMessageConverter);
 	}
 
-	@Bean // org.springframework.cloud.stream.config.ContentTypeConfiguration
+	/**
+	 * org.springframework.cloud.stream.config.ContentTypeConfiguration
+	 */
+	@Bean
 	@ConditionalOnMissingBean
 	public SpringCloudEventMessageConverter springCloudEventMessageConverter(
 		CloudEventSerializerDeserializer cloudEventSerializerDeserializer
@@ -135,9 +138,12 @@ public class MessageConfiguration {
 		return new SpringCloudEventMessageConverter(cloudEventSerializerDeserializer);
 	}
 
+	/**
+	 * org.springframework.cloud.stream.binder.MessageConverterConfigurer$PartitioningInterceptor
+	 * org.springframework.cloud.stream.binder.PartitionHandler#getPartitionKeyExtractorStrategy
+	 */
 	@Bean("messagePartitionKeyExtractorStrategy")
 	@ConditionalOnMissingBean
-	// org.springframework.cloud.stream.binder.MessageConverterConfigurer#getPartitionKeyExtractorStrategy
 	public MessagePartitionKeyExtractorStrategy messagePartitionKeyExtractorStrategy() {
 		return new MessagePartitionKeyExtractorStrategy();
 	}

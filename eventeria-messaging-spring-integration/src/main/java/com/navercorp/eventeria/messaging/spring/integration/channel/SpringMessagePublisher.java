@@ -35,6 +35,10 @@ import com.navercorp.eventeria.messaging.contract.channel.MessagePublisher;
 import com.navercorp.eventeria.messaging.contract.event.ApplicationEvent;
 import com.navercorp.eventeria.messaging.spring.integration.channel.fallback.FallbackPolicy;
 
+/**
+ * A implementation of {@link MessagePublisher} and {@link org.springframework.messaging.MessageChannel}
+ * to publish {@link Message}s.
+ */
 public class SpringMessagePublisher extends DirectChannel implements MessagePublisher, ApplicationEventPublisherAware {
 	private final FallbackPolicy fallbackPolicy;
 	@Nullable
@@ -51,6 +55,13 @@ public class SpringMessagePublisher extends DirectChannel implements MessagePubl
 		this.executor = executor;
 	}
 
+	/**
+	 * Converts {@link Message}s to a {@link org.springframework.messaging.Message}
+	 * and publish to outbound channel declared by spring-integration.<br/>
+	 * Each message are published by {@link ApplicationEventPublisher} as well.
+	 *
+	 * @param messages
+	 */
 	@Override
 	public void publish(Iterable<? extends Message> messages) {
 		if (this.getSubscriberCount() > 0) {
@@ -69,6 +80,13 @@ public class SpringMessagePublisher extends DirectChannel implements MessagePubl
 		messages.forEach(this.applicationEventPublisher::publishEvent);
 	}
 
+	/**
+	 * Converts a {@link Message} to a {@link org.springframework.messaging.Message}
+	 * and publish to outbound channel declared by spring-integration.<br/>
+	 * The message is published by {@link ApplicationEventPublisher} as well.
+	 *
+	 * @param message
+	 */
 	@Override
 	public void publish(Message message) {
 		if (this.getSubscriberCount() > 0 && this.isExternalMessage(message)) {
@@ -128,11 +146,10 @@ public class SpringMessagePublisher extends DirectChannel implements MessagePubl
 	}
 
 	private boolean isExternalMessage(Message message) {
-		if (!(message instanceof ApplicationEvent)) {
+		if (!(message instanceof ApplicationEvent applicationEvent)) {
 			return true;
 		}
 
-		ApplicationEvent applicationEvent = (ApplicationEvent)message;
 		return applicationEvent.isExternalEvent();
 	}
 }
