@@ -62,7 +62,8 @@ public class TimerMessagePublisherIntegrationAdapter extends MessagePublisherInt
 	 *                               headers of {@link org.springframework.messaging.Message}.
 	 * @param outputChannel output channel of spring-integration to send other system.
 	 * @param cloudEventFilter
-	 * @param springTimerMessageHandler publish/subscribe channel for {@link com.navercorp.eventeria.timer.contract.TimerMessage}
+	 * @param springTimerMessageHandler publish/subscribe channel
+	 *                                  for {@link com.navercorp.eventeria.timer.contract.TimerMessage}/
 	 */
 	public TimerMessagePublisherIntegrationAdapter(
 		SpringMessagePublisher messagePublisher,

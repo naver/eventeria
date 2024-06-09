@@ -1,5 +1,14 @@
 rootProject.name = "eventeria"
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
 include "eventeria-messaging-contract"
 include "eventeria-messaging-contract-cloudevents"
 include "eventeria-messaging"

@@ -20,8 +20,6 @@ package com.navercorp.eventeria.messaging.contract.meta;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -33,7 +31,9 @@ public class EventeriaPropertiesLoader {
 
 	public static Properties load() {
 		Properties properties = new Properties();
-		try (InputStream propertiesIs = EventeriaPropertiesLoader.class.getResourceAsStream(EVENTERIA_META_INF_PROPERTIES)) {
+		try (InputStream propertiesIs
+			= EventeriaPropertiesLoader.class.getResourceAsStream(EVENTERIA_META_INF_PROPERTIES)
+		) {
 			if (propertiesIs != null) {
 				properties.load(propertiesIs);
 				LOG.info("Load {}. {}", EVENTERIA_META_INF_PROPERTIES, properties);

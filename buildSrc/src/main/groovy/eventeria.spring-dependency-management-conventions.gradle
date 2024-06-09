@@ -1,0 +1,15 @@
+plugins {
+    id "io.spring.dependency-management"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+    }
+}
+
+// version managed by maven-bom
+dependencies {
+    implementation("org.slf4j:slf4j-api")
+}

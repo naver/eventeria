@@ -43,7 +43,8 @@ public final class DeserializeMessageFailureMessageCategoryFallback implements D
 	}
 
 	/**
-	 * Deserialize cloudevent to the object which is type of eventeria by {@link MessageCategoryExtension#MESSAGE_CATEGORY_EXTENSION} value.
+	 * Deserialize cloudevent to the object which is type of eventeria
+	 * by {@link MessageCategoryExtension#MESSAGE_CATEGORY_EXTENSION} value.
 	 *
 	 * @param cloudEvent cloudevent to convert
 	 * @param throwable failure from original deserializer
