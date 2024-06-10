@@ -9,9 +9,6 @@ repositories {
     }
 }
 
-group "com.navercorp.eventeria"
-version "1.2.0"
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     implementation("io.spring.gradle:dependency-management-plugin:1.1.5")
