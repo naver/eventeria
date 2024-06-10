@@ -23,7 +23,8 @@ import java.util.Optional;
 import com.navercorp.eventeria.messaging.contract.Message;
 
 /**
- * A mapping from {@link com.navercorp.eventeria.messaging.extension.CloudEventTypeAliasExtension#TYPE_ALIAS_EXTENSION} extension value to actual type.
+ * A mapping from {@link com.navercorp.eventeria.messaging.extension.CloudEventTypeAliasExtension#TYPE_ALIAS_EXTENSION}
+ * extension value to actual type.
  */
 @FunctionalInterface
 public interface MessageDeserializeTypeAliasMapper {

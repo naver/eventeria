@@ -1,0 +1,22 @@
+plugins {
+    id "java"
+    id "java-library"
+    id "idea"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+// https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add("-parameters")
+}
+
+dependencies {
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
+}

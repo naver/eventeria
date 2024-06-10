@@ -29,8 +29,8 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessageHandler;
 
 /**
- * A implementation of {@link com.navercorp.eventeria.messaging.contract.channel.MessageHandler} and {@link org.springframework.messaging.MessageChannel}
- * to subscribe a {@link Message}.
+ * A implementation of {@link com.navercorp.eventeria.messaging.contract.channel.MessageHandler}
+ * and {@link org.springframework.messaging.MessageChannel} to subscribe a {@link Message}.
  */
 public class SpringMessageHandler extends PublishSubscribeChannel
 	implements MessageHandler, ApplicationEventPublisherAware {

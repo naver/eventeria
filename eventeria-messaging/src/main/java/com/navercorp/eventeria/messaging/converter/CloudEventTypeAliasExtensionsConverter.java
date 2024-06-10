@@ -30,7 +30,6 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventExtensionsConverter;
 import com.navercorp.eventeria.messaging.contract.cloudevents.extension.EmptyCloudEventExtensions;
 import com.navercorp.eventeria.messaging.extension.CloudEventTypeAliasExtension;
-import com.navercorp.eventeria.messaging.extension.PartitionKeyExtension;
 import com.navercorp.eventeria.messaging.typealias.MessageSerializeTypeAliasMapper;
 
 /**

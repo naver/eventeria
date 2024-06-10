@@ -23,8 +23,6 @@ import java.time.OffsetDateTime;
 
 import javax.annotation.Nullable;
 
-import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
-
 /**
  * a abstract class to support implementation of {@link IntegrationEvent}
  */
