@@ -19,9 +19,17 @@
 package com.navercorp.eventeria.domain.repository;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.navercorp.eventeria.domain.entity.AggregateRoot;
 
+/**
+ * Create/Read/Update Repository of {@link AggregateRoot}
+ * <p/>
+ * Delete operation is not supported by default. If need, override {@link AbstractAggregateRepository#delete}.
+ *
+ * @see AbstractAggregateRepository
+ */
 public interface AggregateRepository<T extends AggregateRoot, ID> {
 	T save(T aggregateRoot);
 

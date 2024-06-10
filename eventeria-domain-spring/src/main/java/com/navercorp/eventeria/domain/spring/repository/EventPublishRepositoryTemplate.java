@@ -31,6 +31,14 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.channel.MessagePublisher;
 import com.navercorp.eventeria.validator.executor.ObjectValidatorExecutor;
 
+/**
+ * An abstract implementation with useful methods.<br/>
+ * <p/>
+ * This supports integrating with spring-data,<br/>
+ * with similar implementations with {@link com.navercorp.eventeria.domain.repository.AbstractAggregateRepository}.
+ * 
+ * @see LogicalDeletable
+ */
 public class EventPublishRepositoryTemplate {
 	private final MessagePublisher messagePublisher;
 	private ObjectValidatorExecutor<Object> objectValidatorExecutor;
@@ -52,8 +60,7 @@ public class EventPublishRepositoryTemplate {
 	}
 
 	public <T extends AggregateRoot> void delete(T aggregateRoot, Consumer<T> deleteOperation) {
-		if (aggregateRoot instanceof LogicalDeletable) {
-			LogicalDeletable logicalDeletable = (LogicalDeletable)aggregateRoot;
+		if (aggregateRoot instanceof LogicalDeletable logicalDeletable) {
 			if (!logicalDeletable.isDeleted()) {
 				logicalDeletable.markDeleted();
 			}
@@ -69,17 +76,16 @@ public class EventPublishRepositoryTemplate {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T extends AggregateRoot> void publishEvents(T aggregateRoot) {
 		Iterable<? extends Message> messages = aggregateRoot.events();
 		if (messages.iterator().hasNext()) {
 			if (this.transactionTemplate != null) {
 				this.transactionTemplate.execute(status -> {
-					this.messagePublisher.publish((Iterable<Message>)messages);
+					this.messagePublisher.publish(messages);
 					return null;
 				});
 			} else {
-				this.messagePublisher.publish((Iterable<Message>)messages);
+				this.messagePublisher.publish(messages);
 			}
 		}
 		aggregateRoot.clearEvents();
@@ -98,10 +104,8 @@ public class EventPublishRepositoryTemplate {
 		this.doPublishEvents(aggregateRoot);
 	}
 
-	@SuppressWarnings("unchecked")
 	private <T extends AggregateRoot> void doPublishEvents(T aggregateRoot) {
-		Iterable<? extends Message> messages = aggregateRoot.events();
-		this.messagePublisher.publish((Iterable<Message>)messages);
+		this.messagePublisher.publish(aggregateRoot.events());
 		aggregateRoot.clearEvents();
 	}
 

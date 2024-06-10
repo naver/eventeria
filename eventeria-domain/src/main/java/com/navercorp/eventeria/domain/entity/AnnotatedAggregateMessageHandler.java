@@ -21,13 +21,20 @@ package com.navercorp.eventeria.domain.entity;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 
-public final class AnnotatedAggregateMessageHandler {
-	private final AggregateRoot aggregateRoot;
-	private final AnnotatedAggregateMetaModel metaModel;
+/**
+ * Executes annotated {@link Command}/{@link DomainEvent} handler methods.
+ *
+ * @see com.navercorp.eventeria.domain.annotation.CommandHandler
+ * @see com.navercorp.eventeria.domain.annotation.DomainEventHandler
+ */
+public final class AnnotatedAggregateMessageHandler<T extends AggregateRoot> {
+	private final T aggregateRoot;
+	private final AnnotatedAggregateMetaModel<T> metaModel;
 
-	public AnnotatedAggregateMessageHandler(AggregateRoot aggregateRoot) {
+	@SuppressWarnings("unchecked")
+	public AnnotatedAggregateMessageHandler(T aggregateRoot) {
 		this.aggregateRoot = aggregateRoot;
-		this.metaModel = AggregateMetaManager.findAggregateMetaModel(aggregateRoot.getClass());
+		this.metaModel = AggregateMetaManager.findAggregateMetaModel((Class<T>)aggregateRoot.getClass());
 		if (this.metaModel == null) {
 			throw new IllegalStateException("Can not find AnnotatedAggregateMetaModel."
 				+ "Check out annotated @AnnotatedAggregateHandler on AggregateRoot. type: " + aggregateRoot);
@@ -38,6 +45,13 @@ public final class AnnotatedAggregateMessageHandler {
 		this.handle(domainEvent, true);
 	}
 
+	/**
+	 * invoke handler method of {@link DomainEvent}.
+	 * 
+	 * @param domainEvent
+	 * @param requiredHandler whether handler method must exist.
+	 * @throws RequiredDomainEventHandlerException if requiredHandler is true and actual handler method does not exist
+	 */
 	public void handle(DomainEvent domainEvent, boolean requiredHandler) {
 		if (domainEvent == null) {
 			return;
@@ -50,6 +64,13 @@ public final class AnnotatedAggregateMessageHandler {
 		this.handle(command, true);
 	}
 
+	/**
+	 * invoke handler method of {@link Command}.
+	 *
+	 * @param command
+	 * @param requiredHandler whether handler method must exist.
+	 * @throws RequiredCommandHandlerException if requiredHandler is true and actual handler method does not exist
+	 */
 	public void handle(Command command, boolean requiredHandler) {
 		if (command == null) {
 			return;

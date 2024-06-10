@@ -28,11 +28,15 @@ import java.util.Set;
 
 import org.reflections.ReflectionUtils;
 
-import com.navercorp.eventeria.domain.annotation.DomainCommandHandler;
+import com.navercorp.eventeria.domain.annotation.CommandHandler;
 import com.navercorp.eventeria.domain.annotation.DomainEventHandler;
+import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 
+/**
+ * A metadata model of {@link AnnotatedMessageHandlerAggregateRoot}.
+ */
 class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 	private final Class<T> aggregateRootType;
 	private final Map<Class<? extends Command>, Method> commandHandlerMethods;
@@ -49,34 +53,37 @@ class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 	}
 
 	static <T extends AggregateRoot> AnnotatedAggregateMetaModel<T> newAggregateMetaModel(Class<T> rootType) {
-		Map<Class<? extends Command>, Method> domainCommandHandlerMethods = getDomainCommandHandlerMethods(rootType);
+		Map<Class<? extends Command>, Method> commandHandlerMethods = getCommandHandlerMethods(rootType);
 		Map<Class<? extends DomainEvent>, Method> domainEventHandlerMethods = getDomainEventHandlerMethods(rootType);
-		return new AnnotatedAggregateMetaModel<>(rootType, domainCommandHandlerMethods, domainEventHandlerMethods);
+		return new AnnotatedAggregateMetaModel<>(rootType, commandHandlerMethods, domainEventHandlerMethods);
 	}
 
-	private static <T extends AggregateRoot> Map<Class<? extends Command>, Method> getDomainCommandHandlerMethods(
+	/**
+	 * build {@link Command} handler method from reflection by finding method annotated with {@link CommandHandler}.
+	 */
+	private static <T extends AggregateRoot> Map<Class<? extends Command>, Method> getCommandHandlerMethods(
 		Class<T> rootType
 	) {
 		Map<Class<? extends Command>, Method> domainCommandEventHandlerMethods = new HashMap<>();
 		Set<Method> commandHandlerMethods = ReflectionUtils.getAllMethods(
-			rootType, method -> method.isAnnotationPresent(DomainCommandHandler.class));
+			rootType, method -> method.isAnnotationPresent(CommandHandler.class));
 		for (Method method : commandHandlerMethods) {
 			Class<?>[] parameterTypes = method.getParameterTypes();
 			if (parameterTypes == null || parameterTypes.length == 0) {
 				throw new InitializeCommandHandlerException(
-					"@DomainCommandHandler method must have Command type parameter at least.");
+					"@CommandHandler method must have Command type parameter at least.");
 			}
 
 			Class<?> commandType = parameterTypes[0];
 			if (!Command.class.isAssignableFrom(commandType)) {
 				throw new InitializeCommandHandlerException(
-					"@DomainCommandHandler method's first argument type must be Command type. type: " + commandType);
+					"@CommandHandler method's first argument type must be Command type. type: " + commandType);
 			}
 			if (domainCommandEventHandlerMethods.containsKey(commandType)) {
 				Method existMethod = domainCommandEventHandlerMethods.get(commandType);
 				if (!existMethod.getName().equals(method.getName())) {
 					throw new InitializeCommandHandlerException(
-						"Duplicated @DomainCommandHandler for type is detected. commandType: " + commandType);
+						"Duplicated @CommandHandler for type is detected. commandType: " + commandType);
 				}
 				if (!existMethod.getDeclaringClass().isAssignableFrom(method.getDeclaringClass())
 					&& method.getDeclaringClass().isAssignableFrom(existMethod.getDeclaringClass())) {
@@ -90,6 +97,9 @@ class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 		return domainCommandEventHandlerMethods;
 	}
 
+	/**
+	 * build {@link DomainEvent} handler method from reflection by finding method annotated with {@link DomainEventHandler}.
+	 */
 	private static <T extends AggregateRoot> Map<Class<? extends DomainEvent>, Method> getDomainEventHandlerMethods(
 		Class<T> rootType
 	) {
@@ -126,41 +136,35 @@ class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 		return domainEventHandlerMethods;
 	}
 
-	private static void invokeHandler(Method method, AggregateRoot aggregateRoot, Command command) {
+	private static <T extends AggregateRoot, M extends Message> void invokeHandler(
+		Method method,
+		T aggregateRoot,
+		M message
+	) {
 		try {
-			method.invoke(aggregateRoot, command);
+			method.invoke(aggregateRoot, message);
 		} catch (IllegalAccessException ex) {
 			throw new IllegalStateException("Could not access method: " + ex.getMessage());
 		} catch (InvocationTargetException ex) {
 			Throwable throwable = ex.getTargetException();
-			if (throwable instanceof RuntimeException) {
-				throw (RuntimeException)throwable;
+			if (throwable instanceof RuntimeException re) {
+				throw re;
 			}
-			if (throwable instanceof Error) {
-				throw (Error)throwable;
+			if (throwable instanceof Error error) {
+				throw error;
 			}
 			throw new UndeclaredThrowableException(throwable);
 		}
 	}
 
-	private static void invokeHandler(Method method, AggregateRoot aggregateRoot, DomainEvent domainEvent) {
-		try {
-			method.invoke(aggregateRoot, domainEvent);
-		} catch (IllegalAccessException ex) {
-			throw new IllegalStateException("Could not access method: " + ex.getMessage());
-		} catch (InvocationTargetException ex) {
-			Throwable throwable = ex.getTargetException();
-			if (throwable instanceof RuntimeException) {
-				throw (RuntimeException)throwable;
-			}
-			if (throwable instanceof Error) {
-				throw (Error)throwable;
-			}
-			throw new UndeclaredThrowableException(throwable);
-		}
-	}
-
-	void invoke(AggregateRoot aggregateRoot, Command command, boolean required) {
+	/**
+	 * invoke handler method of {@link Command}
+	 *
+	 * @param aggregateRoot target
+	 * @param command
+	 * @param required
+	 */
+	void invoke(T aggregateRoot, Command command, boolean required) {
 		if (aggregateRoot.getClass() != this.aggregateRootType) {
 			throw new IllegalArgumentException("The argument `aggregateRoot` is not a suitable type for meta models.");
 		}
@@ -177,7 +181,14 @@ class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 		}
 	}
 
-	void invoke(AggregateRoot aggregateRoot, DomainEvent domainEvent, boolean required) {
+	/**
+	 * invoke handler method of {@link DomainEvent}
+	 *
+	 * @param aggregateRoot target
+	 * @param domainEvent
+	 * @param required
+	 */
+	void invoke(T aggregateRoot, DomainEvent domainEvent, boolean required) {
 		if (aggregateRoot.getClass() != this.aggregateRootType) {
 			throw new IllegalArgumentException("The argument `aggregateRoot` is not a suitable type for meta models.");
 		}

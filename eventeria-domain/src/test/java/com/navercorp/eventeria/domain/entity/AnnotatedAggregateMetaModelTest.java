@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import net.jqwik.api.Example;
 import net.jqwik.api.Label;
 
-import com.navercorp.eventeria.domain.annotation.DomainCommandHandler;
+import com.navercorp.eventeria.domain.annotation.CommandHandler;
 import com.navercorp.eventeria.domain.annotation.DomainEventHandler;
 import com.navercorp.eventeria.messaging.contract.command.AbstractCommand;
 import com.navercorp.eventeria.messaging.contract.event.AbstractDomainEvent;
@@ -45,7 +45,7 @@ class AnnotatedAggregateMetaModelTest {
 	}
 
 	@Example
-	@Label("Argument 가 정의되지 않은 메소드에 @DomainCommandHandler 가 정의되어 있으면 InitializeCommandHandlerException 이 발생합니다.")
+	@Label("Argument 가 정의되지 않은 메소드에 @CommandHandler 가 정의되어 있으면 InitializeCommandHandlerException 이 발생합니다.")
 	void newAggregateMetaModelNoArgsCommandHandlerThrowsException() {
 		// Given
 		Class<NoArgsCommandHandlerAggregateSpec> aggregateType
@@ -69,8 +69,8 @@ class AnnotatedAggregateMetaModelTest {
 	}
 
 	@Example
-	@Label("@DomainCommandHandler 의 파라미터가 Command 타입이 아니면, InitializeCommandHandlerException 이 발생합니다.")
-	void newAggregateMetaModelIncompatibleDomainCommandHandlerThrowsException() {
+	@Label("@CommandHandler 의 파라미터가 Command 타입이 아니면, InitializeCommandHandlerException 이 발생합니다.")
+	void newAggregateMetaModelIncompatibleCommandHandlerThrowsException() {
 		// Given
 		Class<IncompatibleCommandHandlerAggregateSpec> aggregateType
 			= IncompatibleCommandHandlerAggregateSpec.class;
@@ -105,7 +105,7 @@ class AnnotatedAggregateMetaModelTest {
 	}
 
 	@Example
-	@Label("같은 DomainEvent 를 처리하는 @DomainCommandHandler 가 중복되면 InitializeCommandHandlerException 이 발생합니다.")
+	@Label("같은 DomainEvent 를 처리하는 @CommandHandler 가 중복되면 InitializeCommandHandlerException 이 발생합니다.")
 	void newAggregateMetaModelDuplicatedDomainCommandEventHandlerThrowsException() {
 		// Given
 		Class<DuplicatedDomainCommandEventHandlerAggregateSpec> aggregateType
@@ -117,7 +117,7 @@ class AnnotatedAggregateMetaModelTest {
 	}
 
 	@Example
-	@Label("@DomainCommandHandler 를 Override 할 수 있습니다.")
+	@Label("@CommandHandler 를 Override 할 수 있습니다.")
 	void newAggregateMetaModelOverrideCommandHandler() {
 		// Given
 		Class<OverrideHandlerAggregateSpec> aggregateType = OverrideHandlerAggregateSpec.class;
@@ -171,7 +171,7 @@ class AnnotatedAggregateMetaModelTest {
 			return null;
 		}
 
-		@DomainCommandHandler
+		@CommandHandler
 		private void noArgsCommandHandler() {
 		}
 	}
@@ -203,7 +203,7 @@ class AnnotatedAggregateMetaModelTest {
 			return null;
 		}
 
-		@DomainCommandHandler
+		@CommandHandler
 		private void onDomainEvent(SimpleDomainEventSpec domainEvent) {
 		}
 	}
@@ -235,11 +235,11 @@ class AnnotatedAggregateMetaModelTest {
 			return null;
 		}
 
-		@DomainCommandHandler
+		@CommandHandler
 		private void onCommand(SimpleCommandSpec command) {
 		}
 
-		@DomainCommandHandler
+		@CommandHandler
 		private void onCommand2(SimpleCommandSpec command) {
 		}
 	}
@@ -265,7 +265,7 @@ class AnnotatedAggregateMetaModelTest {
 	}
 
 	static class OverrideHandlerAggregateSpec extends SimpleAggregateSpec {
-		@DomainCommandHandler
+		@CommandHandler
 		private void onDomainCommand(SimpleCommandSpec command) {
 		}
 

@@ -39,6 +39,12 @@ public class DefaultObjectValidatorExecutor<T> implements ObjectValidatorExecuto
 		this.delegate = delegate;
 	}
 
+	/**
+	 * Validates given object {@link jakarta.validation.Validator}
+	 * and {@link com.navercorp.eventeria.validator.ObjectValidator}
+	 *
+	 * @param object the value to validate
+	 */
 	@Override
 	public void execute(T object) {
 		Set<ConstraintViolation<Object>> violations = this.delegate.validate(object);
@@ -46,9 +52,9 @@ public class DefaultObjectValidatorExecutor<T> implements ObjectValidatorExecuto
 			throw new ConstraintViolationException(violations);
 		}
 
-		if (object instanceof ObjectValidator) {
+		if (object instanceof ObjectValidator validator) {
 			try {
-				((ObjectValidator)object).validate();
+				validator.validate();
 			} catch (ValidationException e) {
 				throw e;
 			} catch (RuntimeException e) {

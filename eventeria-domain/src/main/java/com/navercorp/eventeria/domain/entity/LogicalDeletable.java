@@ -18,7 +18,14 @@
 
 package com.navercorp.eventeria.domain.entity;
 
+/**
+ * Indicates can be considered as deleted without actual delete operation.
+ */
 public interface LogicalDeletable {
+	/**
+	 * Perform any actions for delete operation.<br/>
+	 * ex) Update flag as deleted, raise deleted event, ...
+	 */
 	void markDeleted();
 
 	boolean isDeleted();

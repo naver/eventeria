@@ -22,13 +22,27 @@ import javax.annotation.Nullable;
 
 import com.navercorp.eventeria.messaging.contract.event.Event;
 
+/**
+ * Indicates aggregate root
+ *
+ * @see <a href="https://martinfowler.com/bliki/DDD_Aggregate.html">DDD Aggregate</a>
+ */
 public interface AggregateRoot {
 	String getId();
 
+	/**
+	 * optional: for optimistic locking
+	 */
 	@Nullable
 	Long getVersion();
 
+	/**
+	 * @return the pending events raised by aggregate.
+	 */
 	Iterable<Event> events();
 
+	/**
+	 * remove all pending events of aggregate
+	 */
 	void clearEvents();
 }

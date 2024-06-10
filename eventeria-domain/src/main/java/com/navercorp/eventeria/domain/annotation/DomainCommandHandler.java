@@ -25,9 +25,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Indicates a method can subscribe {@link com.navercorp.eventeria.messaging.contract.command.Command}
+ *
+ * @deprecated use {@link CommandHandler} instead.
+ */
+@Deprecated(since = "1.2.1", forRemoval = true)
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Inherited
+@CommandHandler
 public @interface DomainCommandHandler {
 }

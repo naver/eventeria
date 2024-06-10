@@ -26,25 +26,39 @@ import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 import com.navercorp.eventeria.messaging.contract.event.Event;
 
+/**
+ * An extended implementation to support managing {@link Message} changes by aggregate root.
+ */
 public abstract class MessageHandlerAggregateRoot extends AbstractAggregateRoot implements MessageHandler {
 	@Override
 	public void handle(Message message, Map<String, Object> headers) {
-		if (message instanceof Command) {
-			this.handleCommand((Command)message);
+		if (message instanceof Command command) {
+			this.handleCommand(command);
 		}
-		if (message instanceof Event) {
-			this.raiseEvent((Event)message);
+		if (message instanceof Event event) {
+			this.raiseEvent(event);
 		}
 	}
 
+	@Override
 	protected void raiseEvent(Event event) {
 		super.raiseEvent(event);
-		if (event instanceof DomainEvent) {
-			this.handleDomainEvent((DomainEvent)event);
+		if (event instanceof DomainEvent domainEvent) {
+			this.handleDomainEvent(domainEvent);
 		}
 	}
 
+	/**
+	 * Behavior on subscribe {@link Command}
+	 *
+	 * @param command
+	 */
 	protected abstract void handleCommand(Command command);
 
+	/**
+	 * Behavior on subscribe {@link DomainEvent}
+	 *
+	 * @param domainEvent
+	 */
 	protected abstract void handleDomainEvent(DomainEvent domainEvent);
 }

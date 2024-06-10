@@ -27,6 +27,9 @@ import com.navercorp.eventeria.messaging.contract.event.Event;
 import com.navercorp.eventeria.messaging.contract.source.EventRaisableSource;
 import com.navercorp.eventeria.messaging.contract.source.RaiseEventHandler;
 
+/**
+ * Delegates implementation of {@link AggregateRoot} and {@link EventRaisableSource}<br/>
+ */
 public final class AggregateEventDelegate {
 	private final AggregateRoot aggregateRoot;
 	private final List<Event> pendingEvents = new ArrayList<>();
@@ -56,10 +59,10 @@ public final class AggregateEventDelegate {
 				+ " Event source type: " + event.getSourceType());
 		}
 
-		if (this.aggregateRoot instanceof EventRaisableSource
-			&& event instanceof RaiseEventHandler
+		if (this.aggregateRoot instanceof EventRaisableSource raisableSource
+			&& event instanceof RaiseEventHandler raiseEventHandler
 		) {
-			((RaiseEventHandler)event).onRaised((EventRaisableSource)this.aggregateRoot);
+			raiseEventHandler.onRaised(raisableSource);
 		}
 
 		this.pendingEvents.add(event);

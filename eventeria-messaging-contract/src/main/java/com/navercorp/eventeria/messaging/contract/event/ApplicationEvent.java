@@ -20,7 +20,7 @@ package com.navercorp.eventeria.messaging.contract.event;
 
 /**
  * a event to process in application instance.
- * <p>
+ * <p/>
  * if isExternalEvent() returns true, a event would be also published outside.
  */
 public interface ApplicationEvent {

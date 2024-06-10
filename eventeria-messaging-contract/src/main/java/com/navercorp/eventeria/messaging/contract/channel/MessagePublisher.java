@@ -22,6 +22,9 @@ import java.util.Collections;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 
+/**
+ * Publish a {@link Message}
+ */
 @FunctionalInterface
 public interface MessagePublisher {
 	void publish(Iterable<? extends Message> messages);
@@ -30,4 +33,3 @@ public interface MessagePublisher {
 		this.publish(Collections.singletonList(message));
 	}
 }
-
