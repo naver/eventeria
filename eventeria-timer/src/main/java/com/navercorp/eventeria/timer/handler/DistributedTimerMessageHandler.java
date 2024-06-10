@@ -55,6 +55,16 @@ public class DistributedTimerMessageHandler implements TimerMessageHandler {
 	@Nullable
 	private final Executor executor;
 
+	/**
+	 * @param timerMessageStore
+	 * @param countPerRelease
+	 * @param partitionGenerator
+	 * @param registeredPartitionCount partition count used on register time.
+	 * @param seekPartitionCount partition count used on retrieve time.
+	 *                           Normally has same value with registeredPartitionCount,
+	 *                           but can be different when increasing partition for backward compatibility.
+	 * @param executor
+	 */
 	public DistributedTimerMessageHandler(
 		TimerMessageStore timerMessageStore,
 		int countPerRelease,

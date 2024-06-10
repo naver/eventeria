@@ -27,7 +27,7 @@ import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventSerializerDeserializer;
 
 /**
- * A default implementation of serializer/deserializer between {@link CloudEvent> and byte array.
+ * A default implementation of serializer/deserializer between {@link CloudEvent} and byte array.
  */
 public class DefaultCloudEventSerializer implements CloudEventSerializerDeserializer {
 	private final EventFormat eventFormat;

@@ -23,6 +23,9 @@ import io.cloudevents.jackson.JsonFormat;
 
 import com.navercorp.eventeria.messaging.header.DefaultCloudEventHeaderMapper;
 
+/**
+ * A extended implementation to configure 'content-type' header as {@link JsonFormat#CONTENT_TYPE}
+ */
 public class JacksonCloudEventHeaderMapper extends DefaultCloudEventHeaderMapper {
 	public JacksonCloudEventHeaderMapper() {
 		super(EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE));

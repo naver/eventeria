@@ -20,6 +20,9 @@ package com.navercorp.eventeria.fake.spring.cloud.stream.binder.kafka;
 
 import org.springframework.integration.channel.PublishSubscribeChannel;
 
+/**
+ * fake-binder channel
+ */
 public class FakeBindingSubscribableChannel extends PublishSubscribeChannel {
 	private final String topic;
 	private final String type;

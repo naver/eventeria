@@ -41,14 +41,25 @@ import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEv
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStore;
 import com.navercorp.eventeria.timer.contract.store.TimerMessageStoreValue;
 
+/**
+ * An implementation of {@link TimerMessageStore} for integration with redis using spring-data-redis
+ */
 public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 	private static final Logger LOG = LoggerFactory.getLogger(RedisCloudEventTimerMessageStore.class);
+
+	private static final long EXPIRATION_BUFFER_HOURS_VALUE = 24L;
 
 	private final String redisKeyPrefix;
 	private final RedisOperations<String, String> redisIndexOperations;
 	private final RedisOperations<String, RedisCloudEventTimerMessageStoreValue> redisValueOperations;
 	private final CloudEventMessageReaderWriter cloudEventMessageReaderWriter;
 
+	/**
+	 * @param redisKeyPrefix prefix to classify timer message.
+	 * @param redisIndexOperations redis operations to index actual values.
+	 * @param redisValueOperations redis operations to handle timer messages.
+	 * @param cloudEventMessageReaderWriter (de)serializer for persisting timer messages.
+	 */
 	public RedisCloudEventTimerMessageStore(
 		String redisKeyPrefix,
 		RedisOperations<String, String> redisIndexOperations,
@@ -61,6 +72,12 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 		this.cloudEventMessageReaderWriter = cloudEventMessageReaderWriter;
 	}
 
+	/**
+	 * Save message with adding index.
+	 *
+	 * @param storeValue
+	 * @param partition
+	 */
 	@Override
 	public void save(
 		TimerMessageStoreValue storeValue,
@@ -72,12 +89,19 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 
 		String valueKey = this.generateKey(storeValue.getId(), partition);
 		RedisCloudEventTimerMessageStoreValue redisStoreValue = this.toRedisStoreValue(storeValue);
-		long expiration = storeValue.getReleaseDateTime().plus(24L, ChronoUnit.HOURS).toEpochMilli()
-			- Instant.now().toEpochMilli();
+		long expirationMillis =
+			storeValue.getReleaseDateTime().plus(EXPIRATION_BUFFER_HOURS_VALUE, ChronoUnit.HOURS).toEpochMilli()
+				- Instant.now().toEpochMilli();
 		this.redisValueOperations.opsForValue()
-			.set(valueKey, redisStoreValue, expiration, TimeUnit.MILLISECONDS);
+			.set(valueKey, redisStoreValue, expirationMillis, TimeUnit.MILLISECONDS);
 	}
 
+	/**
+	 * Remove message with deleting index.
+	 *
+	 * @param storeValueId
+	 * @param partition
+	 */
 	@Override
 	public void remove(UUID storeValueId, @Nullable Integer partition) {
 		String indexKey = this.generateIndexKey(partition);
@@ -92,14 +116,32 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 		}
 	}
 
+	/**
+	 * Count number of stored messages in index operation.
+	 *
+	 * @param conditionDateTime time to search before
+	 * @param partition
+	 * @return number of rows exists in index of partition and has time before conditionDateTime.
+	 */
 	@Override
 	public long count(Instant conditionDateTime, @Nullable Integer partition) {
 		String indexKey = this.generateIndexKey(partition);
+
 		double conditionScore = (double)conditionDateTime.getEpochSecond();
+
 		Long result = this.redisIndexOperations.opsForZSet().count(indexKey, 0, conditionScore);
+
 		return result != null ? result : 0L;
 	}
 
+	/**
+	 * find all messages by a scheduled time and partitions.
+	 *
+	 * @param conditionDateTime
+	 * @param count
+	 * @param partition
+	 * @return
+	 */
 	@Override
 	public List<TimerMessageStoreValue> findReleaseValues(
 		Instant conditionDateTime,
@@ -161,11 +203,11 @@ public class RedisCloudEventTimerMessageStore implements TimerMessageStore {
 
 		CloudEvent cloudEvent;
 		boolean cloudEventType = false;
-		if (message instanceof CloudEvent) {
-			cloudEvent = (CloudEvent)message;
+		if (message instanceof CloudEvent ce) {
+			cloudEvent = ce;
 			cloudEventType = true;
-		} else if (message instanceof Message) {
-			cloudEvent = this.cloudEventMessageReaderWriter.convert((Message)message);
+		} else if (message instanceof Message msg) {
+			cloudEvent = this.cloudEventMessageReaderWriter.convert(msg);
 		} else {
 			throw new UnsupportedOperationException("unsupported");
 		}

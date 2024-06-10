@@ -25,6 +25,9 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.TaskExecutor;
 
+/**
+ * TaskExecutor executes Runnable with blocking, in order to await for asynchronous call tests in a test environment.
+ */
 public class TestBlockingTaskExecutor implements TaskExecutor, InitializingBean, DisposableBean {
 	private final Executor executor;
 
@@ -39,15 +42,15 @@ public class TestBlockingTaskExecutor implements TaskExecutor, InitializingBean,
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if (this.executor instanceof InitializingBean) {
-			((InitializingBean)this.executor).afterPropertiesSet();
+		if (this.executor instanceof InitializingBean initializingBean) {
+			initializingBean.afterPropertiesSet();
 		}
 	}
 
 	@Override
 	public void destroy() throws Exception {
-		if (this.executor instanceof DisposableBean) {
-			((DisposableBean)this.executor).destroy();
+		if (this.executor instanceof DisposableBean disposableBean) {
+			disposableBean.destroy();
 		}
 	}
 }

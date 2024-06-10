@@ -10,7 +10,8 @@ plugins {
 dependencies {
     api project(":eventeria-messaging")
     api project(":eventeria-timer")
-    api("org.springframework.boot:spring-boot-starter-data-redis")
+
+    compileOnly("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 editorconfig {

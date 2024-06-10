@@ -42,6 +42,9 @@ import org.springframework.util.MultiValueMap;
 
 import com.navercorp.eventeria.messaging.spring.cloud.stream.binding.ChannelBinder;
 
+/**
+ * Do bind and return bindings in type of FakeBindingSubscribableChannel.
+ */
 public class FakeKafkaChannelBinder implements ChannelBinder {
 	private final BindingServiceProperties bindingServiceProperties;
 	private final BinderFactory binderFactory;

@@ -26,6 +26,9 @@ import com.navercorp.eventeria.domain.entity.AggregateMetaManager;
 import com.navercorp.eventeria.messaging.contract.meta.EventeriaMetaManager;
 import com.navercorp.eventeria.messaging.contract.meta.EventeriaProperties;
 
+/**
+ * Initializes {@link com.navercorp.eventeria.messaging.contract.meta.EventeriaMetaManager}.
+ */
 public class EventeriaMetaManagerInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 	private static final String INITIALIZE_META_MANAGER = "eventeria.meta.initialize";
 

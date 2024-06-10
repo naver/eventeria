@@ -30,6 +30,9 @@ import org.springframework.util.StringUtils;
 import com.navercorp.eventeria.messaging.contract.meta.EventeriaBasePackagePropertyPath;
 import com.navercorp.eventeria.messaging.contract.meta.EventeriaPropertiesLoader;
 
+/**
+ * Initializes properties for {@link com.navercorp.eventeria.messaging.contract.meta.EventeriaMetaManager}.
+ */
 public class EventeriaPackagePropertyPostProcessor implements EnvironmentPostProcessor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EventeriaPackagePropertyPostProcessor.class);

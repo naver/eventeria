@@ -24,12 +24,21 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Model of timer message to store redis.
+ */
 public class RedisCloudEventTimerMessageStoreValue {
-	private final UUID id;    // unique id for each timer message distinguish
+	private final UUID id;
 	private final byte[] message;
 	private final Instant releaseDateTime;
 	private final boolean cloudEventType;
 
+	/**
+	 * @param id unique id for each timer message distinguish.
+	 * @param message serialized value of timer message.
+	 * @param releaseDateTime scheduled time to release.
+	 * @param cloudEventType whether serialized message is type of {@link io.cloudevents.CloudEvent}.
+	 */
 	@ConstructorProperties({"id", "message", "releaseDateTime", "cloudEventType"})
 	public RedisCloudEventTimerMessageStoreValue(
 		UUID id,

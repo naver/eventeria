@@ -20,7 +20,7 @@ package com.navercorp.eventeria.messaging.spring.cloud.stream.support;
 
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
-public class BindingSupports {
+public final class BindingSupports {
 	public static boolean isBatchConsumer(
 		BindingServiceProperties bindingServiceProperties,
 		String topic,

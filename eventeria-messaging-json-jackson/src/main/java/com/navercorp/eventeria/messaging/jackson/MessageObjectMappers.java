@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import com.navercorp.eventeria.messaging.jackson.module.MessageModule;
 
-public class MessageObjectMappers {
+public final class MessageObjectMappers {
 	private static final List<Module> REGISTERED_MODULES = ObjectMapper.findModules().stream()
 		.filter(module -> !module.getModuleName().equalsIgnoreCase("AfterburnerModule"))
 		.collect(toList()); // afterburner only support "public setter" for deserializing

@@ -29,6 +29,9 @@ import org.springframework.transaction.support.ResourceHolderSynchronization;
 import org.springframework.transaction.support.SmartTransactionObject;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+/**
+ * transaction manager for replacing {@link KafkaTransactionManager} under fake-binder env.
+ */
 public class FakeKafkaTransactionManager<K, V> extends KafkaTransactionManager<K, V> {
 
 	public FakeKafkaTransactionManager(ProducerFactory<K, V> producerFactory) {
