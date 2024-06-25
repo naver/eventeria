@@ -26,3 +26,5 @@ include "eventeria-timer-spring-integration"
 include "eventeria-messaging-timer-spring-redis"
 include "spring-boot-eventeria"
 include "eventeria-fake-spring-cloud-stream-binder-kafka"
+
+include "guide-projects:spring-boot-eventeria-guide"
