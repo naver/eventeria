@@ -29,7 +29,7 @@ public class PostEventHandler {
 
 		springMessagePublisher.publish(
 			List.of(
-				UpdateUserStatistic.from(event.getPostId(), event.getWriterId()),
+				UpdateUserStatistic.of(event.getPostId(), event.getWriterId()),
 				RefreshPostRanking.from(event.getPostId()),
 				ApplySearchIndex.from(event.getPostId())
 			)

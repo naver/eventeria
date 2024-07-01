@@ -3,7 +3,6 @@ spring:
     function:
       definition:
         transformCloudEventToMessage|toNotifyToSubscribers;
-        transformMessageToCloudEvent;
         transformCloudEventToMessage|consumeNotifyToSubscribersCommand;
     stream:
       function:

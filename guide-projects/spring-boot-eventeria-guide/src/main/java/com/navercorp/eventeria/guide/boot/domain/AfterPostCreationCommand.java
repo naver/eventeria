@@ -22,7 +22,7 @@ public sealed interface AfterPostCreationCommand extends Command {
 
 	// programmatic binding
 	@Getter
-	@RequiredArgsConstructor(staticName = "from")
+	@RequiredArgsConstructor(staticName = "of")
 	final class UpdateUserStatistic extends AbstractCommand implements AfterPostCreationCommand {
 		private final long postId;
 		private final String writerId;
