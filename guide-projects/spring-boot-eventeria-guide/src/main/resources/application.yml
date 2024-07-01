@@ -1,0 +1,58 @@
+spring:
+  cloud:
+    function:
+      definition:
+        transformCloudEventToMessage|toNotifyToSubscribers;
+        transformCloudEventToMessage|consumeNotifyToSubscribersCommand;
+    stream:
+      function:
+        bindings:
+          transformCloudEventToMessage|toNotifyToSubscribers-in-0: inbound-kafka-channel-post-event-functional
+          transformCloudEventToMessage|consumeNotifyToSubscribersCommand-in-0: inbound-kafka-channel-notify-command-functional
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        inbound-kafka-channel-post-event-programmatic:
+          group: post-programmatic
+          destination: ${topics.post-event}
+          consumer:
+            concurrency: 1
+            auto-startup: true
+        inbound-kafka-channel-post-event-functional:
+          group: post-functional
+          destination: ${topics.post-event}
+          consumer:
+            concurrency: 1
+            auto-startup: true
+            use-native-decoding: true # for custom headers/extensions of eventeria
+        inbound-kafka-channel-notify-command-functional:
+          group: notify-functional
+          destination: ${topics.notify-command}
+          consumer:
+            concurrency: 1
+            auto-startup: true
+            use-native-decoding: true # for custom headers/extensions of eventeria
+        inbound-kafka-channel-after-post-command:
+          group: after-post-programmatic
+          destination: ${topics.after-post-command}
+          consumer:
+            concurrency: 1
+            auto-startup: true
+        outbound-kafka-channel-post-event:
+          destination: ${topics.post-event}
+          producer:
+            partition-count: 2
+        outbound-kafka-channel-notify-command:
+          destination: ${topics.notify-command}
+          producer:
+            partition-count: 2
+        outbound-kafka-channel-after-post-command:
+          destination: ${topics.after-post-command}
+          producer:
+            partition-count: 2
+
+topics:
+  post-event: post-event
+  after-post-command: after-post-command
+  notify-command: notify-command

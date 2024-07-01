@@ -1,0 +1,18 @@
+plugins {
+    id "eventeria.java-conventions"
+    id "eventeria.verification-conventions"
+    id "eventeria.spring-dependency-management-conventions"
+}
+
+dependencies {
+    implementation project(":spring-boot-eventeria")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
+    // for embedded kafka
+    implementation("org.springframework.kafka:spring-kafka-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
