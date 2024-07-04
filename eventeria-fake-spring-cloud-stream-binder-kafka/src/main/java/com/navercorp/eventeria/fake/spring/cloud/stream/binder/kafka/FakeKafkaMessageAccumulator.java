@@ -251,8 +251,8 @@ public class FakeKafkaMessageAccumulator {
 
 	/**
 	 * flush all registered triggers by {@link #registerFlushTrigger}.
-	 * 
-	 * @see FakeKafkaBindingMessageHandler#sendOutputs 
+	 *
+	 * @see FakeKafkaBindingMessageHandler#sendOutputs
 	 */
 	public void flushTriggers() {
 		List<Runnable> triggers = new ArrayList<>(this.flushTriggers);

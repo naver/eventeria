@@ -98,7 +98,8 @@ class AnnotatedAggregateMetaModel<T extends AggregateRoot> {
 	}
 
 	/**
-	 * build {@link DomainEvent} handler method from reflection by finding method annotated with {@link DomainEventHandler}.
+	 * build {@link DomainEvent} handler method from reflection
+	 * by finding method annotated with {@link DomainEventHandler}.
 	 */
 	private static <T extends AggregateRoot> Map<Class<? extends DomainEvent>, Method> getDomainEventHandlerMethods(
 		Class<T> rootType

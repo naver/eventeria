@@ -50,7 +50,8 @@ public final class AggregateMetaManager {
 	}
 
 	/**
-	 * Create {@link AnnotatedAggregateMetaModel} by parsing {@link AggregateRoot} annotated with {@link AnnotatedAggregateHandler}
+	 * Create {@link AnnotatedAggregateMetaModel} by parsing
+	 * {@link AggregateRoot} annotated with {@link AnnotatedAggregateHandler}
 	 *
 	 * @param aggregateRootType
 	 * @return

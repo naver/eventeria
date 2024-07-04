@@ -22,17 +22,19 @@ import org.springframework.data.annotation.Transient;
 
 import com.navercorp.eventeria.domain.annotation.AnnotatedAggregateHandler;
 import com.navercorp.eventeria.domain.entity.AnnotatedAggregateMessageHandler;
-import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 
 /**
- * An extended implementation to support managing {@link com.navercorp.eventeria.messaging.contract.Message} changes by aggregate root. <br/>
+ * An extended implementation to support managing {@link com.navercorp.eventeria.messaging.contract.Message}
+ * changes by aggregate root. <br/>
  * This also supports executions of annotated methods.
  * <p/>
- * This has a same implementation with {@link com.navercorp.eventeria.domain.entity.AnnotatedMessageHandlerAggregateRoot}<br/>
- * except the {@link SpringAggregateRoot#eventDelegate} and {@link #messageHandler} fields annotated with {@link Transient}.
- * 
+ * This has a same implementation with
+ * {@link com.navercorp.eventeria.domain.entity.AnnotatedMessageHandlerAggregateRoot}<br/>
+ * except the {@link SpringAggregateRoot#eventDelegate}
+ * and {@link #messageHandler} fields annotated with {@link Transient}.
+ *
  * @see com.navercorp.eventeria.domain.annotation.CommandHandler
  * @see com.navercorp.eventeria.domain.annotation.DomainEventHandler
  */

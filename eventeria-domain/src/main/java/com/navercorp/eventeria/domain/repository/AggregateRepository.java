@@ -19,7 +19,6 @@
 package com.navercorp.eventeria.domain.repository;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import com.navercorp.eventeria.domain.entity.AggregateRoot;
 

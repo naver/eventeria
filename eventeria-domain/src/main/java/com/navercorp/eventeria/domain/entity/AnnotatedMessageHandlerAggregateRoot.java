@@ -23,7 +23,8 @@ import com.navercorp.eventeria.messaging.contract.command.Command;
 import com.navercorp.eventeria.messaging.contract.event.DomainEvent;
 
 /**
- * An extended implementation to support managing {@link com.navercorp.eventeria.messaging.contract.Message} changes by aggregate root. <br/>
+ * An extended implementation to support managing
+ * {@link com.navercorp.eventeria.messaging.contract.Message} changes by aggregate root. <br/>
  * This also supports executions of annotated methods.
  *
  * @see com.navercorp.eventeria.domain.annotation.CommandHandler
