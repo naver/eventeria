@@ -26,7 +26,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a type is able to handle raised both {@link com.navercorp.eventeria.messaging.contract.command.Command} and {@link com.navercorp.eventeria.messaging.contract.event.DomainEvent}
+ * Indicates a type is able to handle raised both {@link com.navercorp.eventeria.messaging.contract.command.Command}
+ * and {@link com.navercorp.eventeria.messaging.contract.event.DomainEvent}
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

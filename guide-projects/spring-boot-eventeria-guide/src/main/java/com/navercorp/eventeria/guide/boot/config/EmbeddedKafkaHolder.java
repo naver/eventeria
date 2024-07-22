@@ -7,6 +7,8 @@ import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.EmbeddedKafkaZKBroker;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 public final class EmbeddedKafkaHolder implements InitializingBean {
 
 	private static final EmbeddedKafkaBroker embeddedKafka = new EmbeddedKafkaZKBroker(1, false)
@@ -33,6 +35,10 @@ public final class EmbeddedKafkaHolder implements InitializingBean {
 		return embeddedKafka;
 	}
 
+	@SuppressFBWarnings(
+		value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+		justification = "for test"
+	)
 	@Override
 	public void afterPropertiesSet() {
 		embeddedKafka.afterPropertiesSet();
