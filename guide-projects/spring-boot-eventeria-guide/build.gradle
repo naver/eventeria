@@ -17,4 +17,8 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka-test")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("io.rest-assured:rest-assured:${restAssuredVersion}")
+    testImplementation("io.rest-assured:json-path:${restAssuredVersion}")
+    testImplementation("io.rest-assured:spring-mock-mvc:${restAssuredVersion}")
 }
