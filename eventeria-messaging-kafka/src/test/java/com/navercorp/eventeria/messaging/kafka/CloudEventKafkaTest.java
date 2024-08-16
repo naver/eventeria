@@ -45,9 +45,9 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.domains.Domain;
 
 import io.cloudevents.CloudEvent;
+import io.cloudevents.core.format.ContentType;
 import io.cloudevents.core.message.Encoding;
 import io.cloudevents.core.provider.EventFormatProvider;
-import io.cloudevents.jackson.JsonFormat;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import io.cloudevents.kafka.CloudEventSerializer;
 import kafka.server.KafkaConfig;
@@ -108,7 +108,7 @@ class CloudEventKafkaTest {
 		producerProps.put(CloudEventSerializer.ENCODING_CONFIG, Encoding.STRUCTURED);
 		producerProps.put(
 			CloudEventSerializer.EVENT_FORMAT_CONFIG,
-			EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE)
+			EventFormatProvider.getInstance().resolveFormat(ContentType.JSON)
 		);
 
 		try (KafkaProducer<String, CloudEvent> producer = new KafkaProducer<>(producerProps)) {
@@ -131,7 +131,7 @@ class CloudEventKafkaTest {
 
 			records.forEach(rec -> {
 				rec.headers().headers("content-type").iterator().forEachRemaining(it ->
-					assertThat(new String(it.value(), StandardCharsets.UTF_8)).isEqualTo(JsonFormat.CONTENT_TYPE)
+					assertThat(new String(it.value(), StandardCharsets.UTF_8)).isEqualTo(ContentType.JSON.value())
 				);
 
 				Message message = cloudEventToMessageConverter.convert(rec.value());

@@ -27,10 +27,10 @@ import net.jqwik.api.lifecycle.BeforeTry;
 
 import io.cloudevents.CloudEvent;
 import io.cloudevents.SpecVersion;
+import io.cloudevents.core.format.ContentType;
 import io.cloudevents.core.provider.EventFormatProvider;
 import io.cloudevents.core.v1.CloudEventV1;
 import io.cloudevents.jackson.JsonCloudEventData;
-import io.cloudevents.jackson.JsonFormat;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventToMessageConverter;
@@ -52,7 +52,7 @@ import com.navercorp.eventeria.messaging.typealias.CloudEventMessageTypeAliasMap
 
 class DefaultCloudEventSerializerTest {
 	private final DefaultCloudEventSerializer sut = new DefaultCloudEventSerializer(
-		EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE)
+		EventFormatProvider.getInstance().resolveFormat(ContentType.JSON)
 	);
 	private final JacksonMessageSerializer messageSerializer = new JacksonMessageSerializer();
 	private MessageToCloudEventConverter messageToCloudEventConverter;

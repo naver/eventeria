@@ -18,17 +18,17 @@
 
 package com.navercorp.eventeria.messaging.jackson.serializer;
 
+import io.cloudevents.core.format.ContentType;
 import io.cloudevents.core.provider.EventFormatProvider;
-import io.cloudevents.jackson.JsonFormat;
 
 import com.navercorp.eventeria.messaging.serializer.DefaultCloudEventSerializer;
 
 /**
  * A implementation of serializer/deserializer between {@link io.cloudevents.CloudEvent} and byte array<br/>
- * using {@link JsonFormat}.
+ * using {@link ContentType#JSON}.
  */
 public final class JacksonCloudEventSerializer extends DefaultCloudEventSerializer {
 	public JacksonCloudEventSerializer() {
-		super(EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE));
+		super(EventFormatProvider.getInstance().resolveFormat(ContentType.JSON));
 	}
 }
