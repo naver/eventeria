@@ -29,6 +29,7 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 import io.cloudevents.CloudEvent;
+import io.cloudevents.core.format.ContentType;
 
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventSerializerDeserializer;
 
@@ -41,7 +42,7 @@ public class SpringCloudEventMessageConverter extends AbstractMessageConverter {
 	public SpringCloudEventMessageConverter(CloudEventSerializerDeserializer cloudEventSerializerDeserializer) {
 		super(
 			Arrays.asList(
-				new MimeType("application", "cloudevents+json"),
+				MimeType.valueOf(ContentType.JSON.value()),
 				MimeTypeUtils.APPLICATION_JSON
 			)
 		);

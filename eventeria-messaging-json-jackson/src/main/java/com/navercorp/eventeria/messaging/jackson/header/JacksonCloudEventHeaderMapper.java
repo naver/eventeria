@@ -18,16 +18,16 @@
 
 package com.navercorp.eventeria.messaging.jackson.header;
 
+import io.cloudevents.core.format.ContentType;
 import io.cloudevents.core.provider.EventFormatProvider;
-import io.cloudevents.jackson.JsonFormat;
 
 import com.navercorp.eventeria.messaging.header.DefaultCloudEventHeaderMapper;
 
 /**
- * A extended implementation to configure 'content-type' header as {@link JsonFormat#CONTENT_TYPE}
+ * A extended implementation to configure 'content-type' header as {@link ContentType#JSON}
  */
 public class JacksonCloudEventHeaderMapper extends DefaultCloudEventHeaderMapper {
 	public JacksonCloudEventHeaderMapper() {
-		super(EventFormatProvider.getInstance().resolveFormat(JsonFormat.CONTENT_TYPE));
+		super(EventFormatProvider.getInstance().resolveFormat(ContentType.JSON));
 	}
 }
