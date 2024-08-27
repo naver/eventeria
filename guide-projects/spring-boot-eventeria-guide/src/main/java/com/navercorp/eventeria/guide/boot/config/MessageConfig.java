@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import com.navercorp.eventeria.guide.boot.domain.AfterPostCreationCommand.NotifyToSubscribers;
 import com.navercorp.eventeria.guide.boot.domain.PostCreatedEvent;
+import com.navercorp.eventeria.guide.boot.domain.SerializeOnlyTypeAliasPostCreatedEvent;
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEventMessageReaderWriter;
 import com.navercorp.eventeria.messaging.contract.serializer.MessageSerializerDeserializer;
@@ -29,8 +30,6 @@ import com.navercorp.spring.boot.eventeria.support.FunctionalBindingSupports;
 @RequiredArgsConstructor
 public class MessageConfig {
 
-	private final ObjectMapper objectMapper;
-
 	static {
 		EventFormatProvider.getInstance()
 			.registerFormat(
@@ -39,6 +38,8 @@ public class MessageConfig {
 					.withForceIgnoreInvalidExtensionNameDeserialization()
 			);
 	}
+
+	private final ObjectMapper objectMapper;
 
 	@Bean
 	MessageSerializerDeserializer messageSerializerDeserializer() {
@@ -52,6 +53,11 @@ public class MessageConfig {
 		typeAliasMapper.addCompatibleTypeAlias(
 			PostCreatedEvent.class,
 			"com.navercorp.eventeria.guide.boot.domain.PostCreatedEvent"
+		);
+
+		typeAliasMapper.addSerializeTypeAlias(
+			SerializeOnlyTypeAliasPostCreatedEvent.class,
+			"com.navercorp.eventeria.guide.boot.domain.PostCreatedEventSerializeOnlyVersion"
 		);
 
 		typeAliasMapper.addCompatibleTypeAlias(

@@ -64,7 +64,7 @@ class PostApiControllerIntegrationTest {
 	}
 
 	private void assertPublishedMessageCount() {
-		int expectedPostEventCount = 1;
+		int expectedPostEventCount = 1 + 1; // PostCreatedEvent + SerializeOnlyTypeAliasPostCreatedEvent
 		int expectedAfterPostCommandCount = 3;
 		int expectedNotifyCommandCount = 1;
 
@@ -88,7 +88,11 @@ class PostApiControllerIntegrationTest {
 			throw new RuntimeException(e);
 		}
 
+		// PostCreatedEvent + SerializeOnlyTypeAliasPostCreatedEvent published
 		then(actualPostEventCounter.get()).isEqualTo(expectedPostEventCount);
+
+		// continuous command published for PostCreatedEvent only.
+		// Because failed to deserialize SerializeOnlyTypeAliasPostCreatedEvent
 		then(actualAfterPostCommandCounter.get()).isEqualTo(expectedAfterPostCommandCount);
 		then(actualNotifyCommandCounter.get()).isEqualTo(expectedNotifyCommandCount);
 	}

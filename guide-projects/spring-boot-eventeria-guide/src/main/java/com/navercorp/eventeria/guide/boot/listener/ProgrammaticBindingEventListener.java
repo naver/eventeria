@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.navercorp.eventeria.guide.boot.domain.PostCreatedEvent;
 import com.navercorp.eventeria.guide.boot.domain.PostEventHandler;
+import com.navercorp.eventeria.guide.boot.domain.SerializeOnlyTypeAliasPostCreatedEvent;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventToMessageConverter;
 import com.navercorp.eventeria.messaging.spring.cloud.stream.binding.InboundChannelBinder;
 import com.navercorp.eventeria.messaging.spring.integration.channel.SpringMessageHandler;
@@ -98,6 +99,7 @@ public class ProgrammaticBindingEventListener {
 	) {
 		return MessagePayloadTypeRouter.register(INBOUND_BEAN_NAME)
 			.route(PostCreatedEvent.class, postEventHandler::publishAfterPostCreatedCommands)
+			.route(SerializeOnlyTypeAliasPostCreatedEvent.class, postEventHandler::publishAfterPostCreatedCommands)
 			.done();
 	}
 }
