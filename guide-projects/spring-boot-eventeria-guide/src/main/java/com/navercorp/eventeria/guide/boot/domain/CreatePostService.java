@@ -26,6 +26,10 @@ public class CreatePostService {
 			PostCreatedEvent.from(post)
 		);
 
+		springMessagePublisher.publish(
+			SerializeOnlyTypeAliasPostCreatedEvent.from(post)
+		);
+
 		return post;
 	}
 }

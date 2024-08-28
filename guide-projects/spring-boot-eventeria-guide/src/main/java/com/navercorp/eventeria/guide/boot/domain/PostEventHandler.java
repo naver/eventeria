@@ -35,4 +35,18 @@ public class PostEventHandler {
 			)
 		);
 	}
+
+	public void publishAfterPostCreatedCommands(
+		SerializeOnlyTypeAliasPostCreatedEvent event
+	) {
+		log.info("[CONSUME][Programmatic][SerializeOnlyTypeAliasPostCreatedEvent] {}", event);
+
+		springMessagePublisher.publish(
+			List.of(
+				UpdateUserStatistic.of(event.getPostId(), event.getWriterId()),
+				RefreshPostRanking.from(event.getPostId()),
+				ApplySearchIndex.from(event.getPostId())
+			)
+		);
+	}
 }

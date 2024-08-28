@@ -124,6 +124,41 @@ public class ExampleService {
     }
     ```
 
+## `typealias` extension
+
+Eventeria provides the `typealias` extension to support following features.
+
+- multiple data formats for single topic.
+- publish the string of message type in fixed string, even if rename of class or relocate package.
+
+When publishing `Message`, the message will contain `typealias` extension that you registered by `addSerializeTypeAlias` or `addCompatibleTypeAlias`. If not, full class name will be used.
+
+When consuming `Message`, eventeria try to deserialize the message with `typealias` extension. You should register typealias by `addDeserializeTypeAlias` or `addCompatibleTypeAlias`.  
+If eventeria failed to find deserialize target type, it try to load class using ClassLoader with provided `typealias` string. If there is no matching class, consuming will be failed.
+
+### Configuration Example
+
+```java
+@Bean
+CloudEventMessageTypeAliasMapper cloudEventMessageTypeAliasMapper() {
+    CloudEventMessageTypeAliasMapper typeAliasMapper = new CloudEventMessageTypeAliasMapper();
+
+    // support typealias at both serialization / deserialization times
+    typeAliasMapper.addCompatibleTypeAlias(
+        PostCreatedEvent.class,
+        "com.navercorp.eventeria.guide.boot.domain.PostCreatedEvent"
+    );
+
+    // support typealias at serialization time only
+    typeAliasMapper.addSerializeTypeAlias(
+        SerializeOnlyTypeAliasPostCreatedEvent.class,
+        "com.navercorp.eventeria.guide.boot.domain.PostCreatedEventSerializeOnlyVersion"
+    );
+
+    return typeAliasMapper;
+}
+```
+
 ## License
 
 ```
