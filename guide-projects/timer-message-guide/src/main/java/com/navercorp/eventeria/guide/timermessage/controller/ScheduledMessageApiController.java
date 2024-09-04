@@ -20,13 +20,4 @@ public class ScheduledMessageApiController {
 	) {
 		scheduleMessageService.schedule(seconds);
 	}
-
-	public record CreatePostRequest(
-		long id,
-
-		String writerId,
-
-		String content
-	) {
-	}
 }

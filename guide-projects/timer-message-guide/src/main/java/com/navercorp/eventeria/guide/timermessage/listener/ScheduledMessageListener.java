@@ -39,7 +39,7 @@ public class ScheduledMessageListener {
 	 */
 	private static final String INBOUND_KAFKA_CHANNEL_NAME = "inbound-kafka-channel-scheduled";
 
-	private static final String ROUTER_NAME = "afterPostCreationCommandRouter";
+	private static final String ROUTER_NAME = "scheduledRouter";
 
 	private final InboundChannelBinder inboundChannelBinder;
 
