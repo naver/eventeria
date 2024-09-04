@@ -1,0 +1,26 @@
+plugins {
+    id "eventeria.java-conventions"
+    id "eventeria.verification-conventions"
+    id "eventeria.spring-dependency-management-conventions"
+}
+
+dependencies {
+    implementation project(":spring-boot-eventeria")
+    implementation project(":eventeria-timer-spring-integration")
+    implementation project(":eventeria-timer") // for InMemoryTimerMessageStore
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    implementation("com.google.code.findbugs:annotations:3.0.1")
+
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
+    // for embedded kafka
+    implementation("org.springframework.kafka:spring-kafka-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("io.rest-assured:rest-assured:${restAssuredVersion}")
+    testImplementation("io.rest-assured:json-path:${restAssuredVersion}")
+    testImplementation("io.rest-assured:spring-mock-mvc:${restAssuredVersion}")
+}

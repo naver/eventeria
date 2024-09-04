@@ -28,3 +28,4 @@ include "spring-boot-eventeria"
 include "eventeria-fake-spring-cloud-stream-binder-kafka"
 
 include "guide-projects:spring-boot-eventeria-guide"
+include "guide-projects:timer-message-guide"
