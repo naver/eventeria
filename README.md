@@ -6,7 +6,7 @@ Event Driven lightweight message format
 
  eventeria | spring-boot   | spring-cloud-stream 
 -----------|---------------|---------------------
- 1.2.1     | 3.2.x         | 4.1.x               
+ 1.2.2     | 3.2.x ~ 3.3.x | 4.1.x               
  1.1.1     | 3.0.x ~ 3.1.x | 4.0.x               
  1.0.1     | 2.7.x         | 3.2.x               
 
@@ -40,7 +40,7 @@ public class MessageConfig {
 }
 ```
 
-## Produce `Message`s
+## Produce Message
 
 1. Register your spring-cloud-stream produce channel in application.yml or application.properties
     ```yml
@@ -74,7 +74,7 @@ public class ExampleService {
 
 > **NOTE:** Does not support Functional publishing currently.
 
-## Consume `Message`s
+## Consume Message
 
 1. First, register your spring-cloud-stream consume channel in application.yml or application.properties
     ```yml
@@ -99,14 +99,14 @@ public class ExampleService {
 ### Functional way
 
 1. Register additional function mappings in application.yml or application.properties.
-   ```yml
-   spring:
-      cloud:
-        function:
-          definition:
-            transformCloudEventToMessage|consumeImplementsEventeriaMessage;
-            transformCloudEventToMessage|consumeXXX;
-   ```
+    ```yml
+    spring:
+       cloud:
+         function:
+           definition:
+             transformCloudEventToMessage|consumeImplementsEventeriaMessage;
+             transformCloudEventToMessage|consumeXXX;
+    ```
 2. Register `Function` bean which converts spring-messaging `Message` to eventeria `Message`.
     ```java
     @Bean
@@ -131,10 +131,14 @@ Eventeria provides the `typealias` extension to support following features.
 - multiple data formats for single topic.
 - publish the string of message type in fixed string, even if rename of class or relocate package.
 
-When publishing `Message`, the message will contain `typealias` extension that you registered by `addSerializeTypeAlias` or `addCompatibleTypeAlias`. If not, full class name will be used.
+### Publishing
 
-When consuming `Message`, eventeria try to deserialize the message with `typealias` extension. You should register typealias by `addDeserializeTypeAlias` or `addCompatibleTypeAlias`.  
-If eventeria failed to find deserialize target type, it try to load class using ClassLoader with provided `typealias` string. If there is no matching class, consuming will be failed.
+- When publishing `Message`, the message will contain `typealias` extension that you registered by `addSerializeTypeAlias` or `addCompatibleTypeAlias`. If not, full class name will be used.
+
+### Consuming
+
+- When consuming `Message`, eventeria try to deserialize the message with `typealias` extension. You should register typealias by `addDeserializeTypeAlias` or `addCompatibleTypeAlias  
+- If eventeria failed to find deserialize target type, it try to load class using ClassLoader with provided `typealias` string. If there is no matching class, consuming will be failed.
 
 ### Configuration Example
 
@@ -156,6 +160,36 @@ CloudEventMessageTypeAliasMapper cloudEventMessageTypeAliasMapper() {
     );
 
     return typeAliasMapper;
+}
+```
+
+## Message routing by class type
+
+If typealias is configured correctly, you can also configure 'route functions' to handle message by class type.  
+This feature is provided for programmatic binding only.
+
+
+```java
+// register router
+@Bean("router")
+MessagePayloadTypeRouter eventRouter(
+    YourEventHandler handler
+) {
+    return MessagePayloadTypeRouter.register("beanname")
+        .route(CreatedEvent.class, handler::onCreatedEvent)
+        .route(RemovedEvent.class, handler::onRemovedEvent)
+        .done();
+}
+
+// map inbound handler and router
+@Bean
+IntegrationFlow eventRouterIntegrationFlow(
+	@Qualifier("inboundHandlerName") SpringMessageHandler springMessageHandler,
+	@Qualifier("router") MessagePayloadTypeRouter router
+) {
+	return IntegrationFlow.from(springMessageHandler)
+		.route(router)
+		.get();
 }
 ```
 
