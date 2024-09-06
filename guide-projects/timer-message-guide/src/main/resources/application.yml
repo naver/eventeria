@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        inbound-kafka-channel-scheduled:
+          group: scheduled-consumer-group
+          destination: scheduled-topic
+          consumer:
+            concurrency: 1
+            auto-startup: true
+        outbound-kafka-channel-scheduled:
+          destination: scheduled-topic
+          producer:
+            partition-count: 2
