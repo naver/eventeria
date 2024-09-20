@@ -184,13 +184,122 @@ MessagePayloadTypeRouter eventRouter(
 // map inbound handler and router
 @Bean
 IntegrationFlow eventRouterIntegrationFlow(
-	@Qualifier("inboundHandlerName") SpringMessageHandler springMessageHandler,
-	@Qualifier("router") MessagePayloadTypeRouter router
+    @Qualifier("inboundHandlerName") SpringMessageHandler springMessageHandler,
+    @Qualifier("router") MessagePayloadTypeRouter router
 ) {
-	return IntegrationFlow.from(springMessageHandler)
-		.route(router)
-		.get();
+    return IntegrationFlow.from(springMessageHandler)
+        .route(router)
+        .get();
 }
+```
+
+## Schedule message publishing time
+
+You can schedule the time when a message is published.  
+To use this feature, you should configure a persistence store to save/retrieve `TimerMessage`.
+
+### Details
+
+1. Publish a message that implements `TimerMessage`, with the time when should be published.
+2. Published message is converted to `TimerMessageStoreValue` which is saved in `TimerMessageStore`.
+3. A retriever finds messages to publish from `TimerMessageStore` periodically.
+    - If exists, it will publish them to actual output channel.
+
+### Additional dependencies
+
+```gradle
+dependencies {
+    implementation("com.navercorp.eventeria:eventeria-timer-spring-integration:${version}")
+
+    // provides `TimerMessageStoreValue` implementations using redis
+    implementation("com.navercorp.eventeria:eventeria-timer-spring-redis:${version}")
+    
+    // If you use in-memory or other persistence store, import this and implement `TimerMessageStoreValue` for your store.
+    implementation("com.navercorp.eventeria:eventeria-timer:${version}")
+}
+```
+
+### Examples
+
+You must configure beans following, `SpringTimerMessageHandler`, `Scheduler`, `IntegrationFlowAdapter`
+
+```java
+// bean example using in-memory store
+@Bean
+SpringTimerMessageHandler springTimerMessageHandler() {
+    TimerMessageStore timerMessageStore = new InMemoryTimerMessageStore();
+    TimerMessageHandler timerMessageHandler = new SimpleTimerMessageHandler(timerMessageStore, 1000);
+
+    return new SpringTimerMessageHandler(timerMessageHandler);
+}
+
+// bean example using redis store with distributed partitions supported.
+@Bean
+SpringTimerMessageHandler springTimerMessageHandler(
+    CloudEventMessageReaderWriter cloudEventMessageReaderWriter,
+    RedisOperations<String, String> redisIndexOperations,
+    RedisOperations<String, RedisCloudEventTimerMessageStoreValue> redisCloudEventTimerMessageStoreValueRedisOperations
+) {
+    TimerMessageStore timerMessageStore = new RedisCloudEventTimerMessageStore(
+        "timer-message-", // redis key prefix
+        redisIndexOperations,
+        redisCloudEventTimerMessageStoreValueRedisOperations,
+        cloudEventMessageReaderWriter
+    );
+    TimerMessageHandler timerMessageHandler = new DistributedTimerMessageHandler(
+        timerMessageStore, 
+        1000, // count per each release
+        DefaultPartitionGenerator(),
+        10, // registered partition count
+        10, // seek partition count
+        null // Executor
+    );
+
+    return new SpringTimerMessageHandler(timerMessageHandler);
+}
+```
+
+```java
+@EnableScheduling
+@Configuration
+@RequiredArgsConstructor
+public class SchedulingConfig {
+
+    private final SpringTimerMessageHandler springTimerMessageHandler;
+
+    @Scheduled(fixedDelay = 1000L)
+    void triggerReschedule() {
+        springTimerMessageHandler.reschedulePersistedMessages();
+    }
+}
+```
+
+```java
+@Bean
+IntegrationFlowAdapter outboundIntegrationFlowAdapter(
+    MessageChannel outboundChannel,
+    MessageToCloudEventConverter messageToCloudEventConverter,
+    CloudEventHeaderMapper cloudEventHeaderMapper,
+    SpringMessagePublisher springMessagePublisher,
+    SpringTimerMessageHandler springTimerMessageHandler
+) {
+    return new TimerMessagePublisherIntegrationAdapter(
+        springMessagePublisher,
+        messageToCloudEventConverter,
+        cloudEventHeaderMapper,
+        outboundChannel,
+        springTimerMessageHandler
+    );
+}
+```
+
+Now, you can use message scheduling like below.
+
+```java
+public class ScheduledMessage implements TimerMessage {
+}
+
+springMessagePublisher.publish(new ScheduledMessage());
 ```
 
 ## License
