@@ -22,7 +22,10 @@ import org.springframework.integration.channel.PublishSubscribeChannel;
 
 /**
  * fake-binder channel
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class FakeBindingSubscribableChannel extends PublishSubscribeChannel {
 	private final String topic;
 	private final String type;
