@@ -44,7 +44,10 @@ import com.navercorp.eventeria.messaging.spring.cloud.stream.binding.ChannelBind
 
 /**
  * Do bind and return bindings in type of FakeBindingSubscribableChannel.
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class FakeKafkaChannelBinder implements ChannelBinder {
 	private final BindingServiceProperties bindingServiceProperties;
 	private final BinderFactory binderFactory;

@@ -24,7 +24,10 @@ import org.springframework.messaging.support.GenericMessage;
 
 /**
  * Publish message into fake-kafka binders.
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public final class FakeKafkaMessageTrigger {
 	private final FakeKafkaChannelBinder binder;
 

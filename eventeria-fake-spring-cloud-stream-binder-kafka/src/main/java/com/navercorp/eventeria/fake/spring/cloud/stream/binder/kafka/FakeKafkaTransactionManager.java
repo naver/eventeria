@@ -31,7 +31,10 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 /**
  * transaction manager for replacing {@link KafkaTransactionManager} under fake-binder env.
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class FakeKafkaTransactionManager<K, V> extends KafkaTransactionManager<K, V> {
 
 	public FakeKafkaTransactionManager(ProducerFactory<K, V> producerFactory) {
