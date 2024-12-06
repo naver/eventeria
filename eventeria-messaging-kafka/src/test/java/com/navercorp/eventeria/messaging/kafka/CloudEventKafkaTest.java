@@ -50,7 +50,6 @@ import io.cloudevents.core.message.Encoding;
 import io.cloudevents.core.provider.EventFormatProvider;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import io.cloudevents.kafka.CloudEventSerializer;
-import kafka.server.KafkaConfig;
 
 import com.navercorp.eventeria.messaging.contract.Message;
 import com.navercorp.eventeria.messaging.contract.cloudevents.converter.CloudEventToMessageConverter;
@@ -75,9 +74,9 @@ class CloudEventKafkaTest {
 			.kafkaPorts(0)
 			.brokerProperties(
 				Map.of(
-					KafkaConfig.OffsetsTopicReplicationFactorProp(), "1",
-					KafkaConfig.TransactionsTopicReplicationFactorProp(), "1",
-					KafkaConfig.TransactionsTopicMinISRProp(), "1"
+					"offsets.topic.replication.factor", "1",
+					"transaction.state.log.replication.factor", "1",
+					"transaction.state.log.min.isr", "1"
 				)
 			);
 		BROKER.afterPropertiesSet();
