@@ -27,7 +27,10 @@ import org.springframework.core.task.TaskExecutor;
 
 /**
  * TaskExecutor executes Runnable with blocking, in order to await for asynchronous call tests in a test environment.
+ *
+ * @deprecated extend {@link TaskExecutor} and override {@link TaskExecutor#execute(Runnable)}.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class TestBlockingTaskExecutor implements TaskExecutor, InitializingBean, DisposableBean {
 	private final Executor executor;
 

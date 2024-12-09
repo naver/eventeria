@@ -50,7 +50,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Subscribes messages by fake-binder and invokes registered channel binding.
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class FakeKafkaBindingMessageHandler extends AggregatingMessageHandler {
 	@Nullable
 	private final String outboundChannelName;

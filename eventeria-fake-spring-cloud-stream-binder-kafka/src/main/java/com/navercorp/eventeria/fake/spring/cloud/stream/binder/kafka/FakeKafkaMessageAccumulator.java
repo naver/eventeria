@@ -40,7 +40,10 @@ import com.navercorp.eventeria.messaging.contract.cloudevents.serializer.CloudEv
  * accumulates all published/subscribed/failed messages by fake-binder.
  *
  * @see FakeKafkaBindingMessageHandler
+ *
+ * @deprecated use spring-cloud-stream-test-binder instead.
  */
+@Deprecated(since = "1.3.0", forRemoval = true)
 public class FakeKafkaMessageAccumulator {
 	@Nullable
 	private final CloudEventMessageReaderWriter cloudEventMessageReaderWriter;
