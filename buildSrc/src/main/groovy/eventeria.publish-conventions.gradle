@@ -1,10 +1,9 @@
 plugins {
     id "maven-publish"
-    id "signing"
 }
 
 group "com.navercorp.eventeria"
-version "1.3.0"
+version "1.3.0-SNAPSHOT"
 
 tasks.withType(Javadoc).configureEach { enabled = false }
 
@@ -28,8 +27,8 @@ publishing {
                         password ossrhPassword
                     }
 
-                    def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                    def releasesRepoUrl = "https://ossrh-staging-api.central.sonatype.com/service/local/"
+                    def snapshotsRepoUrl = "https://central.sonatype.com/repository/maven-snapshots/"
                     url = version.endsWith("SNAPSHOT") ? snapshotsRepoUrl : releasesRepoUrl
                 }
             }
@@ -79,19 +78,6 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
-
-    useInMemoryPgpKeys(signingKey, signingPassword)
-
-    sign publishing.publications.mavenJava
-}
-
-tasks.withType(Sign).configureEach {
-    onlyIf { !version.endsWith("SNAPSHOT") }
 }
 
 jar {
