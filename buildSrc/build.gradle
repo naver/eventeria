@@ -14,4 +14,5 @@ dependencies {
     implementation("io.spring.gradle:dependency-management-plugin:1.1.5")
     implementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:5.0.13"
     implementation "org.ec4j.editorconfig:org.ec4j.editorconfig.gradle.plugin:0.1.0"
+    implementation "org.jreleaser:jreleaser-gradle-plugin:1.19.0"
 }
