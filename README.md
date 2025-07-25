@@ -6,7 +6,7 @@ Event Driven lightweight message format
 
  eventeria | spring-boot   | spring-cloud-stream 
 -----------|---------------|---------------------
- 1.3.0     | 3.4.x         | 4.2.x
+ 1.3.1     | 3.4.x ~       | 4.2.x ~
  1.2.2     | 3.2.x ~ 3.3.x | 4.1.x               
  1.1.1     | 3.0.x ~ 3.1.x | 4.0.x               
  1.0.1     | 2.7.x         | 3.2.x               
