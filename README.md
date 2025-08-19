@@ -1,6 +1,24 @@
 # Eventeria
 
-Event Driven lightweight message format
+Eventeria is a lightweight, CloudEvents-compliant messaging toolkit for Spring Cloud Stream/Kafka that simplifies stream processing—centered on class-type–based message routing with stable type aliases. 
+
+### What “message-type routing” means in Eventeria
+
+Route by payload class, not by topic names or ad-hoc headers. You register a router that maps concrete event classes to handler methods, then plug it into a Spring Integration flow. This provides clean, type-safe dispatch without switch/if chains or topic sprawl. 
+
+How it’s wired: 
+1. define a `MessagePayloadTypeRouter` bean
+2. chain `.route(FooCreated.class, handler::onFooCreated)` etc.
+3. connect it with `.route(router)` in your `IntegrationFlow`. 
+4. This routing is available for programmatic bindings. 
+
+### How this simplifies CloudEvents stream processing
+
+CloudEvents in, Eventeria messages out
+-  provide a function like `transformCloudEventToMessage(...)` and then consume strongly-typed Message objects—keeping CloudEvents compliance while giving your app class-typed events for routing. 
+
+Fits your stack
+- the repo includes Spring Cloud Stream and Kafka integration modules, so you can publish/consume with minimal boilerplate. 
 
 ## Version compatibility
 
